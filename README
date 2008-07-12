@@ -1,0 +1,10 @@
+Sample code and Xcode projects for Cocoa development techniques.
+
+TODO:
+- OCUnit
+- Framework bundles
+- sqlite3 Objc wrapper API
+- RubyCocoa (rbiphonetest?)
+- Bindings
+- iPhone table views
+- iPhone location API
