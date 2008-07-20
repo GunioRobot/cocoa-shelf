@@ -1,10 +1,20 @@
 Sample code and Xcode projects for Cocoa development techniques.
 
-TODO:
+
+iPhone TODO:
+- Google Toolkit for Mac Unit Testing
+- RubyCocoa (rbiphonetest)
+- iPhone table views
+- iPhone location API
+- with sqlite3 framework bundle (unit tested)
+
+Desktop TODO:
 - OCUnit
 - Framework bundles
 - sqlite3 Objc wrapper API
-- RubyCocoa (rbiphonetest?)
+- RubyCocoa
 - Bindings
-- iPhone table views
-- iPhone location API
+- CoreData
+- Sync Services
+- MobileMe API (?)
+- Plugin Bundles
