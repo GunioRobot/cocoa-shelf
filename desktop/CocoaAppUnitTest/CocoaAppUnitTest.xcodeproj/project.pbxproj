@@ -11,6 +11,9 @@
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		B7700DB80E34116000DA27FB /* AdderTest.m in Sources */ = {isa = PBXBuildFile; fileRef = B7700DB70E34116000DA27FB /* AdderTest.m */; };
+		B7700DC60E3411E500DA27FB /* Adder.m in Sources */ = {isa = PBXBuildFile; fileRef = B7700DC50E3411E500DA27FB /* Adder.m */; };
+		B7700DC90E34144200DA27FB /* Adder.m in Sources */ = {isa = PBXBuildFile; fileRef = B7700DC50E3411E500DA27FB /* Adder.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +39,10 @@
 		8D1107320486CEB800E47090 /* CocoaAppUnitTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CocoaAppUnitTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7700D9B0E34057100DA27FB /* UnitTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7700D9C0E34057100DA27FB /* UnitTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "UnitTests-Info.plist"; sourceTree = "<group>"; };
+		B7700DB60E34116000DA27FB /* AdderTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdderTest.h; sourceTree = "<group>"; };
+		B7700DB70E34116000DA27FB /* AdderTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdderTest.m; sourceTree = "<group>"; };
+		B7700DC40E3411E500DA27FB /* Adder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Adder.h; sourceTree = "<group>"; };
+		B7700DC50E3411E500DA27FB /* Adder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Adder.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +67,8 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				B7700DC40E3411E500DA27FB /* Adder.h */,
+				B7700DC50E3411E500DA27FB /* Adder.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -95,6 +104,7 @@
 			isa = PBXGroup;
 			children = (
 				080E96DDFE201D6D7F000001 /* Classes */,
+				B7700DC30E3411B700DA27FB /* Test Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
@@ -130,6 +140,15 @@
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B7700DC30E3411B700DA27FB /* Test Classes */ = {
+			isa = PBXGroup;
+			children = (
+				B7700DB60E34116000DA27FB /* AdderTest.h */,
+				B7700DB70E34116000DA27FB /* AdderTest.m */,
+			);
+			name = "Test Classes";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -230,6 +249,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B7700DC90E34144200DA27FB /* Adder.m in Sources */,
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -238,6 +258,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B7700DB80E34116000DA27FB /* AdderTest.m in Sources */,
+				B7700DC60E3411E500DA27FB /* Adder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
