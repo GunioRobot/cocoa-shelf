@@ -1,0 +1,8 @@
+1) Create app
+2) Create new target, Cocoa -> Unit Test Bundle
+3) In build settings:
+    Bundle Loader = $(BUILT_PRODUCTS_DIR)/CocoaAppUnitTest.app/Contents/MacOS/CocoaAppUnitTest
+    Test Host = $(BUILT_PRODUCTS_DIR)/CocoaAppUnitTest.app/Contents/MacOS/CocoaAppUnitTest
+ (NOTE: Test Host not required for testing shared libs and frameworks)
+4) Create new unit test file, File -> New File -> Cocoa -> ObjC test case class
+5) Drag test impl file (.m) into test target, Compile Sources task.
