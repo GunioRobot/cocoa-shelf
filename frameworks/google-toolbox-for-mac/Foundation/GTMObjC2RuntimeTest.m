@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -101,9 +101,9 @@ AT_REQUIRED
 
   // Watcher is released when it is notified.
   GTMObjC2NotificationWatcher *watcher = [[GTMObjC2NotificationWatcher alloc] init];
-  [nc addObserver:watcher 
-         selector:@selector(startedTest:) 
-             name:SenTestSuiteDidStartNotification 
+  [nc addObserver:watcher
+         selector:@selector(startedTest:)
+             name:SenTestSuiteDidStartNotification
            object:nil];
 }
 
@@ -144,8 +144,8 @@ AT_REQUIRED
   // STAssertFalse(class_conformsToProtocol(nil, nil), nil);
 
   // Standard use check
-  STAssertTrue(class_conformsToProtocol(cls_, 
-                                        @protocol(GTMObjC2Runtime_TestProtocol)), 
+  STAssertTrue(class_conformsToProtocol(cls_,
+                                        @protocol(GTMObjC2Runtime_TestProtocol)),
                nil);
 }
 
@@ -172,10 +172,10 @@ AT_REQUIRED
   STAssertEquals(count, 2U, nil);
   STAssertNULL(list[count], nil);
   free(list);
-  
+
   // Now test meta class
   count = 0;
-  list = class_copyMethodList((Class)objc_getMetaClass(class_getName(cls_)), 
+  list = class_copyMethodList((Class)objc_getMetaClass(class_getName(cls_)),
                               &count);
   STAssertNotNULL(list, nil);
   STAssertEquals(count, 2U, nil);
@@ -215,7 +215,7 @@ AT_REQUIRED
   STAssertNotNil(val3, nil);
   NSString *val4 = [GTMObjC2Runtime_TestClass brokeHisBrain];
   STAssertNotNil(val4, nil);
-  
+
   // exchange the imps
   Method *list = class_copyMethodList(cls_, nil);
   STAssertNotNULL(list, nil);
@@ -232,7 +232,7 @@ AT_REQUIRED
   // Check that other methods not affected
   STAssertEqualStrings([GTMObjC2Runtime_TestClass dontHaveACow], val3, nil);
   STAssertEqualStrings([GTMObjC2Runtime_TestClass brokeHisBrain], val4, nil);
-  
+
   // exchange the imps back
   method_exchangeImplementations(list[0], list[1]);
 
@@ -309,7 +309,7 @@ AT_REQUIRED
 
 - (void)test_protocol_getMethodDescription {
   // Check nil cases
-  struct objc_method_description desc = protocol_getMethodDescription(nil, nil, 
+  struct objc_method_description desc = protocol_getMethodDescription(nil, nil,
                                                                       YES, YES);
   STAssertNULL(desc.name, nil);
   desc = protocol_getMethodDescription(nil, @selector(optional), YES, YES);

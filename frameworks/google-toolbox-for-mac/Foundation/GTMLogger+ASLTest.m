@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -42,7 +42,7 @@ static NSMutableArray *gDummyLog;  // weak
 - (void)testCreation {
   GTMLogger *aslLogger = [GTMLogger standardLoggerWithASL];
   STAssertNotNil(aslLogger, nil);
-  
+
   GTMLogASLWriter *writer = [GTMLogASLWriter aslWriter];
   STAssertNotNil(writer, nil);
 }
@@ -52,7 +52,7 @@ static NSMutableArray *gDummyLog;  // weak
   GTMLogASLWriter *writer = [[[GTMLogASLWriter alloc]
                               initWithClientClass:[DummyASLClient class]]
                              autorelease];
-  
+
 
   STAssertNotNil(writer, nil);
   STAssertTrue([gDummyLog count] == 0, nil);
@@ -63,11 +63,11 @@ static NSMutableArray *gDummyLog;  // weak
   [writer logMessage:@"info" level:kGTMLoggerLevelInfo];
   [writer logMessage:@"error" level:kGTMLoggerLevelError];
   [writer logMessage:@"assert" level:kGTMLoggerLevelAssert];
-  
-  // Inspect the logged message to make sure they were logged correctly. The 
-  // dummy writer will save the messages w/ @level concatenated. The "level" 
+
+  // Inspect the logged message to make sure they were logged correctly. The
+  // dummy writer will save the messages w/ @level concatenated. The "level"
   // will be the ASL level, not the GTMLogger level. GTMLogASLWriter will log
-  // all 
+  // all
   NSArray *log = gDummyLog;
   NSArray *expected = [NSArray arrayWithObjects:
                        @"unknown@5",
@@ -76,9 +76,9 @@ static NSMutableArray *gDummyLog;  // weak
                        @"error@3",
                        @"assert@1",
                        nil];
-  
+
   STAssertEqualObjects(log, expected, nil);
-  
+
   gDummyLog = nil;
 }
 

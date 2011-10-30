@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -23,7 +23,7 @@
 #import "GTMUnitTestDevLog.h"
 
 @interface GTMScriptRunnerTest : GTMTestCase {
- @private 
+ @private
   NSString *shScript_;
   NSString *perlScript_;
   NSString *shOutputScript_;
@@ -45,7 +45,7 @@
    @"fi\n"
    @"echo $i\n"
    writeToFile:shScript_ atomically:YES encoding:NSUTF8StringEncoding error:nil];
-  
+
   perlScript_ = [NSString stringWithFormat:@"/tmp/script_runner_unittest_%d_%d_pl", geteuid(), getpid()];
   [@"#!/usr/bin/perl\n"
    @"use strict;\n"
@@ -101,19 +101,19 @@
                                                     withArgs:[NSArray arrayWithObject:@"-lq"]];
   STAssertNotNil(sr, @"Script runner must not be nil");
   NSString *output = nil;
-  
+
   // Simple expression (NOTE that bc requires that commands end with a newline)
   output = [sr run:@"1 + 2\n"];
   STAssertEqualObjects(output, @"3", @"output should equal '3'");
-  
+
   // Simple expression with variables and multiple statements
   output = [sr run:@"i=1; i+2\n"];
   STAssertEqualObjects(output, @"3", @"output should equal '3'");
-  
+
   // Simple expression with base conversion
   output = [sr run:@"obase=2; 2^5\n"];
   STAssertEqualObjects(output, @"100000", @"output should equal '100000'");
-  
+
   // Simple expression with sine and cosine functions
   output = [sr run:@"scale=3;s(0)+c(0)\n"];
   STAssertEqualObjects(output, @"1.000", @"output should equal '1.000'");
@@ -123,15 +123,15 @@
   GTMScriptRunner *sr = [GTMScriptRunner runnerWithPerl];
   STAssertNotNil(sr, @"Script runner must not be nil");
   NSString *output = nil;
-  
+
   // Simple print
   output = [sr run:@"print 'hi'"];
   STAssertEqualObjects(output, @"hi", @"output should equal 'hi'");
-  
+
   // Simple print x4
   output = [sr run:@"print 'A'x4"];
   STAssertEqualObjects(output, @"AAAA", @"output should equal 'AAAA'");
-  
+
   // Simple perl-y stuff
   output = [sr run:@"my $i=0; until ($i++==41){} print $i"];
   STAssertEqualObjects(output, @"42", @"output should equal '42'");
@@ -141,11 +141,11 @@
   GTMScriptRunner *sr = [GTMScriptRunner runnerWithPython];
   STAssertNotNil(sr, @"Script runner must not be nil");
   NSString *output = nil;
-  
+
   // Simple print
   output = [sr run:@"print 'hi'"];
   STAssertEqualObjects(output, @"hi", @"output should equal 'hi'");
-  
+
   // Simple python expression
   output = [sr run:@"print '-'.join(['a', 'b', 'c'])"];
   STAssertEqualObjects(output, @"a-b-c", @"output should equal 'a-b-c'");
@@ -155,11 +155,11 @@
   GTMScriptRunner *sr = [GTMScriptRunner runnerWithBash];
   STAssertNotNil(sr, @"Script runner must not be nil");
   NSString *output = nil;
-  
+
   // Simple sh script
   output = [sr runScript:shScript_];
   STAssertEqualObjects(output, @"1", @"output should equal '1'");
-  
+
   // Simple sh script with 1 command line argument
   output = [sr runScript:shScript_ withArgs:[NSArray arrayWithObject:@"2"]];
   STAssertEqualObjects(output, @"2", @"output should equal '2'");
@@ -169,11 +169,11 @@
   GTMScriptRunner *sr = [GTMScriptRunner runnerWithPerl];
   STAssertNotNil(sr, @"Script runner must not be nil");
   NSString *output = nil;
-  
+
   // Simple Perl script
   output = [sr runScript:perlScript_];
   STAssertEqualObjects(output, @"1", @"output should equal '1'");
-  
+
   // Simple perl script with 1 command line argument
   output = [sr runScript:perlScript_ withArgs:[NSArray arrayWithObject:@"2"]];
   STAssertEqualObjects(output, @"2", @"output should equal '2'");
@@ -183,33 +183,33 @@
   GTMScriptRunner *sr = [GTMScriptRunner runner];
   STAssertNotNil(sr, @"Script runner must not be nil");
   NSString *output = nil;
-  
+
   STAssertNil([sr environment], @"should start w/ empty env");
-  
+
   output = [sr run:@"/usr/bin/env | wc -l"];
   int numVars = [output intValue];
   STAssertGreaterThan(numVars, 0, @"numVars should be positive");
   // By default the environment is wiped clean, however shells often add a few
-  // of their own env vars after things have been wiped. For example, sh will 
+  // of their own env vars after things have been wiped. For example, sh will
   // add about 3 env vars (PWD, _, and SHLVL).
   STAssertLessThan(numVars, 5, @"Our env should be almost empty");
-  
+
   NSDictionary *newEnv = [NSDictionary dictionaryWithObject:@"bar"
                                                      forKey:@"foo"];
   [sr setEnvironment:newEnv];
-  
+
   output = [sr run:@"/usr/bin/env | wc -l"];
   STAssertEquals([output intValue], numVars + 1,
                @"should have one more env var now");
-  
+
   [sr setEnvironment:nil];
   output = [sr run:@"/usr/bin/env | wc -l"];
   STAssertEquals([output intValue], numVars,
                @"should be back down to %d vars", numVars);
-  
+
   NSDictionary *currVars = [[NSProcessInfo processInfo] environment];
   [sr setEnvironment:currVars];
-  
+
   output = [sr run:@"/usr/bin/env | wc -l"];
   STAssertEquals([output intValue], (int)[currVars count],
                @"should be back down to %d vars", numVars);
@@ -225,38 +225,38 @@
 
 - (void)testRunCommandOutputHandling {
   // Test whitespace trimming & stdout vs. stderr w/ run command api
-  
+
   GTMScriptRunner *sr = [GTMScriptRunner runnerWithBash];
   STAssertNotNil(sr, @"Script runner must not be nil");
   NSString *output = nil;
   NSString *err = nil;
-  
+
   // w/o whitespace trimming
   {
     [sr setTrimsWhitespace:NO];
     STAssertFalse([sr trimsWhitespace], @"setTrimsWhitespace to NO failed");
-    
+
     // test stdout
     output = [sr run:@"echo \" on out \"" standardError:&err];
     STAssertEqualObjects(output, @" on out \n", @"failed to get stdout output");
     STAssertNil(err, @"stderr should have been empty");
-    
+
     // test stderr
     output = [sr run:@"echo \" on err \" > /dev/stderr" standardError:&err];
     STAssertNil(output, @"stdout should have been empty");
     STAssertEqualObjects(err, @" on err \n", nil);
   }
-  
+
   // w/ whitespace trimming
   {
     [sr setTrimsWhitespace:YES];
     STAssertTrue([sr trimsWhitespace], @"setTrimsWhitespace to YES failed");
-    
+
     // test stdout
     output = [sr run:@"echo \" on out \"" standardError:&err];
     STAssertEqualObjects(output, @"on out", @"failed to get stdout output");
     STAssertNil(err, @"stderr should have been empty");
-    
+
     // test stderr
     output = [sr run:@"echo \" on err \" > /dev/stderr" standardError:&err];
     STAssertNil(output, @"stdout should have been empty");
@@ -276,14 +276,14 @@
   {
     [sr setTrimsWhitespace:NO];
     STAssertFalse([sr trimsWhitespace], @"setTrimsWhitespace to NO failed");
-  
+
     // test stdout
     output = [sr runScript:shOutputScript_
                   withArgs:[NSArray arrayWithObject:@"out"]
              standardError:&err];
     STAssertEqualObjects(output, @" on out \n", nil);
     STAssertNil(err, @"stderr should have been empty");
-    
+
     // test stderr
     output = [sr runScript:shOutputScript_
                   withArgs:[NSArray arrayWithObject:@"err"]
@@ -291,19 +291,19 @@
     STAssertNil(output, @"stdout should have been empty");
     STAssertEqualObjects(err, @" on err \n", nil);
   }
-  
+
   // w/ whitespace trimming
   {
     [sr setTrimsWhitespace:YES];
     STAssertTrue([sr trimsWhitespace], @"setTrimsWhitespace to YES failed");
-    
+
     // test stdout
     output = [sr runScript:shOutputScript_
                   withArgs:[NSArray arrayWithObject:@"out"]
              standardError:&err];
     STAssertEqualObjects(output, @"on out", nil);
     STAssertNil(err, @"stderr should have been empty");
-    
+
     // test stderr
     output = [sr runScript:shOutputScript_
                   withArgs:[NSArray arrayWithObject:@"err"]
@@ -317,7 +317,7 @@
   GTMScriptRunner *sr = [GTMScriptRunner runner];
   STAssertNotNil(sr, @"Script runner must not be nil");
   NSString *err = nil;
-  
+
   STAssertNil([sr run:nil standardError:&err], nil);
   STAssertNil(err, nil);
 }
@@ -326,7 +326,7 @@
   GTMScriptRunner *sr = [GTMScriptRunner runner];
   STAssertNotNil(sr, @"Script runner must not be nil");
   NSString *err = nil;
-  
+
   STAssertNil([sr runScript:nil withArgs:nil standardError:&err], nil);
   STAssertNil(err, nil);
   STAssertNil([sr runScript:@"/path/that/does/not/exists/foo/bar/baz"
@@ -340,7 +340,7 @@
     [GTMScriptRunner runnerWithInterpreter:@"/path/that/does/not/exists/interpreter"];
   STAssertNotNil(sr, @"Script runner must not be nil");
   NSString *err = nil;
-  
+
   STAssertNil([sr run:nil standardError:&err], nil);
   STAssertNil(err, nil);
   [GTMUnitTestDevLog expectString:@"Failed to launch interpreter "
@@ -354,7 +354,7 @@
     [GTMScriptRunner runnerWithInterpreter:@"/path/that/does/not/exists/interpreter"];
   STAssertNotNil(sr, @"Script runner must not be nil");
   NSString *err = nil;
-  
+
   [GTMUnitTestDevLog expectString:@"Failed to launch interpreter "
    "'/path/that/does/not/exists/interpreter' due to: launch path not accessible"];
   STAssertNil([sr runScript:shScript_ withArgs:nil standardError:&err], nil);
@@ -374,38 +374,38 @@
 - (void)helperTestBourneShellUsingScriptRunner:(GTMScriptRunner *)sr {
   STAssertNotNil(sr, @"Script runner must not be nil");
   NSString *output = nil;
-  
+
   // Simple command
   output = [sr run:@"ls /etc/passwd"];
   STAssertEqualObjects(output, @"/etc/passwd", @"output should equal '/etc/passwd'");
-  
+
   // Simple command pipe-line
   output = [sr run:@"ls /etc/ | grep passwd | tail -1"];
   STAssertEqualObjects(output, @"passwd", @"output should equal 'passwd'");
-  
+
   // Simple pipe-line with quotes and awk variables
   output = [sr run:@"ps jaxww | awk '{print $2}' | sort -nr | tail -2 | head -1"];
   STAssertEqualObjects(output, @"1", @"output should equal '1'");
-  
+
   // Simple shell loop with variables
   output = [sr run:@"i=0; while [ $i -lt 100 ]; do i=$((i+1)); done; echo $i"];
   STAssertEqualObjects(output, @"100", @"output should equal '100'");
-  
+
   // Simple command with newlines
   output = [sr run:@"i=1\necho $i"];
   STAssertEqualObjects(output, @"1", @"output should equal '1'");
-  
+
   // Simple full shell script
   output = [sr run:@"#!/bin/sh\ni=1\necho $i\n"];
   STAssertEqualObjects(output, @"1", @"output should equal '1'");
-  
+
   NSString *err = nil;
-  
+
   // Test getting standard error with no stdout
   output = [sr run:@"ls /etc/does-not-exist" standardError:&err];
   STAssertNil(output, @"output should be nil due to expected error");
   STAssertEqualObjects(err, @"ls: /etc/does-not-exist: No such file or directory", @"");
-  
+
   // Test getting standard output along with some standard error
   output = [sr run:@"ls /etc/does-not-exist /etc/passwd" standardError:&err];
   STAssertEqualObjects(output, @"/etc/passwd", @"");

@@ -13,7 +13,7 @@
  * 3. Neither the name of the copyright holder nor the names of any contributors
  *    may be used to endorse or promote products derived from this
  *    software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -63,7 +63,7 @@
 
     _db = [database retain];
     _dialect = [dialect retain];
-    
+
     return self;
 }
 
@@ -89,7 +89,7 @@
     NSObject<PLPreparedStatement> *stmt;
 
     /* Create the query string */
-    query = [NSString stringWithFormat: @"INSERT INTO %@ (%@) VALUES (:%@)", 
+    query = [NSString stringWithFormat: @"INSERT INTO %@ (%@) VALUES (:%@)",
              [_dialect quoteIdentifier: tableName],
              [columnNames componentsJoinedByString: @", "],
              [columnNames componentsJoinedByString: @", :"]];
@@ -116,14 +116,14 @@
  * @param outError If an error occurs, nil will be returned and outError will be populated with the error reason.
  * @return A prepared statement that may be used for dictionary-based parameter binding. Nil if an error occurs.
  */
-- (NSObject<PLPreparedStatement> *) selectForTable: (NSString *) tableName 
+- (NSObject<PLPreparedStatement> *) selectForTable: (NSString *) tableName
                                        withColumns: (NSArray *) columnNames
                                        primaryKeys: (NSArray *) primaryKeys
                                              error: (NSError **) outError
-{    
+{
     NSString *query;
     NSObject<PLPreparedStatement> *stmt;
-    
+
     /* Create the query string */
     query = [NSString stringWithFormat: @"SELECT %@ FROM %@ WHERE %@",
              [self identifiersWithQuoting: columnNames],
@@ -134,7 +134,7 @@
     stmt = [_db prepareStatement: query error: outError];
     if (stmt == nil)
         return nil;
-    
+
     /* All is well in prepared statement land */
     return stmt;
 }
@@ -151,14 +151,14 @@
  * @param primaryKey The name of the primary key column that will be compared against the last insert ID as provided by the database.
  * @param outError If an error occurs, nil will be returned and outError will be populated with the error reason.
  */
-- (NSObject<PLPreparedStatement> *) selectLastInsertForTable: (NSString *) tableName 
-                                                 withColumns: (NSArray *) columnNames 
+- (NSObject<PLPreparedStatement> *) selectLastInsertForTable: (NSString *) tableName
+                                                 withColumns: (NSArray *) columnNames
                                                   primaryKey: (NSString *) primaryKey
                                                        error: (NSError **) outError
 {
     NSString *query;
     NSObject<PLPreparedStatement> *stmt;
-    
+
     /* Create the query string */
     assert([_dialect supportsLastInsertIdentity]);
     query = [NSString stringWithFormat: @"SELECT %@ FROM %@ WHERE %@ = %@",
@@ -171,7 +171,7 @@
     stmt = [_db prepareStatement: query error: outError];
     if (stmt == nil)
         return nil;
-    
+
     /* All is well in prepared statement land */
     return stmt;
 }
@@ -189,17 +189,17 @@
 - (NSObject<PLPreparedStatement> *) deleteForTable: (NSString *) tableName primaryKeys: (NSArray *) columnNames error: (NSError **) outError {
     NSString *query;
     NSObject<PLPreparedStatement> *stmt;
-    
+
     /* Create the query string */
-    query = [NSString stringWithFormat: @"DELETE FROM %@ WHERE %@", 
+    query = [NSString stringWithFormat: @"DELETE FROM %@ WHERE %@",
              [_dialect quoteIdentifier: tableName],
              [self columnsWithEquality: columnNames]];
-    
+
     /* Prepare the statement */
     stmt = [_db prepareStatement: query error: outError];
     if (stmt == nil)
         return nil;
-    
+
     /* All is well in prepared statement land */
     return stmt;
 }
@@ -218,13 +218,13 @@
  */
 - (NSString *) identifiersWithQuoting: (NSArray *) identifiers {
     NSMutableString *identifierString;
-    
+
     /* Create the column list */
     identifierString = [NSMutableString stringWithCapacity: [identifiers count] * 10];
     for (NSString *identifier in identifiers) {
         if ([identifierString length] != 0)
             [identifierString appendString: @", "];
-        
+
         [identifierString appendString: [_dialect quoteIdentifier: identifier]];
     }
 
@@ -238,14 +238,14 @@
  */
 - (NSString *) columnsWithEquality: (NSArray *) columnNames {
     NSMutableString *builder = [NSMutableString stringWithCapacity: 15];
-    
+
     for (NSString *columnName in columnNames) {
         if ([builder length] > 0)
             [builder appendString: @" AND "];
-        
+
         [builder appendFormat: @"%@ = (:%@)", [_dialect quoteIdentifier: columnName], columnName];
     }
-    
+
     return builder;
 }
 

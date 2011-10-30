@@ -13,7 +13,7 @@
  * 3. Neither the name of the copyright holder nor the names of any contributors
  *    may be used to endorse or promote products derived from this
  *    software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -65,10 +65,10 @@
 
     /* Retain a reference to our entity manager */
     _entityManager = [entityManager retain];
-    
+
     /* Retain our dialect */
     _sqlDialect = [[entityManager dialect] retain];
-    
+
     /* Initialize transaction state */
     _inTransaction = NO;
 
@@ -269,10 +269,10 @@ static BOOL propertyfilter_filter_generated (PLEntityProperty *property, void *c
     PLEntityDescription *desc;
     NSDictionary *values;
     NSMutableDictionary *updateValues;
-    
+
     NSObject<PLPreparedStatement> *stmt = nil;
     NSObject<PLResultSet> *rs = nil;
-    
+
     /* Fetch the entity description */
     desc = [_entityManager descriptionForEntity: [entity class]];
     generatedPrimaryKey = [desc generatedPrimaryKeyProperty];
@@ -287,10 +287,10 @@ static BOOL propertyfilter_filter_generated (PLEntityProperty *property, void *c
     stmt = [_sqlBuilder insertForTable: [desc tableName] withColumns: [values allKeys] error: error];
     if (stmt == nil)
         goto error;
-    
+
     /* Bind parameters */
     [stmt bindParameterDictionary: values];
-    
+
     /* Execute our statement */
     if (![stmt executeUpdateAndReturnError: error])
         goto error;
@@ -298,7 +298,7 @@ static BOOL propertyfilter_filter_generated (PLEntityProperty *property, void *c
     /*
      * Fetch all generated values
      */
-    
+
     /* Determine the generated column names */
     NSArray *generatedProperties;
     NSMutableArray *columnNames;
@@ -311,7 +311,7 @@ static BOOL propertyfilter_filter_generated (PLEntityProperty *property, void *c
     /* Generate a SELECT statement for the generated primary key */
     if (generatedPrimaryKey != nil && [values objectForKey: [generatedPrimaryKey columnName]] == [NSNull null]) {
         /* Create the select statement */
-        stmt = [_sqlBuilder selectLastInsertForTable: [desc tableName] 
+        stmt = [_sqlBuilder selectLastInsertForTable: [desc tableName]
                                          withColumns: columnNames
                                           primaryKey: [generatedPrimaryKey columnName]
                                                error: error];
@@ -332,7 +332,7 @@ static BOOL propertyfilter_filter_generated (PLEntityProperty *property, void *c
             goto error;
         [stmt bindParameterDictionary: primaryKeyValues];
     }
-        
+
     /* Execute our statement */
     rs = [stmt executeQueryAndReturnError: error];
     if (rs == nil)
@@ -342,8 +342,8 @@ static BOOL propertyfilter_filter_generated (PLEntityProperty *property, void *c
     if (![rs next]) {
         if (error) {
             NSString *description = NSLocalizedString(@"The entity could not be located in the database after an INSERT.", @"");
-            *error = [NSError errorWithDomain: PLEntityErrorDomain 
-                                         code: PLEntityNotFoundError 
+            *error = [NSError errorWithDomain: PLEntityErrorDomain
+                                         code: PLEntityNotFoundError
                                      userInfo: [NSDictionary dictionaryWithObjectsAndKeys: description, NSLocalizedDescriptionKey, nil]];
         }
         goto error;
@@ -354,7 +354,7 @@ static BOOL propertyfilter_filter_generated (PLEntityProperty *property, void *c
     for (NSString *columnName in columnNames) {
         [updateValues setObject: [rs objectForColumn: columnName] forKey: columnName];
     }
-    
+
     /* Clean up */
     [rs close];
 
@@ -449,28 +449,28 @@ error:
  */
 - (BOOL) deleteEntity: (PLEntity *) entity error: (NSError **) error {
     PLEntityDescription *desc;
-    NSDictionary *columnValues;                            
+    NSDictionary *columnValues;
     NSObject<PLPreparedStatement> *stmt;
     BOOL ret;
-    
+
     /* Fetch the data */
     desc = [_entityManager descriptionForEntity: [entity class]];
     columnValues = [desc columnValuesForEntity: entity withFilter: PLEntityPropertyFilterPrimaryKeys];
-    
+
     /* Create our delete statement */
     stmt = [_sqlBuilder deleteForTable: [desc tableName] primaryKeys: [columnValues allKeys] error: error];
     if (stmt == nil)
         return NO;
-    
+
     /* Bind parameters */
     [stmt bindParameterDictionary: columnValues];
-    
+
     /* Execute our statement */
     ret = [stmt executeUpdateAndReturnError: error];
-    
+
     /* Clean up */
     [stmt close];
-    
+
     return ret;
 }
 

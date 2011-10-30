@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -29,15 +29,15 @@
 // - When you need to set a credential for the http
 // - When you want to avoid changing WebKit's cookies
 //
-// This is assumed to be a one-shot fetch request; don't reuse the object 
+// This is assumed to be a one-shot fetch request; don't reuse the object
 // for a second fetch.
 //
 // The fetcher may be created auto-released, in which case it will release
 // itself after the fetch completion callback.  The fetcher
 // is implicitly retained as long as a connection is pending.
 //
-// But if you may need to cancel the fetcher, allocate it with initWithRequest: 
-// and have the delegate release the fetcher in the callbacks.  
+// But if you may need to cancel the fetcher, allocate it with initWithRequest:
+// and have the delegate release the fetcher in the callbacks.
 //
 // Sample usage:
 //
@@ -46,7 +46,7 @@
 //
 //  [myFetcher setPostData:[postString dataUsingEncoding:NSUTF8StringEncoding]]; // for POSTs
 //
-//  [myFetcher setCredential:[NSURLCredential authCredentialWithUsername:@"foo" 
+//  [myFetcher setCredential:[NSURLCredential authCredentialWithUsername:@"foo"
 //                                                              password:@"bar"]]; // optional http credential
 //
 //  [myFetcher setFetchHistory:myMutableDictionary]; // optional, for persisting modified-dates
@@ -62,13 +62,13 @@
 //  - (void)myFetcher:(GTMHTTPFetcher *)fetcher finishedWithData:(NSData *)retrievedData;
 //  - (void)myFetcher:(GTMHTTPFetcher *)fetcher failedWithError:(NSError *)error;
 //
-// NOTE:  Fetches may retrieve data from the server even though the server 
+// NOTE:  Fetches may retrieve data from the server even though the server
 //        returned an error.  The failWithError selector is called when the server
 //        status is >= 300 (along with any server-supplied data, usually
 //        some html explaining the error).
 //        Status codes are at <http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html>
 //
-// 
+//
 // Proxies:
 //
 // Proxy handling is invisible so long as the system has a valid credential in
@@ -77,7 +77,7 @@
 // will call the failedWithError: method with the NSURLChallenge in the error's
 // userInfo. The error method can get the challenge info like this:
 //
-//  NSURLAuthenticationChallenge *challenge 
+//  NSURLAuthenticationChallenge *challenge
 //     = [[error userInfo] objectForKey:kGTMHTTPFetcherErrorChallengeKey];
 //  BOOL isProxyChallenge = [[challenge protectionSpace] isProxy];
 //
@@ -95,7 +95,7 @@
 // by servers for the application from interfering with Safari cookie settings,
 // and vice versa.  The fetcher cookies are lost when the application quits.
 //
-// To rely instead on WebKit's global NSHTTPCookieStorage, call 
+// To rely instead on WebKit's global NSHTTPCookieStorage, call
 // setCookieStorageMethod: with kGTMHTTPFetcherCookieStorageMethodSystemDefault.
 //
 // If you provide a fetch history (such as for periodic checks, described
@@ -110,7 +110,7 @@
 // bandwidth by providing a "Nothing changed" status message instead of response
 // data.
 //
-// To get this behavior, provide a persistent mutable dictionary to setFetchHistory:, 
+// To get this behavior, provide a persistent mutable dictionary to setFetchHistory:,
 // and look for the failedWithError: callback with code 304
 // (kGTMHTTPFetcherStatusNotModified) like this:
 //
@@ -120,11 +120,11 @@
 //      // [[error userInfo] objectForKey:kGTMHTTPFetcherStatusDataKey] is
 //      // empty; use the data from the previous finishedWithData: for this URL
 //    } else {
-//      // handle other server status code 
+//      // handle other server status code
 //    }
 // }
 //
-// The fetchHistory mutable dictionary should be maintained by the client between 
+// The fetchHistory mutable dictionary should be maintained by the client between
 // fetches and given to each fetcher intended to have the If-modified-since header
 // or the same cookie storage.
 //
@@ -138,7 +138,7 @@
 // The bytes received so far are [dataReceivedSoFar length]. This number may go down
 //    if a redirect causes the download to begin again from a new server.
 // If supplied by the server, the anticipated total download size is available as
-//    [[myFetcher response] expectedContentLength] (may be -1 for unknown 
+//    [[myFetcher response] expectedContentLength] (may be -1 for unknown
 //    download sizes.)
 //
 //
@@ -146,11 +146,11 @@
 //
 // The fetcher can optionally create a timer and reattempt certain kinds of
 // fetch failures (status codes 408, request timeout; 503, service unavailable;
-// 504, gateway timeout; networking errors NSURLErrorTimedOut and 
+// 504, gateway timeout; networking errors NSURLErrorTimedOut and
 // NSURLErrorNetworkConnectionLost.)  The user may set a retry selector to
 // customize the type of errors which will be retried.
 //
-// Retries are done in an exponential-backoff fashion (that is, after 1 second, 
+// Retries are done in an exponential-backoff fashion (that is, after 1 second,
 // 2, 4, 8, and so on.)
 //
 // Enabling automatic retries looks like this:
@@ -170,7 +170,7 @@
 //
 // If set, the retry selector should have the signature:
 //   -(BOOL)fetcher:(GTMHTTPFetcher *)fetcher willRetry:(BOOL)suggestedWillRetry forError:(NSError *)error
-// and return YES to set the retry timer or NO to fail without additional 
+// and return YES to set the retry timer or NO to fail without additional
 // fetch attempts.
 //
 // The retry method may return the |suggestedWillRetry| argument to get the
@@ -199,12 +199,12 @@
 #undef _EXTERN
 #undef _INITIALIZE_AS
 #ifdef GTMHTTPFETCHER_DEFINE_GLOBALS
-#define _EXTERN 
+#define _EXTERN
 #define _INITIALIZE_AS(x) =x
 #else
 #define _EXTERN extern
 #define _INITIALIZE_AS(x)
-#endif 
+#endif
 
 // notifications & errors
 _EXTERN NSString* const kGTMHTTPFetcherErrorDomain _INITIALIZE_AS(@"com.google.mactoolbox.HTTPFetcher");
@@ -221,10 +221,10 @@ _EXTERN NSString* const kGTMHTTPFetcherHistoryCookiesKey _INITIALIZE_AS(@"FetchH
 enum {
   kGTMHTTPFetcherErrorDownloadFailed = -1,
   kGTMHTTPFetcherErrorAuthenticationChallengeFailed = -2,
-  
+
   kGTMHTTPFetcherStatusNotModified = 304
 };
-  
+
 enum {
   kGTMHTTPFetcherCookieStorageMethodStatic = 0,
   kGTMHTTPFetcherCookieStorageMethodFetchHistory = 1,
@@ -253,7 +253,7 @@ typedef NSUInteger GTMHTTPFetcherCookieStorageMethod;
   NSMutableDictionary *fetchHistory_; // if supplied by the caller, used for Last-Modified-Since checks and cookies
   BOOL shouldCacheDatedData_;       // if true, remembers and returns data marked with a last-modified date
   GTMHTTPFetcherCookieStorageMethod cookieStorageMethod_; // constant from above
-  
+
   BOOL isRetryEnabled_;             // user wants auto-retry
   SEL retrySEL_;                    // optional; set with setRetrySelector
   NSTimer *retryTimer_;
@@ -283,7 +283,7 @@ typedef NSUInteger GTMHTTPFetcherCookieStorageMethod;
 - (NSURLCredential *)credential;
 - (void)setCredential:(NSURLCredential *)theCredential;
 
-// setting the proxy credential is optional; it is used if the connection 
+// setting the proxy credential is optional; it is used if the connection
 // receives an authentication challenge from a proxy
 - (NSURLCredential *)proxyCredential;
 - (void)setProxyCredential:(NSURLCredential *)theCredential;
@@ -309,7 +309,7 @@ typedef NSUInteger GTMHTTPFetcherCookieStorageMethod;
 
 // the delegate is not retained except during the connection
 - (id)delegate;
-- (void)setDelegate:(id)theDelegate; 
+- (void)setDelegate:(id)theDelegate;
 
 // the delegate's optional receivedData selector has a signature like:
 //  - (void)myFetcher:(GTMHTTPFetcher *)fetcher receivedData:(NSData *)dataReceivedSoFar;
@@ -317,12 +317,12 @@ typedef NSUInteger GTMHTTPFetcherCookieStorageMethod;
 - (void)setReceivedDataSelector:(SEL)theSelector;
 
 
-// retrying; see comments at the top of the file.  Calling 
+// retrying; see comments at the top of the file.  Calling
 // setIsRetryEnabled(YES) resets the min and max retry intervals.
 - (BOOL)isRetryEnabled;
 - (void)setIsRetryEnabled:(BOOL)flag;
 
-// retry selector is optional for retries. 
+// retry selector is optional for retries.
 //
 // If present, it should have the signature:
 //   -(BOOL)fetcher:(GTMHTTPFetcher *)fetcher willRetry:(BOOL)suggestedWillRetry forError:(NSError *)error
@@ -354,7 +354,7 @@ typedef NSUInteger GTMHTTPFetcherCookieStorageMethod;
 // interval delay to precede next retry
 - (NSTimeInterval)nextRetryInterval;
 
-/// Begin fetching the request.  
+/// Begin fetching the request.
 //
 /// |delegate| can optionally implement the two selectors |finishedSEL| and
 /// |networkFailedSEL| or pass nil for them.
@@ -365,7 +365,7 @@ typedef NSUInteger GTMHTTPFetcherCookieStorageMethod;
 //   - (void)fetcher:(GTMHTTPFetcher *)fetcher finishedWithData:(NSData *)data
 // failedSEL has a signature like:
 //   - (void)fetcher:(GTMHTTPFetcher *)fetcher failedWithError:(NSError *)error
-// 
+//
 
 - (BOOL)beginFetchWithDelegate:(id)delegate
              didFinishSelector:(SEL)finishedSEL
@@ -439,8 +439,8 @@ typedef NSUInteger GTMHTTPFetcherCookieStorageMethod;
 
 // using the fetcher while a modal dialog is displayed requires setting the
 // run-loop modes to include NSModalPanelRunLoopMode
-// 
-// setting run loop modes does nothing if they are not supported, 
+//
+// setting run loop modes does nothing if they are not supported,
 // such as on 10.4
 - (NSArray *)runLoopModes;
 - (void)setRunLoopModes:(NSArray *)modes;
@@ -448,8 +448,8 @@ typedef NSUInteger GTMHTTPFetcherCookieStorageMethod;
 + (BOOL)doesSupportRunLoopModes;
 + (NSArray *)defaultRunLoopModes;
 + (void)setDefaultRunLoopModes:(NSArray *)modes;
-  
-// users who wish to replace GTMHTTPFetcher's use of NSURLConnection 
+
+// users who wish to replace GTMHTTPFetcher's use of NSURLConnection
 // can do so globally here.  The replacement should be a subclass of
 // NSURLConnection.
 + (Class)connectionClass;
@@ -474,7 +474,7 @@ typedef NSUInteger GTMHTTPFetcherCookieStorageMethod;
 // and downloaded data.
 //
 // A symlink is created in the logs folder to simplify finding the html file
-// for the latest run of the application; the symlink is called 
+// for the latest run of the application; the symlink is called
 //
 //   AppName_http_log_newest.html
 //
@@ -484,7 +484,7 @@ typedef NSUInteger GTMHTTPFetcherCookieStorageMethod;
 // logging code (it defaults to 1).  By default, any data uploaded via PUT/POST
 // w/ and NSInputStream will not be logged.  You can enable this logging by
 // defining GTM_HTTPFETCHER_ENABLE_INPUTSTREAM_LOGGING to 1 (it defaults to 0).
-// 
+//
 
 @interface GTMHTTPFetcher (GTMHTTPFetcherLogging)
 

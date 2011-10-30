@@ -15,12 +15,12 @@ Changes since 1.5.1
 
 - Added GTMHTTPFetcher and GTMHTTPServer to GTMiPhone
 
-- Made sure that build would work with iPhone device attached, and that all 
+- Made sure that build would work with iPhone device attached, and that all
   tests run directly on the phone.
-  
-- Added GTMValidatingContainers which are a set of mutable container classes 
-  that allow you to have a selector on a target that is called to verify that 
-  the objects being put into the container are valid. This can be controlled 
+
+- Added GTMValidatingContainers which are a set of mutable container classes
+  that allow you to have a selector on a target that is called to verify that
+  the objects being put into the container are valid. This can be controlled
   at compile time so that you don't take the performance hit in a release build.
 
 - Added GTMPath, which represents an existing absolute path on the file system.
@@ -34,11 +34,11 @@ Changes since 1.5.1
 
 - Added GTMLargeTypeWindow for doing display windows similar to Address Book
   Large Type display for phone numbers.
-  
+
 - Removed GTMNSWorkspace+ScreenSaver as it has always been a little dodgy due
   to it's dependencies on undocumented frameworks, and the ScreenSaver
   framework doesn't play nicely in GC mode.
-  
+
 - Added property methods to GTMHTTPFetcher.  These are convenient alternatives
   to storing an NSDictionary in the userData.
 
@@ -47,7 +47,7 @@ Changes since 1.5.1
   isn't needed in most cases.
 
 - Fixed a potential GTMHTTPFetcher crash on failed authentication.
-  
+
 - Added a obj-c logging package, GTMLogger, for applications that want an
   application level logging system.  See GTMLogger.h, GTMLogger+ASL.h, and
   GTMLoggerRingBufferWriter.h for what the basic system and two optional
@@ -142,7 +142,7 @@ Changes since 1.0.0
   unittests because it turns on a variety of "enhancements" (such as zombies,
   scribbling etc) to encourage our unittests to fail for us. It also will run
   the unittests using the _debug frameworks if you have them.
-  
+
   https://connect.apple.com/cgi-bin/WebObjects/MemberSite.woa/wa/getSoftware?bundleID=19915
 
 - Remove NSColor+Theme and NSWorkspace+Theme as they are no longer needed for
@@ -166,7 +166,7 @@ Changes since 1.0.0
 - Added GTMFourCharCode for wrapping FourCharCodes in an ObjC object. Mainly for
   use by the NSAppleEventDescriptor code, and also useful for storing them
   in ObjC collection classes.
-  
+
 - Added GTMStackTrace.
 
 - Added NSString+URLArguments and NSDictionary+URLArguments
@@ -176,7 +176,7 @@ Changes since 1.0.0
 - Added _GTMCompileAssert for doing compile time assertions to GTMDefines.h
 
 - Added GTMUnitTestDevLog and GTMTestCase for logging and tracking logs while
-  running unittests to verify what is being logged is what you expect. All 
+  running unittests to verify what is being logged is what you expect. All
   unittests should now inherit from GTMTestCase instead of SenTestCase to take
   advantage of the new log tracking. See GTMUnitTestDevLog.h for details.
 

@@ -13,7 +13,7 @@
  * 3. Neither the name of the copyright holder nor the names of any contributors
  *    may be used to endorse or promote products derived from this
  *    software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -65,16 +65,16 @@ NSString *PLEntityPAGeneratedValue = @"PLEntityPAGeneratedValue";
  * This method is the true designated initializer.
  */
 - (id) initWithKey: (NSString *) key columnName: (NSString *) columnName attribute: (NSString *) firstAttribute attributesv: (va_list) attributesv {
-    
+
     /*
      * Standard initialization
      */
     if ((self = [super init]) == nil)
         return nil;
-    
+
     _key = [key retain];
     _columnName = [columnName retain];
-    
+
     /*
      * Option Parsing.
      */
@@ -90,11 +90,11 @@ NSString *PLEntityPAGeneratedValue = @"PLEntityPAGeneratedValue";
             [NSException raise: PLDatabaseException format: @"Undefined PLEntityProperty attribute: %@", attribute];
         }
     }
-    
+
     /*
      * Option validation.
      */
-    
+
     return self;
 }
 
@@ -140,7 +140,7 @@ NSString *PLEntityPAGeneratedValue = @"PLEntityPAGeneratedValue";
  * @param key KVC key used to access the column value.
  * @param columnName The corresponding database column.
  * @param firstAttribute A nil-terminated list of property attributes.
- * 
+ *
  * @par Property Attributes
  *
  * The property attributes are a nil-terminated list of attribute constants and associated
@@ -163,11 +163,11 @@ NSString *PLEntityPAGeneratedValue = @"PLEntityPAGeneratedValue";
  */
 - (id) initWithKey: (NSString *) key columnName: (NSString *) columnName attributes: (NSString *) firstAttribute, ... {
     va_list args;
-    
+
     va_start(args, firstAttribute);
     [self initWithKey: key columnName: columnName attribute: firstAttribute attributesv: args];
     va_end(args);
-    
+
     return self;
 }
 

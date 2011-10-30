@@ -1,6 +1,6 @@
 //
 //  GTMCALayer+UnitTesting.m
-//  
+//
 //  Category for making unit testing of graphics/UI easier.
 //  Allows you to save a view out to a image file, and compare a view
 //  with a previously stored representation to make sure it hasn't changed.
@@ -10,9 +10,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -22,7 +22,7 @@
 
 #import "GTMCALayer+UnitTesting.h"
 
-@implementation CALayer (GTMUnitTestingAdditions) 
+@implementation CALayer (GTMUnitTestingAdditions)
 
 //  Returns an image containing a representation of the object
 //  suitable for use in comparing against a master image.
@@ -39,12 +39,12 @@
   CGContextRef context = [self gtm_createUnitTestBitmapContextOfSize:size
                                                                 data:NULL];
   _GTMDevAssert(context, @"Couldn't create context");
-  
+
   // iPhone renders are flipped
   CGAffineTransform transform = CGAffineTransformMakeTranslation(0, size.height);
   transform = CGAffineTransformScale(transform, 1.0, -1.0);
   CGContextConcatCTM(context, transform);
-  
+
   [self renderInContext:context];
   CGImageRef image = CGBitmapContextCreateImage(context);
   CFRelease(context);
@@ -67,7 +67,7 @@
   if ([self gtm_shouldEncodeStateForSublayers]) {
     int i = 0;
     for (CALayer *subLayer in [self sublayers]) {
-      [inCoder encodeObject:subLayer 
+      [inCoder encodeObject:subLayer
                      forKey:[NSString stringWithFormat:@"CALayerSubLayer %d", i]];
       i = i + 1;
     }

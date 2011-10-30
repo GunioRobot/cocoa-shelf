@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -28,7 +28,7 @@
   // test w/ a set of strings
   NSSet *numbers = [NSSet setWithObjects: @"1", @"2", @"3", nil];
   NSEnumerator *e = [[numbers objectEnumerator]
-    gtm_enumeratorByMakingEachObjectPerformSelector:@selector(stringByAppendingString:) 
+    gtm_enumeratorByMakingEachObjectPerformSelector:@selector(stringByAppendingString:)
                                          withObject:@" "];
   NSMutableSet *trailingSpaces = [NSMutableSet set];
   id obj;
@@ -41,7 +41,7 @@
   // test an empty set
   NSSet *empty = [NSSet set];
   e = [[empty objectEnumerator]
-    gtm_enumeratorByMakingEachObjectPerformSelector:@selector(stringByAppendingString:) 
+    gtm_enumeratorByMakingEachObjectPerformSelector:@selector(stringByAppendingString:)
                                          withObject:@" "];
   STAssertNil([e nextObject],
               @"shouldn't have gotten anything from first advance of enumerator");
@@ -56,7 +56,7 @@
                            nil];
   // test those that have prefixes
   NSEnumerator *e = [[testDict objectEnumerator]
-    gtm_filteredEnumeratorByMakingEachObjectPerformSelector:@selector(hasPrefix:) 
+    gtm_filteredEnumeratorByMakingEachObjectPerformSelector:@selector(hasPrefix:)
                                                  withObject:@"foo"];
   // since the dictionary iterates in any order, compare as sets
   NSSet *filteredValues = [NSSet setWithArray:[e allObjects]];
@@ -66,15 +66,15 @@
   // test an empty set
   NSSet *empty = [NSSet set];
   e = [[empty objectEnumerator]
-    gtm_filteredEnumeratorByMakingEachObjectPerformSelector:@selector(hasPrefix:) 
+    gtm_filteredEnumeratorByMakingEachObjectPerformSelector:@selector(hasPrefix:)
                                                  withObject:@"foo"];
   STAssertNil([e nextObject],
               @"shouldn't have gotten anything from first advance of enumerator");
-  
+
   // test an set that will filter out
   NSSet *filterAway = [NSSet setWithObjects:@"bar", @"baz", nil];
   e = [[filterAway objectEnumerator]
-    gtm_filteredEnumeratorByMakingEachObjectPerformSelector:@selector(hasPrefix:) 
+    gtm_filteredEnumeratorByMakingEachObjectPerformSelector:@selector(hasPrefix:)
                                                  withObject:@"foo"];
   STAssertNil([e nextObject],
               @"shouldn't have gotten anything from first advance of enumerator");
@@ -91,7 +91,7 @@
   NSSet *collectedValues = [NSSet setWithArray:[e allObjects]];
   NSSet *expectedValues = [NSSet setWithObjects:@"foo1", @"foo2", @"foo3", nil];
   STAssertEqualObjects(collectedValues, expectedValues, @"");
-  
+
   // test an empty set
   NSSet *empty = [NSSet set];
   e = [[empty objectEnumerator]

@@ -13,7 +13,7 @@
  * 3. Neither the name of the copyright holder nor the names of any contributors
  *    may be used to endorse or promote products derived from this
  *    software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -65,14 +65,14 @@
 - (void) testInUseHandling {
     NSObject<PLPreparedStatement> *stmt;
     NSObject<PLResultSet> *rs;
-    
+
     /* Prepare the statement */
     stmt = [_db prepareStatement: @"SELECT * FROM test WHERE name = ?"];
     [stmt bindParameters: [NSArray arrayWithObjects: @"Johnny", nil]];
 
     /* First result set */
     rs = [stmt executeQuery];
-    
+
     /* Should throw an exception */
     STAssertThrows([stmt executeQuery], @"Did not throw an exception re-executing query");
     STAssertThrows(([stmt bindParameters: [NSArray arrayWithObjects: @"Johnny", nil]]),
@@ -125,7 +125,7 @@
     /* Sarah */
     [stmt bindParameters: [NSArray arrayWithObjects: @"Sarah", nil]];
     rs = [stmt executeQuery];
-    
+
     STAssertNotNil(rs, @"Query failed");
     STAssertTrue([rs next], @"No results returned");
 
@@ -143,7 +143,7 @@
 
     /* Prepare the statement */
     stmt = [_db prepareStatement: @"INSERT INTO test (name, color) VALUES (:name, :color)"];
-    
+
     /* Create the parameter dictionary */
     parameters = [NSMutableDictionary dictionaryWithCapacity: 2];
     [parameters setObject: @"Appleseed" forKey: @"name"];
@@ -182,7 +182,7 @@
     stmt = [_db prepareStatement: @"INSERT INTO data (intval, int64val, stringval, nilval, floatval, doubleval, dateval, dataval)"
             "VALUES (?, ?, ?, ?, ?, ?, ?, ?)"];
     STAssertNotNil(stmt, @"Could not create statement");
-    
+
     /* Some example data */
     NSDate *now = [NSDate date];
     const char bytes[] = "This is some example test data";
@@ -206,33 +206,33 @@
 
     /* Execute the update */
     STAssertTrue([stmt executeUpdate], @"INSERT failed");
-    
+
 	/* Execute the query */
     rs = [_db executeQuery: @"SELECT * FROM data WHERE intval = 42"];
     STAssertNotNil(rs, @"Query failed");
     STAssertTrue([rs next], @"No rows returned");
-    
+
     /* NULL value */
     STAssertTrue([rs isNullForColumn: @"nilval"], @"NULL value not returned.");
-    
+
     /* Date value */
     STAssertEquals([now timeIntervalSince1970], [[rs dateForColumn: @"dateval"] timeIntervalSince1970], @"Date value incorrect.");
-    
+
     /* String */
     STAssertTrue([@"test" isEqual: [rs stringForColumn: @"stringval"]], @"String value incorrect.");
-    
+
     /* Integer */
     STAssertEquals(42, [rs intForColumn: @"intval"], @"Integer value incorrect.");
-    
+
     /* 64-bit integer value */
     STAssertEquals(INT64_MAX, [rs bigIntForColumn: @"int64val"], @"64-bit integer value incorrect");
-    
+
     /* Float */
     STAssertEquals(3.14f, [rs floatForColumn: @"floatval"], @"Float value incorrect");
-    
+
     /* Double */
     STAssertEquals(3.14159, [rs doubleForColumn: @"doubleval"], @"Double value incorrect");
-    
+
     /* Data */
     STAssertTrue([data isEqualToData: [rs dataForColumn: @"dataval"]], @"Data value incorrect");
 }

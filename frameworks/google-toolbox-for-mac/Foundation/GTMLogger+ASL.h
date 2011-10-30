@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -23,7 +23,7 @@
 
 // GTMLogger (GTMLoggerASLAdditions)
 //
-// Adds a convenience creation method that allows you to get a standard 
+// Adds a convenience creation method that allows you to get a standard
 // GTMLogger object that is configured to write to ASL (Apple System Log) using
 // the GTMLogASLWriter (declared below).
 //
@@ -39,10 +39,10 @@
 @class GTMLoggerASLClient;
 
 // GTMLogASLWriter
-// 
-// A GTMLogWriter implementation that will send log messages to ASL (Apple 
-// System Log facility). To use with GTMLogger simply set the "writer" for a 
-// GTMLogger to be an instance of this class. The following example sets the 
+//
+// A GTMLogWriter implementation that will send log messages to ASL (Apple
+// System Log facility). To use with GTMLogger simply set the "writer" for a
+// GTMLogger to be an instance of this class. The following example sets the
 // shared system logger to lot to ASL.
 //
 //   [[GTMLogger sharedLogger] setWriter:[GTMLogASLWriter aslWriter]];
@@ -55,7 +55,7 @@
   __weak Class aslClientClass_;
 }
 
-// Returns an autoreleased GTMLogASLWriter instance that uses an instance of 
+// Returns an autoreleased GTMLogASLWriter instance that uses an instance of
 // GTMLoggerASLClient.
 + (id)aslWriter;
 
@@ -71,10 +71,10 @@
 // Helper class used by GTMLogASLWriter to create an ASL client and write to the
 // ASL log. This class is need to make management/cleanup of the aslclient work
 // in a multithreaded environment. You'll need one of these GTMLoggerASLClient
-// per thread (this is automatically handled by GTMLogASLWriter). 
+// per thread (this is automatically handled by GTMLogASLWriter).
 //
 // This class should rarely (if EVER) be used directly. It's designed to be used
-// internally by GTMLogASLWriter, and by some unit tests. It should not be 
+// internally by GTMLogASLWriter, and by some unit tests. It should not be
 // used externally.
 @interface GTMLoggerASLClient : NSObject {
  @private

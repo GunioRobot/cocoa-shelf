@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -43,7 +43,7 @@
 
 - (void)testBindings {
   // Get our window to work with and test it's bindings
-  GTMUnitTestingTestController *testWindowController 
+  GTMUnitTestingTestController *testWindowController
     = [[GTMUnitTestingTestController alloc] initWithWindowNibName:@"GTMUnitTestingTest"];
   NSWindow *window = [testWindowController window];
   GTMTestExposedBindings(window, @"Window failed binding test");
@@ -51,12 +51,12 @@
   [window close];
   [testWindowController release];
 
-  // Run a test against something with no bindings. 
+  // Run a test against something with no bindings.
   // We're expecting a failure here.
   expectedFailureCount_ = 1;
   GTMTestExposedBindings(@"foo", @"testing no bindings");
   STAssertEquals(expectedFailureCount_, 0, @"Didn't get expected failures testing bindings");
-  
+
   // Run test against some with bad bindings.
   // We're expecting failures here.
   expectedFailureCount_ = 4;
@@ -84,15 +84,15 @@ NSString *const kGTMKeyWeCantSet = @"keyWeCantSet";
 NSString *const kGTMKeyThatIsntEqual = @"keyThatIsntEqual";
 
 - (NSArray *)exposedBindings {
-  return [NSArray arrayWithObjects:kGTMKeyWithNoClass, 
-                                   kGTMKeyWithNoValue, 
-                                   kGTMKeyWeCantSet, 
+  return [NSArray arrayWithObjects:kGTMKeyWithNoClass,
+                                   kGTMKeyWithNoValue,
+                                   kGTMKeyWeCantSet,
                                    kGTMKeyThatIsntEqual,
                                    nil];
 }
 
 - (NSMutableDictionary*)gtm_unitTestExposedBindingsTestValues:(NSString*)binding {
-  
+
   NSMutableDictionary *dict = [NSMutableDictionary dictionary];
   [dict setObject:kGTMKeyThatIsntEqual forKey:kGTMKeyThatIsntEqual];
   return dict;

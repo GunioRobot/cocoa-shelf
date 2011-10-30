@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -34,10 +34,10 @@
   NSString *realPrefsPath = [@"~/Library/Preferences" stringByExpandingTildeInPath];
   STAssertEqualObjects(realPrefsPath, prefsPath, @"Found incorrect prefs path");
 
-  
+
   // test the subfolder method; it should return nil if we pass NO and the
   // subfolder doesn't already exist
-  
+
   NSString *googCacheNoCreatePath = [NSString gtm_stringWithPathForFolder:kCachedDataFolderType
                                                             subfolderName:@"GTMUnitTestDuzntExist"
                                                                  inDomain:kUserDomain
@@ -45,7 +45,7 @@
   STAssertNil(googCacheNoCreatePath, @"Should not exist: %@", googCacheNoCreatePath);
 
   // test creating ~/Library/Cache/GTMUnitTestCreated
-  
+
   NSString *folderName = @"GTMUnitTestCreated";
   NSString *gtmCachePath = [NSString gtm_stringWithPathForFolder:kCachedDataFolderType
                                                    subfolderName:folderName
@@ -56,7 +56,7 @@
                                                     doCreate:NO];
   NSString *testPathAppended = [testPath stringByAppendingPathComponent:folderName];
   STAssertEqualObjects(gtmCachePath, testPathAppended, @"Unexpected path name");
-  
+
   NSFileManager* fileMgr = [NSFileManager defaultManager];
   BOOL isDir = NO;
   BOOL pathExists = [fileMgr fileExistsAtPath:gtmCachePath isDirectory:&isDir] && isDir;
@@ -68,10 +68,10 @@
                                                          inDomain:kUserDomain
                                                          doCreate:NO];
   STAssertEqualObjects(gtmCachePath2, gtmCachePath, nil);
-  
+
   BOOL didRemove = [fileMgr removeFileAtPath:gtmCachePath
                                      handler:nil];
-  STAssertTrue(didRemove, @"Error removing %@", gtmCachePath);  
+  STAssertTrue(didRemove, @"Error removing %@", gtmCachePath);
 }
 
 @end

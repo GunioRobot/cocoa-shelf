@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -36,7 +36,7 @@ static SInt32 sGTMSystemVersionBugFix = 0;
     require_noerr(Gestalt(gestaltSystemVersionMajor, &sGTMSystemVersionMajor), failedGestalt);
     require_noerr(Gestalt(gestaltSystemVersionMinor, &sGTMSystemVersionMinor), failedGestalt);
     require_noerr(Gestalt(gestaltSystemVersionBugFix, &sGTMSystemVersionBugFix), failedGestalt);
-    
+
     return;
 
   failedGestalt:
@@ -104,17 +104,17 @@ static SInt32 sGTMSystemVersionBugFix = 0;
 }
 
 + (BOOL)isPantherOrGreater {
-  return (sGTMSystemVersionMajor > 10) || 
+  return (sGTMSystemVersionMajor > 10) ||
           (sGTMSystemVersionMajor == 10 && sGTMSystemVersionMinor >= 3);
 }
 
 + (BOOL)isTigerOrGreater {
-  return (sGTMSystemVersionMajor > 10) || 
+  return (sGTMSystemVersionMajor > 10) ||
           (sGTMSystemVersionMajor == 10 && sGTMSystemVersionMinor >= 4);
 }
 
 + (BOOL)isLeopardOrGreater {
-  return (sGTMSystemVersionMajor > 10) || 
+  return (sGTMSystemVersionMajor > 10) ||
           (sGTMSystemVersionMajor == 10 && sGTMSystemVersionMinor >= 5);
 }
 

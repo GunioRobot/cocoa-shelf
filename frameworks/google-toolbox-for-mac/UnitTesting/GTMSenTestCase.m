@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -24,29 +24,29 @@
 
 @implementation NSException (GTMSenTestAdditions)
 
-+ (NSException *)failureInFile:(NSString *)filename 
-                        atLine:(int)lineNumber 
++ (NSException *)failureInFile:(NSString *)filename
+                        atLine:(int)lineNumber
                withDescription:(NSString *)formatString, ... {
   va_list vl;
   va_start(vl, formatString);
-  NSString *reason = [[[NSString alloc] initWithFormat:formatString arguments:vl] autorelease]; 
+  NSString *reason = [[[NSString alloc] initWithFormat:formatString arguments:vl] autorelease];
   va_end(vl);
   reason = [NSString stringWithFormat:@"%@:%d: error: %@", filename, lineNumber, reason];
-  return [NSException exceptionWithName:SenTestFailureException 
+  return [NSException exceptionWithName:SenTestFailureException
                                  reason:reason
                                userInfo:nil];
 }
 
-+ (NSException *)failureInCondition:(NSString *)condition 
-                             isTrue:(BOOL)isTrue 
-                             inFile:(NSString *)filename 
-                             atLine:(int)lineNumber 
++ (NSException *)failureInCondition:(NSString *)condition
+                             isTrue:(BOOL)isTrue
+                             inFile:(NSString *)filename
+                             atLine:(int)lineNumber
                     withDescription:(NSString *)formatString, ... {
   va_list vl;
   va_start(vl, formatString);
-  NSString *reason = [[[NSString alloc] initWithFormat:formatString arguments:vl] autorelease]; 
+  NSString *reason = [[[NSString alloc] initWithFormat:formatString arguments:vl] autorelease];
   va_end(vl);
-  reason = [NSString stringWithFormat:@"condition '%@' is %s : %@", 
+  reason = [NSString stringWithFormat:@"condition '%@' is %s : %@",
             condition, isTrue ? "TRUE" : "FALSE", reason];
   return [self failureInFile:filename atLine:lineNumber withDescription:reason];
 }
@@ -58,53 +58,53 @@
                                 withDescription:(NSString *)formatString, ... {
   va_list vl;
   va_start(vl, formatString);
-  NSString *reason = [[[NSString alloc] initWithFormat:formatString arguments:vl] autorelease]; 
+  NSString *reason = [[[NSString alloc] initWithFormat:formatString arguments:vl] autorelease];
   va_end(vl);
   reason = [NSString stringWithFormat:@"%@ != %@ : %@",
             left, right, reason];
   return [self failureInFile:filename atLine:lineNumber withDescription:reason];
 }
 
-+ (NSException *)failureInEqualityBetweenValue:(NSValue *)left 
-                                      andValue:(NSValue *)right 
-                                  withAccuracy:(NSValue *)accuracy 
-                                        inFile:(NSString *)filename 
++ (NSException *)failureInEqualityBetweenValue:(NSValue *)left
+                                      andValue:(NSValue *)right
+                                  withAccuracy:(NSValue *)accuracy
+                                        inFile:(NSString *)filename
                                         atLine:(int)lineNumber
                                withDescription:(NSString *)formatString, ... {
   va_list vl;
   va_start(vl, formatString);
-  NSString *reason = [[[NSString alloc] initWithFormat:formatString arguments:vl] autorelease]; 
+  NSString *reason = [[[NSString alloc] initWithFormat:formatString arguments:vl] autorelease];
   va_end(vl);
   reason = [NSString stringWithFormat:@"%@ != %@ with accuracy %@ : %@",
             left, right, accuracy, reason];
-  return [self failureInFile:filename atLine:lineNumber withDescription:reason];  
+  return [self failureInFile:filename atLine:lineNumber withDescription:reason];
 }
 
-+ (NSException *)failureInRaise:(NSString *)expression 
-                         inFile:(NSString *)filename 
++ (NSException *)failureInRaise:(NSString *)expression
+                         inFile:(NSString *)filename
                          atLine:(int)lineNumber
                 withDescription:(NSString *)formatString, ... {
   va_list vl;
   va_start(vl, formatString);
-  NSString *reason = [[[NSString alloc] initWithFormat:formatString arguments:vl] autorelease]; 
+  NSString *reason = [[[NSString alloc] initWithFormat:formatString arguments:vl] autorelease];
   va_end(vl);
   reason = [NSString stringWithFormat:@"failure in raise %@ : %@",
             expression, reason];
-  return [self failureInFile:filename atLine:lineNumber withDescription:reason];  
+  return [self failureInFile:filename atLine:lineNumber withDescription:reason];
 }
 
-+ (NSException *)failureInRaise:(NSString *)expression 
-                      exception:(NSException *)exception 
-                         inFile:(NSString *)filename 
-                         atLine:(int)lineNumber 
++ (NSException *)failureInRaise:(NSString *)expression
+                      exception:(NSException *)exception
+                         inFile:(NSString *)filename
+                         atLine:(int)lineNumber
                 withDescription:(NSString *)formatString, ... {
   va_list vl;
   va_start(vl, formatString);
-  NSString *reason = [[[NSString alloc] initWithFormat:formatString arguments:vl] autorelease]; 
+  NSString *reason = [[[NSString alloc] initWithFormat:formatString arguments:vl] autorelease];
   va_end(vl);
   reason = [NSString stringWithFormat:@"failure in raise %@ (%@) : %@",
             expression, exception, reason];
-  return [self failureInFile:filename atLine:lineNumber withDescription:reason];  
+  return [self failureInFile:filename atLine:lineNumber withDescription:reason];
 }
 
 @end
@@ -121,7 +121,7 @@ NSString *STComposeString(NSString *formatString, ...) {
   if (formatString) {
     va_list vl;
     va_start(vl, formatString);
-    reason = [[[NSString alloc] initWithFormat:formatString arguments:vl] autorelease]; 
+    reason = [[[NSString alloc] initWithFormat:formatString arguments:vl] autorelease];
     va_end(vl);
   }
   return reason;
@@ -129,7 +129,7 @@ NSString *STComposeString(NSString *formatString, ...) {
 
 NSString * const SenTestFailureException = @"SenTestFailureException";
 
-@interface SenTestCase (SenTestCasePrivate) 
+@interface SenTestCase (SenTestCasePrivate)
 // our method of logging errors
 - (void)printError:(NSString *)error;
 @end
@@ -200,7 +200,7 @@ NSString * const SenTestFailureException = @"SenTestFailureException";
   if (devLogClass) {
     [devLogClass performSelector:@selector(enableTracking)];
     [devLogClass performSelector:@selector(verifyNoMoreLogsExpected)];
-   
+
   }
   [super invokeTest];
   if (devLogClass) {

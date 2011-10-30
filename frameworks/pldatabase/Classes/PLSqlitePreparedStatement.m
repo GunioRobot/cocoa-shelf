@@ -13,7 +13,7 @@
  * 3. Neither the name of the copyright holder nor the names of any contributors
  *    may be used to endorse or promote products derived from this
  *    software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -128,7 +128,7 @@
 
     /* Fetch the parameter name. */
     sqlite_name = sqlite3_bind_parameter_name(_sqlite_stmt, parameterIndex);
-    
+
     /* If there is no name, or if it's blank, we can't retrieve the value. */
     if (sqlite_name == NULL || *sqlite_name == '\0')
         return NULL;
@@ -211,13 +211,13 @@
     /* The statement must be released before the database is released, as the statement has a reference
      * to the database which would cause a SQLITE_BUSY error when the database is released. */
     [self close];
-    
+
     /* Now release the database. */
     [_database release];
-    
+
     /* Release the query statement */
     [_queryString release];
-    
+
     [super dealloc];
 }
 
@@ -226,7 +226,7 @@
 - (void) close {
     if (_sqlite_stmt == nil)
         return;
-    
+
     /* The finalization may return the last error returned by sqlite3_next(), but this has already
      * been handled by the -[PLSqliteResultSet next] implementation. Any remaining memory and
      * resources are released regardless of the error code, so we do not check it here. */
@@ -249,15 +249,15 @@
  */
 - (void) bindParametersWithStrategy: (NSObject<PLSqliteParameterStrategy> *) strategy {
     [self assertNotInUse];
-    
+
     /* Verify that a complete parameter list was provided */
     if ([strategy count] != _parameterCount)
-        [NSException raise: PLSqliteException 
+        [NSException raise: PLSqliteException
                     format: @"%@ prepared statement provided invalid parameter count (expected %d, but %d were provided)", [self class], _parameterCount, [strategy count]];
-    
+
     /* Clear any existing bindings */
     sqlite3_clear_bindings(_sqlite_stmt);
-    
+
     /* Sqlite counts parameters starting at 1. */
     for (int valueIndex = 1; valueIndex <= _parameterCount; valueIndex++) {
         /* (Note that NSArray indexes from 0, so we subtract one to get the current value) */
@@ -270,28 +270,28 @@
         /* Bind the parameter */
         int ret = [self bindValueForParameter: valueIndex
                                     withValue: value];
-        
+
         /* If the bind fails, throw an exception (programmer error). */
         if (ret != SQLITE_OK) {
             [NSException raise: PLSqliteException
                         format: @"SQlite error binding parameter %d for query %@: %@", valueIndex - 1, _queryString, [_database lastErrorMessage]];
         }
     }
-    
+
     /* If you got this far, all is well */
 }
 
 /* from PLPreparedStatement */
 - (void) bindParameters: (NSArray *) parameters {
     PLSqliteArrayParameterStrategy *strategy;
-    
+
     strategy = [[[PLSqliteArrayParameterStrategy alloc] initWithValues: parameters] autorelease];
     [self bindParametersWithStrategy: strategy];
 }
 
 - (void) bindParameterDictionary: (NSDictionary *) parameters {
     PLSqliteDictionaryParameterStrategy *strategy;
-    
+
     strategy = [[[PLSqliteDictionaryParameterStrategy alloc] initWithStatement: _sqlite_stmt values: parameters] autorelease];
     [self bindParametersWithStrategy: strategy];
 }
@@ -308,17 +308,17 @@
     [self assertNotInUse];
 
     int ret;
-    
+
     /* Call sqlite3_step() to run the virtual machine */
     ret = sqlite3_step(_sqlite_stmt);
 
     /* Reset the statement */
     sqlite3_reset(_sqlite_stmt);
-    
+
     /* On success, return (even if data was provided) */
     if (ret == SQLITE_DONE || ret == SQLITE_ROW)
         return YES;
-    
+
     /* Query failed */
     [_database populateError: outError
                withErrorCode: PLDatabaseErrorQueryFailed
@@ -420,45 +420,45 @@
     if (value == nil || value == [NSNull null]) {
         return sqlite3_bind_null(_sqlite_stmt, parameterIndex);
     }
-    
+
     /* Data */
     else if ([value isKindOfClass: [NSData class]]) {
         return sqlite3_bind_blob(_sqlite_stmt, parameterIndex, [value bytes], [value length], SQLITE_TRANSIENT);
     }
-    
+
     /* Date */
     else if ([value isKindOfClass: [NSDate class]]) {
         return sqlite3_bind_double(_sqlite_stmt, parameterIndex, [value timeIntervalSince1970]);
     }
-    
+
     /* String */
     else if ([value isKindOfClass: [NSString class]]) {
         return sqlite3_bind_text(_sqlite_stmt, parameterIndex, [value UTF8String], -1, SQLITE_TRANSIENT);
     }
-    
+
     /* Number */
     else if ([value isKindOfClass: [NSNumber class]]) {
         const char *objcType = [value objCType];
         int64_t number = [value longLongValue];
-        
+
         /* Handle floats and doubles */
         if (strcmp(objcType, @encode(float)) == 0 || strcmp(objcType, @encode(double)) == 0) {
             return sqlite3_bind_double(_sqlite_stmt, parameterIndex, [value doubleValue]);
         }
-        
+
         /* If the value can fit into a 32-bit value, use that bind type. */
         else if (number <= INT32_MAX) {
             return sqlite3_bind_int(_sqlite_stmt, parameterIndex, number);
-            
+
             /* Otherwise use the 64-bit bind. */
         } else {
             return sqlite3_bind_int64(_sqlite_stmt, parameterIndex, number);
         }
     }
-    
+
     /* Not a known type */
     [NSException raise: PLSqliteException format: @"SQLite error binding unknown parameter type '%@'. Value: '%@'", [value class], value];
-    
+
     /* Unreachable */
     abort();
 }

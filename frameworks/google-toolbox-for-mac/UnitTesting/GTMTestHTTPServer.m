@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -63,19 +63,19 @@ static NSArray *GetSubPatternsOfFirstStringMatchedByPattern(NSString *stringToSe
   NSData *data = nil;
   // clients should treat dates as opaque, generally
   NSString *modifiedDate = @"thursday";
-  
+
   NSString *postString = @"";
   NSData *postData = [request body];
   if ([postData length] > 0) {
     postString = [[[NSString alloc] initWithData:postData
                                         encoding:NSUTF8StringEncoding] autorelease];
   }
-  
+
   NSDictionary *allHeaders = [request allHeaderFieldValues];
   NSString *ifModifiedSince = [allHeaders objectForKey:@"If-Modified-Since"];
   NSString *authorization = [allHeaders objectForKey:@"Authorization"];
   NSString *path = [[request URL] absoluteString];
-  
+
   if ([path hasSuffix:@".auth"]) {
     if (![authorization isEqualToString:@"GoogleLogin auth=GoodAuthToken"]) {
       GTMHTTPResponseMessage *response =
@@ -85,10 +85,10 @@ static NSArray *GetSubPatternsOfFirstStringMatchedByPattern(NSString *stringToSe
       path = [path substringToIndex:[path length] - 5];
     }
   }
-  
+
   NSString *overrideHeader = [allHeaders objectForKey:@"X-HTTP-Method-Override"];
   NSString *httpCommand = [request method];
-  if ([httpCommand isEqualToString:@"POST"] && 
+  if ([httpCommand isEqualToString:@"POST"] &&
       [overrideHeader length] > 1) {
     httpCommand = overrideHeader;
   }
@@ -96,30 +96,30 @@ static NSArray *GetSubPatternsOfFirstStringMatchedByPattern(NSString *stringToSe
   if ([path hasSuffix:@"/accounts/ClientLogin"]) {
     // it's a sign-in attempt; it's good unless the password is "bad" or
     // "captcha"
-    
+
     // use regular expression to find the password
     NSString *password = @"";
     searchResult = GetSubPatternsOfFirstStringMatchedByPattern(path, @"Passwd=([^&\n]*)");
     if ([searchResult count] == 2) {
       password = [searchResult objectAtIndex:1];
     }
-    
+
     if ([password isEqualToString:@"bad"]) {
       resultStatus = 403;
     } else if ([password isEqualToString:@"captcha"]) {
       NSString *loginToken = @"";
       NSString *loginCaptcha = @"";
-      
+
       searchResult = GetSubPatternsOfFirstStringMatchedByPattern(postString, @"logintoken=([^&\n]*)");
       if ([searchResult count] == 2) {
         loginToken = [searchResult objectAtIndex:1];
       }
-      
+
       searchResult = GetSubPatternsOfFirstStringMatchedByPattern(postString, @"logincaptcha=([^&\n]*)");
       if ([searchResult count] == 2) {
         loginCaptcha = [searchResult objectAtIndex:1];
       }
-      
+
       if ([loginToken isEqualToString:@"CapToken"] &&
           [loginCaptcha isEqualToString:@"good"]) {
         resultStatus = 200;
@@ -148,7 +148,7 @@ static NSArray *GetSubPatternsOfFirstStringMatchedByPattern(NSString *stringToSe
       if (data) {
         resultStatus = 200;
       } else {
-        resultStatus = 404; 
+        resultStatus = 404;
       }
     }
   }

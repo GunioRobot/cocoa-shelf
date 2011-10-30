@@ -14,9 +14,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -43,8 +43,8 @@
 //    a3: The name of the image file to check against.
 //        Do not include the extension
 //    a4: contextInfo to pass to drawer
-//    description: A format string as in the printf() function. 
-//        Can be nil or an empty string but must be present. 
+//    description: A format string as in the printf() function.
+//        Can be nil or an empty string but must be present.
 //    ...: A variable number of arguments to the format string. Can be absent.
 //
 
@@ -85,7 +85,7 @@
 - (BOOL)gtm_shouldEncodeStateForSubviews;
 @end
 
-//  A view that allows you to delegate out drawing using the formal 
+//  A view that allows you to delegate out drawing using the formal
 //  GTMUnitTestViewDelegate protocol
 //  This is useful when writing up unit tests for visual elements.
 //  Your test will often end up looking like this:
@@ -98,7 +98,7 @@
 //  the contents of the file Foo.tif to make sure it's valid
 @interface GTMUnitTestView : UIView {
  @private
-  id<GTMUnitTestViewDrawer> drawer_; // delegate for doing drawing (STRONG) 
+  id<GTMUnitTestViewDrawer> drawer_; // delegate for doing drawing (STRONG)
   void* contextInfo_; // info passed in by user for them to use when drawing
 }
 
@@ -108,7 +108,7 @@
 //    rect: the area to draw.
 //    drawer: the object that will do the drawing via the GTMUnitTestViewDrawer
 //            protocol
-//    contextInfo: 
+//    contextInfo:
 - (id)initWithFrame:(CGRect)frame drawer:(id<GTMUnitTestViewDrawer>)drawer contextInfo:(void*)contextInfo;
 
 @end

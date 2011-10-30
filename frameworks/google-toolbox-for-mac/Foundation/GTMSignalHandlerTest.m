@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -67,7 +67,7 @@
   STAssertNil(handler, nil);
 
   // Zero signal should return nil as well.
-  handler = [[[GTMSignalHandler alloc] 
+  handler = [[[GTMSignalHandler alloc]
               initWithSignal:0
                       target:self
                      handler:@selector(nomnomnom:)] autorelease];
@@ -79,7 +79,7 @@
 - (void)testSingleHandler {
   SignalCounter *counter = [SignalCounter signalCounter];
   STAssertNotNil(counter, nil);
-  
+
   GTMSignalHandler *handler = [[GTMSignalHandler alloc]
                                 initWithSignal:SIGWINCH
                                         target:counter
@@ -103,10 +103,10 @@
   [[[GTMSignalHandler alloc] initWithSignal:SIGUSR1
                                      target:counter2
                                     handler:@selector(countSignal:)] autorelease];
-  
+
   raise(SIGUSR1);
   [self giveSomeLove];
-  
+
   STAssertEquals([counter count], 2, nil);
   STAssertEquals([counter lastSeen], SIGWINCH, nil);
   STAssertEquals([counter2 count], 1, nil);

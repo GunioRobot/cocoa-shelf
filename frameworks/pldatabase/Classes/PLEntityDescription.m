@@ -13,7 +13,7 @@
  * 3. Neither the name of the copyright holder nor the names of any contributors
  *    may be used to endorse or promote products derived from this
  *    software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -93,21 +93,21 @@
 
         /* Sanity check -- verify that multiple entries aren't registered for the same column */
         if ([columnProperties objectForKey: columnName] != nil) {
-            @throw [NSException exceptionWithName: PLDatabaseException 
-                                           reason: [NSString stringWithFormat: @"Multiple properties registered for column %@", columnName] 
+            @throw [NSException exceptionWithName: PLDatabaseException
+                                           reason: [NSString stringWithFormat: @"Multiple properties registered for column %@", columnName]
                                          userInfo: nil];
         }
 
         /* Save the description in our map */
         [columnProperties setObject: desc forKey: [desc columnName]];
-    
+
         /* Validate any primary keys, and save the generated primary key property, if any. */
         if ([desc isPrimaryKey]) {
-            
+
             if ([desc isGeneratedValue] && _generatedPrimaryKeyProperty != nil) {
                 [self release];
                 [NSException raise: PLDatabaseException format: @"More than one generated primary key was defined. This is not supported."];
-                
+
             } else if ([desc isGeneratedValue]) {
                 _generatedPrimaryKeyProperty = [desc retain];
             }
@@ -196,7 +196,7 @@ BOOL PLEntityPropertyFilterPrimaryKeys (PLEntityProperty *property, void *contex
 BOOL PLEntityPropertyFilterGeneratedPrimaryKeys (PLEntityProperty *property, void *context) {
     if ([property isPrimaryKey] && [property isGeneratedValue])
         return YES;
-    
+
     return NO;
 }
 
@@ -241,7 +241,7 @@ BOOL PLEntityPropertyFilterGeneratedPrimaryKeys (PLEntityProperty *property, voi
  */
 - (NSArray *) propertiesWithFilter: (PLEntityDescriptionPropertyFilter) filter filterContext: (void *) filterContext {
     NSMutableArray *result = [NSMutableArray arrayWithCapacity: [_columnProperties count]];
-    
+
     for (PLEntityProperty *property in [_columnProperties allValues]) {
         /* Skip any that do not match the filter */
         if (!filter(property, filterContext))
@@ -307,30 +307,30 @@ BOOL PLEntityPropertyFilterGeneratedPrimaryKeys (PLEntityProperty *property, voi
  */
 - (NSDictionary *) columnValuesForEntity: (PLEntity *) entity withFilter: (PLEntityDescriptionPropertyFilter) filter filterContext: (void *) filterContext {
     NSMutableDictionary *columnValues;
-    
+
     /* Create our return dictionary */
     columnValues = [NSMutableDictionary dictionaryWithCapacity: [_columnProperties count]];
-    
+
     for (NSString *columnName in _columnProperties) {
         PLEntityProperty *property;
         id value;
-        
+
         /* Fetch the property description, skipping any that do not match the filter */
         property = [_columnProperties objectForKey: columnName];
         if (!filter(property, filterContext))
             continue;
-        
+
         /* Fetch the value */
         value = [entity valueForKey: [property key]];
-        
+
         /* Handle nil (NSDictionary values can't be nil) */
         if (value == nil)
             value = [NSNull null];
-        
+
         /* Add column, value */
         [columnValues setObject: value forKey: [property columnName]];
     }
-    
+
     return columnValues;
 }
 
@@ -342,7 +342,7 @@ BOOL PLEntityPropertyFilterGeneratedPrimaryKeys (PLEntityProperty *property, voi
         validatedValue = nil;
     else
         validatedValue = value;
-    
+
     /*
      * Validate the value (might replace value!)
      */
@@ -386,7 +386,7 @@ BOOL PLEntityPropertyFilterGeneratedPrimaryKeys (PLEntityProperty *property, voi
 
         /* Retrieve the column's value (may be nil, it's up to the validator to accept/reject a nil value) */
         value = [values objectForKey: columnName];
-        
+
         if (![self setValue: value forKey: key withEntity: entity error: outError])
             return nil;
     }

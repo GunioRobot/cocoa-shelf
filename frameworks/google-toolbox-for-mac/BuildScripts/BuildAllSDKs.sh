@@ -66,5 +66,5 @@ end run"
 # open to invoke it, there by escaping our little sandbox.
 #   xcode defeats this: ( echo "${OUR_BUILD_SCRIPT}" | osascript - & )
 rm -rf "${SCRIPT_APP}"
-echo "${OUR_BUILD_SCRIPT}" | osacompile -o "${SCRIPT_APP}" -x 
+echo "${OUR_BUILD_SCRIPT}" | osacompile -o "${SCRIPT_APP}" -x
 open "${SCRIPT_APP}"

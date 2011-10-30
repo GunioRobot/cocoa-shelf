@@ -13,7 +13,7 @@
  * 3. Neither the name of the copyright holder nor the names of any contributors
  *    may be used to endorse or promote products derived from this
  *    software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -75,7 +75,7 @@ NSString *PLSqliteException = @"PLSqliteException";
         return nil;
 
     _path = [dbPath retain];
-    
+
     return self;
 }
 
@@ -124,17 +124,17 @@ NSString *PLSqliteException = @"PLSqliteException";
     /* Do not call open twice! */
     if (_sqlite != nil)
         [NSException raise: PLSqliteException format: @"Attempted to open already-open SQLite database instance at '%@'. Called -[PLSqliteDatabase open] twice?", _path];
-    
+
     /* Open the database */
     err = sqlite3_open([_path fileSystemRepresentation], &_sqlite);
     if (err != SQLITE_OK) {
-        [self populateError: error 
-              withErrorCode: PLDatabaseErrorFileNotFound 
+        [self populateError: error
+              withErrorCode: PLDatabaseErrorFileNotFound
                 description: NSLocalizedString(@"The SQLite database file could not be found.", @"")
                 queryString: nil];
         return NO;
     }
-    
+
     /* Set a busy timeout */
     err = sqlite3_busy_timeout(_sqlite, SQLITE_BUSY_TIMEOUT);
     if (err != SQLITE_OK) {
@@ -145,7 +145,7 @@ NSString *PLSqliteException = @"PLSqliteException";
                 queryString: nil];
         return NO;
     }
-    
+
     /* Success */
     return YES;
 }
@@ -155,7 +155,7 @@ NSString *PLSqliteException = @"PLSqliteException";
     /* If the connection wasn't opened, we have our answer */
     if (_sqlite == nil)
         return NO;
-    
+
     return YES;
 }
 
@@ -163,21 +163,21 @@ NSString *PLSqliteException = @"PLSqliteException";
 /* From PLDatabase */
 - (void) close {
     int err;
-    
+
     if (_sqlite == nil)
         return;
-    
+
     /* Close the connection and release any sqlite resources (if open was ever called) */
     err = sqlite3_close(_sqlite);
-    
+
     /* Leaking prepared statements is programmer error, and is the only cause for SQLITE_BUSY */
     if (err == SQLITE_BUSY)
         [NSException raise: PLSqliteException format: @"The SQLite database at '%@' can not be closed, as the implementation has leaked prepared statements", _path];
-    
+
     /* Unexpected! This should not happen */
     if (err != SQLITE_OK)
         NSLog(@"Unexpected error closing SQLite database at '%@': %s", sqlite3_errmsg(_sqlite));
-    
+
     /* Reset the variable. If any of the above failed, it is programmer error. */
     _sqlite = nil;
 }
@@ -192,7 +192,7 @@ NSString *PLSqliteException = @"PLSqliteException";
 /* from PLDatabase */
 - (NSObject<PLPreparedStatement> *) prepareStatement: (NSString *) statement error: (NSError **) outError {
     sqlite3_stmt *sqlite_stmt;
-    
+
     /* Prepare our statement */
     sqlite_stmt = [self createStatement: statement error: outError];
     if (sqlite_stmt == nil)
@@ -212,7 +212,7 @@ NSString *PLSqliteException = @"PLSqliteException";
  */
 - (NSArray *) arrayWithVaList: (va_list) ap count: (int) count {
     NSMutableArray *result = [NSMutableArray arrayWithCapacity: count];
-    
+
     /* Iterate over count and create our array */
     for (int i = 0; i < count; i++) {
         id obj;
@@ -221,10 +221,10 @@ NSString *PLSqliteException = @"PLSqliteException";
         obj = va_arg(ap, id);
         if (obj == nil)
             obj = [NSNull null];
-        
+
         [result addObject: obj];
     }
-    
+
     return result;
 }
 
@@ -234,16 +234,16 @@ NSString *PLSqliteException = @"PLSqliteException";
 - (BOOL) executeUpdateAndReturnError: (NSError **) error statement: (NSString *) statement args: (va_list) args {
     NSObject<PLPreparedStatement> *stmt;
     BOOL ret;
-    
+
     /* Create the statement */
     stmt = [self prepareStatement: statement error: error];
     if (stmt == nil)
         return NO;
-    
+
     /* Bind the arguments */
     [stmt bindParameters: [self arrayWithVaList: args count: [stmt parameterCount]]];
     ret = [stmt executeUpdateAndReturnError: error];
-    
+
     return ret;
 }
 
@@ -251,11 +251,11 @@ NSString *PLSqliteException = @"PLSqliteException";
 - (BOOL) executeUpdateAndReturnError: (NSError **) error statement: (NSString *) statement, ... {
     BOOL ret;
     va_list ap;
-    
+
     va_start(ap, statement);
     ret = [self executeUpdateAndReturnError: error statement: statement args: ap];
     va_end(ap);
-    
+
     return ret;
 }
 
@@ -263,11 +263,11 @@ NSString *PLSqliteException = @"PLSqliteException";
 - (BOOL) executeUpdate: (NSString *) statement, ... {
     BOOL ret;
     va_list ap;
-    
+
     va_start(ap, statement);
     ret = [self executeUpdateAndReturnError: nil statement: statement args: ap];
     va_end(ap);
-    
+
     return ret;
 }
 
@@ -277,16 +277,16 @@ NSString *PLSqliteException = @"PLSqliteException";
 - (NSObject<PLResultSet> *) executeQueryAndReturnError: (NSError **) error statement: (NSString *) statement args: (va_list) args {
     NSObject<PLResultSet> *result;
     NSObject<PLPreparedStatement> *stmt;
-    
+
     /* Create the statement */
     stmt = [self prepareStatement: statement error: error];
     if (stmt == nil)
         return NO;
-    
+
     /* Bind the arguments */
     [stmt bindParameters: [self arrayWithVaList: args count: [stmt parameterCount]]];
     result = [stmt executeQueryAndReturnError: error];
-    
+
     return result;
 }
 
@@ -294,11 +294,11 @@ NSString *PLSqliteException = @"PLSqliteException";
 - (NSObject<PLResultSet> *) executeQueryAndReturnError: (NSError **) error statement: (NSString *) statement, ... {
     NSObject<PLResultSet> *result;
     va_list ap;
-    
+
     va_start(ap, statement);
     result = [self executeQueryAndReturnError: error statement: statement args: ap];
     va_end(ap);
-    
+
     return result;
 }
 
@@ -307,11 +307,11 @@ NSString *PLSqliteException = @"PLSqliteException";
 - (NSObject<PLResultSet> *) executeQuery: (NSString *) statement, ... {
     NSObject<PLResultSet> *result;
     va_list ap;
-    
+
     va_start(ap, statement);
     result = [self executeQueryAndReturnError: nil statement: statement args: ap];
     va_end(ap);
-    
+
     return result;
 }
 
@@ -423,18 +423,18 @@ NSString *PLSqliteException = @"PLSqliteException";
     NSString *vendorString = [self lastErrorMessage];
     NSNumber *vendorError = [NSNumber numberWithInt: [self lastErrorCode]];
     NSError *result;
-    
+
     /* Create the error */
     result = [PlausibleDatabase errorWithCode: errorCode
                          localizedDescription: localizedDescription
                                   queryString: queryString
                                   vendorError: vendorError
-                            vendorErrorString: vendorString];    
-    
+                            vendorErrorString: vendorString];
+
     /* Log it and optionally return it */
-    NSLog(@"A SQLite database error occurred on database '%@': %@ (SQLite #%@: %@) (query: '%@')", 
+    NSLog(@"A SQLite database error occurred on database '%@': %@ (SQLite #%@: %@) (query: '%@')",
           _path, result, vendorError, vendorString, queryString != nil ? queryString : @"<none>");
-    
+
     if (error != nil)
         *error = result;
 }
@@ -464,10 +464,10 @@ NSString *PLSqliteException = @"PLSqliteException";
     sqlite3_stmt *sqlite_stmt;
     const char *unused;
     int ret;
-    
+
     /* Prepare */
     ret = sqlite3_prepare_v2(_sqlite, [statement UTF8String], -1, &sqlite_stmt, &unused);
-    
+
     /* Prepare failed */
     if (ret != SQLITE_OK) {
         [self populateError: error
@@ -476,7 +476,7 @@ NSString *PLSqliteException = @"PLSqliteException";
                 queryString: statement];
         return nil;
     }
-    
+
     /* Multiple statements were provided */
     if (*unused != '\0') {
         [self populateError: error
@@ -485,7 +485,7 @@ NSString *PLSqliteException = @"PLSqliteException";
                 queryString: statement];
         return nil;
     }
-    
+
     return sqlite_stmt;
 }
 

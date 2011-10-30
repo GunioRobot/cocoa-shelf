@@ -1,6 +1,6 @@
 //
 //  GTMUIKit+UnitTesting.m
-//  
+//
 //  Category for making unit testing of graphics/UI easier.
 //  Allows you to save a view out to a image file, and compare a view
 //  with a previously stored representation to make sure it hasn't changed.
@@ -10,9 +10,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -41,8 +41,8 @@
 //  the contents of the file Foo.tif to make sure it's valid
 @implementation GTMUnitTestView
 
-- (id)initWithFrame:(CGRect)frame 
-             drawer:(id<GTMUnitTestViewDrawer>)drawer 
+- (id)initWithFrame:(CGRect)frame
+             drawer:(id<GTMUnitTestViewDrawer>)drawer
         contextInfo:(void*)contextInfo{
   self = [super initWithFrame:frame];
   if (self != nil) {
@@ -63,7 +63,7 @@
 
 @end
 
-@implementation UIView (GTMUnitTestingAdditions) 
+@implementation UIView (GTMUnitTestingAdditions)
 
 //  Returns an image containing a representation of the object
 //  suitable for use in comparing against a master image.
@@ -97,7 +97,7 @@
     UIView *subview = nil;
     int i = 0;
     while ((subview = [subviewEnum nextObject])) {
-      [inCoder encodeObject:subview 
+      [inCoder encodeObject:subview
                      forKey:[NSString stringWithFormat:@"ViewSubView %d", i]];
       i = i + 1;
     }

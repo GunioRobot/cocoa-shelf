@@ -13,7 +13,7 @@
  * 3. Neither the name of the copyright holder nor the names of any contributors
  *    may be used to endorse or promote products derived from this
  *    software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -37,7 +37,7 @@ extern NSString *PLEntityErrorDomain;
 typedef enum {
     /** An unknown error has occured. If this code is received, it is a bug, and should be reported. */
     PLEntityErrorUnknown = 0,
-    
+
     /** A database entity returned NO validating an entity property value. */
     PLEntityValidationError = 1,
 

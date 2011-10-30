@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -28,18 +28,18 @@
 
   BOOL isDir;
   BOOL exists = [self fileExistsAtPath:path isDirectory:&isDir];
-  
+
   // Quick check for the case where we have nothing to do.
   if (exists && isDir)
     return YES;
-  
+
   NSString *actualPath = @"/";
   NSEnumerator *directoryEnumerator = [[path pathComponents] objectEnumerator];
   NSString *directory;
-  
+
   while ((directory = [directoryEnumerator nextObject])) {
     actualPath = [actualPath stringByAppendingPathComponent:directory];
-    
+
     if ([self fileExistsAtPath:actualPath isDirectory:&isDir] && isDir) {
       continue;
     } else if ([self createDirectoryAtPath:actualPath attributes:attributes]) {
@@ -48,7 +48,7 @@
       return NO;
     }
   }
-  
+
   return YES;
 }
 
@@ -57,11 +57,11 @@
 - (NSArray *)gtm_filePathsWithExtension:(NSString *)extension
                             inDirectory:(NSString *)directoryPath {
   NSArray *extensions = nil;
-  
+
   // Treat no extension and an empty extension as the user requesting all files
   if (extension != nil && ![extension isEqualToString:@""])
     extensions = [NSArray arrayWithObject:extension];
-  
+
   return [self gtm_filePathsWithExtensions:extensions
                                inDirectory:directoryPath];
 }
@@ -70,32 +70,32 @@
                              inDirectory:(NSString *)directoryPath {
   if (directoryPath == nil)
     return nil;
-  
+
   // |basenames| will contain only the matching file names, not their full paths.
   NSArray *basenames = [self directoryContentsAtPath:directoryPath];
-  
+
   // Check if dir doesn't exist or couldn't be opened.
   if (basenames == nil)
     return nil;
-  
+
   // Check if dir is empty.
   if ([basenames count] == 0)
     return basenames;
-  
+
   NSMutableArray *paths = [NSMutableArray arrayWithCapacity:[basenames count]];
   NSString *basename;
   NSEnumerator *basenamesEnumerator = [basenames objectEnumerator];
-  
+
   // Convert all the |basenames| to full paths.
   while ((basename = [basenamesEnumerator nextObject])) {
     NSString *fullPath = [directoryPath stringByAppendingPathComponent:basename];
     [paths addObject:fullPath];
   }
-  
+
   // Check if caller wants all files, regardless of extension.
   if (extensions == nil || [extensions count] == 0)
     return paths;
-  
+
   return [paths pathsMatchingExtensions:extensions];
 }
 

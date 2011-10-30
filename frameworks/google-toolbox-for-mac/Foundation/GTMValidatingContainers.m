@@ -1,7 +1,7 @@
 //
 //  GTMValidatingContainers.m
 //
-//  Mutable containers that do verification of objects being added to them 
+//  Mutable containers that do verification of objects being added to them
 //  at runtime. Support for arrays, dictionaries and sets.
 //
 //  Documentation on subclassing class clusters (which we are doing) is here:
@@ -12,9 +12,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -38,21 +38,21 @@ static inline BOOL VerifyObjectWithTargetAndSelectorForContainer(id anObject,
                                                                  id target,
                                                                  SEL selector,
                                                                  id container) {
-  // We must take care here, since Intel leaves junk in high bytes of return 
+  // We must take care here, since Intel leaves junk in high bytes of return
   // register for predicates that return BOOL.
-  // For details see: 
+  // For details see:
   // http://developer.apple.com/documentation/MacOSX/Conceptual/universal_binary/universal_binary_tips/chapter_5_section_23.html
   // and
   // http://www.red-sweater.com/blog/320/abusing-objective-c-with-class#comment-83187
-  BOOL isGood = ((BOOL (*)(id, SEL, id, id))objc_msgSend)(target, selector, 
+  BOOL isGood = ((BOOL (*)(id, SEL, id, id))objc_msgSend)(target, selector,
                                                           anObject, container);
   if (!isGood) {
 #if GTM_CONTAINERS_VALIDATION_FAILED_ASSERT
-    _GTMDevAssert(isGood, @"%@ failed container verification for %@", 
+    _GTMDevAssert(isGood, @"%@ failed container verification for %@",
                   anObject, [container description]);
 #endif  // GTM_CONTAINERS_VALIDATION_FAILED_LOG
 #if GTM_CONTAINERS_VALIDATION_FAILED_LOG
-    _GTMDevLog(@"%@ failed container verification for %@", anObject, 
+    _GTMDevLog(@"%@ failed container verification for %@", anObject,
                [container description]);
 #endif  // GTM_CONTAINERS_VALIDATION_FAILED_LOG
   }
@@ -60,43 +60,43 @@ static inline BOOL VerifyObjectWithTargetAndSelectorForContainer(id anObject,
 }
 
 static inline void VerifySelectorOnTarget(SEL sel, id target) {
-  GTMAssertSelectorNilOrImplementedWithReturnTypeAndArguments(target, 
-                                                              sel, 
-                                                              @encode(BOOL), 
-                                                              @encode(id), 
+  GTMAssertSelectorNilOrImplementedWithReturnTypeAndArguments(target,
+                                                              sel,
+                                                              @encode(BOOL),
+                                                              @encode(id),
                                                               @encode(id),
                                                               nil);
-}  
+}
 
 void _GTMValidateContainerContainsKindOfClass(id container, Class cls) {
   GTMKindOfClassValidator *validator;
   validator = [GTMKindOfClassValidator validateAgainstClass:cls];
-  _GTMValidateContainer(container, 
-                        validator, 
+  _GTMValidateContainer(container,
+                        validator,
                         @selector(validateObject:forContainer:));
 }
 
 void _GTMValidateContainerContainsMemberOfClass(id container, Class cls) {
   GTMMemberOfClassValidator *validator;
   validator = [GTMMemberOfClassValidator validateAgainstClass:cls];
-  _GTMValidateContainer(container, 
-                        validator, 
+  _GTMValidateContainer(container,
+                        validator,
                         @selector(validateObject:forContainer:));
 }
 
 void _GTMValidateContainerConformsToProtocol(id container, Protocol* prot) {
   GTMConformsToProtocolValidator *validator;
   validator = [GTMConformsToProtocolValidator validateAgainstProtocol:prot];
-  _GTMValidateContainer(container, 
-                        validator, 
+  _GTMValidateContainer(container,
+                        validator,
                         @selector(validateObject:forContainer:));
 }
 
 void _GTMValidateContainerItemsRespondToSelector(id container, SEL sel) {
   GTMRespondsToSelectorValidator *validator;
   validator = [GTMRespondsToSelectorValidator validateAgainstSelector:sel];
-  _GTMValidateContainer(container, 
-                        validator, 
+  _GTMValidateContainer(container,
+                        validator,
                         @selector(validateObject:forContainer:));
 }
 
@@ -105,21 +105,21 @@ void _GTMValidateContainer(id container, id target, SEL selector) {
     NSEnumerator *enumerator = [container objectEnumerator];
     id val;
     while ((val = [enumerator nextObject])) {
-      VerifyObjectWithTargetAndSelectorForContainer(val, 
-                                                    target, 
-                                                    selector, 
+      VerifyObjectWithTargetAndSelectorForContainer(val,
+                                                    target,
+                                                    selector,
                                                     container);
     }
   } else {
 #if GTM_CONTAINERS_VALIDATION_FAILED_ASSERT
-    _GTMDevAssert(0, @"container %@ does not respond to -objectEnumerator", 
+    _GTMDevAssert(0, @"container %@ does not respond to -objectEnumerator",
                   [container description]);
 #endif  // GTM_CONTAINERS_VALIDATION_FAILED_LOG
 #if GTM_CONTAINERS_VALIDATION_FAILED_LOG
-  _GTMDevLog(@"container does not respont to -objectEnumerator: %@", 
+  _GTMDevLog(@"container does not respont to -objectEnumerator: %@",
              [container description]);
 #endif  // GTM_CONTAINERS_VALIDATION_FAILED_LOG
-  }  
+  }
 }
 #endif  // GTM_CONTAINERS_VALIDATE
 
@@ -129,11 +129,11 @@ void _GTMValidateContainer(id container, id target, SEL selector) {
   return [self validatingArrayWithCapacity:0 target:target selector:sel];
 }
 
-+ (id)validatingArrayWithCapacity:(NSUInteger)capacity 
-                           target:(id)target 
++ (id)validatingArrayWithCapacity:(NSUInteger)capacity
+                           target:(id)target
                          selector:(SEL)sel {
-  return [[[[self class] alloc] initValidatingWithCapacity:0 
-                                                    target:target 
+  return [[[[self class] alloc] initValidatingWithCapacity:0
+                                                    target:target
                                                   selector:sel] autorelease];
 }
 
@@ -143,7 +143,7 @@ void _GTMValidateContainer(id container, id target, SEL selector) {
 
 #if GTM_CONTAINERS_VALIDATE
 - (id)initValidatingWithCapacity:(NSUInteger)capacity
-                          target:(id)target 
+                          target:(id)target
                         selector:(SEL)sel {
   if ((self = [super init])) {
     embeddedContainer_ = [[NSMutableArray alloc] initWithCapacity:capacity];
@@ -169,14 +169,14 @@ void _GTMValidateContainer(id container, id target, SEL selector) {
 }
 
 - (void)addObject:(id)anObject {
-  if (VerifyObjectWithTargetAndSelectorForContainer(anObject, target_, 
+  if (VerifyObjectWithTargetAndSelectorForContainer(anObject, target_,
                                                     selector_, self)) {
     [embeddedContainer_ addObject:anObject];
   }
 }
 
 - (void)insertObject:(id)anObject atIndex:(NSUInteger)idx {
-  if (VerifyObjectWithTargetAndSelectorForContainer(anObject, target_, 
+  if (VerifyObjectWithTargetAndSelectorForContainer(anObject, target_,
                                                     selector_, self)) {
     [embeddedContainer_ insertObject:anObject atIndex:idx];
   }
@@ -191,21 +191,21 @@ void _GTMValidateContainer(id container, id target, SEL selector) {
 }
 
 - (void)replaceObjectAtIndex:(NSUInteger)idx withObject:(id)anObject {
-    if (VerifyObjectWithTargetAndSelectorForContainer(anObject, target_, 
+    if (VerifyObjectWithTargetAndSelectorForContainer(anObject, target_,
                                                       selector_, self)) {
     [embeddedContainer_ replaceObjectAtIndex:idx withObject:anObject];
   }
 }
 
 - (NSString*)description {
-  return [NSString stringWithFormat:@"%@ - %@", 
+  return [NSString stringWithFormat:@"%@ - %@",
           NSStringFromClass([self class]),
           [embeddedContainer_ description]];
 }
 
 #else  // GTM_CONTAINERS_VALIDATE
 - (id)initValidatingWithCapacity:(NSUInteger)capacity
-                          target:(id)target 
+                          target:(id)target
                         selector:(SEL)sel {
   [self release];
   return [[NSMutableArray alloc] initWithCapacity:capacity];
@@ -218,13 +218,13 @@ void _GTMValidateContainer(id container, id target, SEL selector) {
   return [self validatingDictionaryWithCapacity:0 target:target selector:sel];
 }
 
-+ (id)validatingDictionaryWithCapacity:(NSUInteger)capacity 
-                                target:(id)target 
++ (id)validatingDictionaryWithCapacity:(NSUInteger)capacity
+                                target:(id)target
                               selector:(SEL)sel {
-  return [[[[self class] alloc] initValidatingWithCapacity:0 
-                                                    target:target 
+  return [[[[self class] alloc] initValidatingWithCapacity:0
+                                                    target:target
                                                   selector:sel] autorelease];
-}  
+}
 
 - (id)initValidatingWithTarget:(id)target selector:(SEL)sel {
   return [self initValidatingWithCapacity:0 target:target selector:sel];
@@ -232,7 +232,7 @@ void _GTMValidateContainer(id container, id target, SEL selector) {
 
 #if GTM_CONTAINERS_VALIDATE
 - (id)initValidatingWithCapacity:(NSUInteger)capacity
-                          target:(id)target 
+                          target:(id)target
                         selector:(SEL)sel {
   if ((self = [super init])) {
     embeddedContainer_ = [[NSMutableDictionary alloc] initWithCapacity:capacity];
@@ -266,21 +266,21 @@ void _GTMValidateContainer(id container, id target, SEL selector) {
 }
 
 - (void)setObject:(id)anObject forKey:(id)aKey {
-  if (VerifyObjectWithTargetAndSelectorForContainer(anObject, target_, 
+  if (VerifyObjectWithTargetAndSelectorForContainer(anObject, target_,
                                                     selector_, self)) {
     [embeddedContainer_ setObject:anObject forKey:aKey];
   }
 }
 
 - (NSString*)description {
-  return [NSString stringWithFormat:@"%@ - %@", 
+  return [NSString stringWithFormat:@"%@ - %@",
           NSStringFromClass([self class]),
           [embeddedContainer_ description]];
 }
 
 #else  // GTM_CONTAINERS_VALIDATE
 - (id)initValidatingWithCapacity:(NSUInteger)capacity
-                          target:(id)target 
+                          target:(id)target
                         selector:(SEL)sel {
   [self release];
   return [[NSMutableDictionary alloc] initWithCapacity:capacity];
@@ -294,20 +294,20 @@ void _GTMValidateContainer(id container, id target, SEL selector) {
   return [self validatingSetWithCapacity:0 target:target selector:sel];
 }
 
-+ (id)validatingSetWithCapacity:(NSUInteger)capacity 
-                         target:(id)target 
++ (id)validatingSetWithCapacity:(NSUInteger)capacity
+                         target:(id)target
                        selector:(SEL)sel {
-  return [[[[self class] alloc] initValidatingWithCapacity:0 
-                                                    target:target 
+  return [[[[self class] alloc] initValidatingWithCapacity:0
+                                                    target:target
                                                   selector:sel] autorelease];
-}  
+}
 - (id)initValidatingWithTarget:(id)target selector:(SEL)sel {
   return [self initValidatingWithCapacity:0 target:target selector:sel];
 }
 
 #if GTM_CONTAINERS_VALIDATE
 - (id)initValidatingWithCapacity:(NSUInteger)capacity
-                          target:(id)target 
+                          target:(id)target
                         selector:(SEL)sel {
   if ((self = [super init])) {
     embeddedContainer_ = [[NSMutableSet alloc] initWithCapacity:capacity];
@@ -337,9 +337,9 @@ void _GTMValidateContainer(id container, id target, SEL selector) {
 }
 
 - (void)addObject:(id)object {
-  if (object && VerifyObjectWithTargetAndSelectorForContainer(object, 
-                                                              target_, 
-                                                              selector_, 
+  if (object && VerifyObjectWithTargetAndSelectorForContainer(object,
+                                                              target_,
+                                                              selector_,
                                                               self)) {
     [embeddedContainer_ addObject:object];
   }
@@ -350,14 +350,14 @@ void _GTMValidateContainer(id container, id target, SEL selector) {
 }
 
 - (NSString*)description {
-  return [NSString stringWithFormat:@"%@ - %@", 
+  return [NSString stringWithFormat:@"%@ - %@",
           NSStringFromClass([self class]),
           [embeddedContainer_ description]];
 }
 
 #else  // GTM_CONTAINERS_VALIDATE
 - (id)initValidatingWithCapacity:(NSUInteger)capacity
-                          target:(id)target 
+                          target:(id)target
                         selector:(SEL)sel {
   [self release];
   return [[NSMutableSet alloc] initWithCapacity:capacity];

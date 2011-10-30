@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -116,7 +116,7 @@
   STAssertNotNil(userInfo, @"failed to get userInfo from error");
   STAssertEqualObjects([userInfo objectForKey:kGTMRegexPatternErrorPattern], @"(.", nil);
   STAssertNotNil([userInfo objectForKey:kGTMRegexPatternErrorErrorString], nil);
-  
+
   // basic pattern w/ options (helper)
   STAssertNotNil([GTMRegex regexWithPattern:@"(.*)"], nil);
   STAssertNotNil([GTMRegex regexWithPattern:@"(.*)"
@@ -128,7 +128,7 @@
                                     options:kGTMRegexOptionIgnoreCase
                                   withError:&error], nil);
   STAssertNil(error, @"shouldn't have been any error");
-  
+
   // not really a test on GTMRegex, but make sure we block attempts to directly
   // alloc/init a GTMRegexStringSegment.
   STAssertThrowsSpecificNamed([[[GTMRegexStringSegment alloc] init] autorelease],
@@ -349,7 +349,7 @@
   // (end)
   seg = [enumerator nextObject];
   STAssertNil(seg, nil);
-  
+
   // kGTMRegexOptionSupressNewlineSupport w/ '^'
   regex = [GTMRegex regexWithPattern:@"^a+" options:kGTMRegexOptionSupressNewlineSupport];
   STAssertNotNil(regex, nil);
@@ -500,13 +500,13 @@
 - (void)testSegmentEnumeratorForString {
   GTMRegex *regex = [GTMRegex regexWithPattern:@"foo+ba+r"];
   STAssertNotNil(regex, nil);
-  
+
   // test odd input
   NSEnumerator *enumerator = [regex segmentEnumeratorForString:@""];
   STAssertNotNil(enumerator, nil);
   enumerator = [regex segmentEnumeratorForString:nil];
   STAssertNil(enumerator, nil);
-  
+
   // on w/ the normal tests
   enumerator = [regex segmentEnumeratorForString:@"afoobarbfooobaarfoobarzz"];
   STAssertNotNil(enumerator, nil);
@@ -697,7 +697,7 @@
   STAssertNotNil(enumerator, nil);
   enumerator = [regex matchSegmentEnumeratorForString:nil];
   STAssertNil(enumerator, nil);
-  
+
   // on w/ the normal tests
   enumerator = [regex matchSegmentEnumeratorForString:@"afoobarbfooobaarfoobarzz"];
   STAssertNotNil(enumerator, nil);
@@ -780,7 +780,7 @@
   NSArray *allSegments = [enumerator allObjects];
   STAssertNotNil(allSegments, nil);
   STAssertEquals((NSUInteger)3, [allSegments count], nil);
-  
+
   // test we are getting the flags right for newline
   regex = [GTMRegex regexWithPattern:@"^a"];
   STAssertNotNil(regex, nil);

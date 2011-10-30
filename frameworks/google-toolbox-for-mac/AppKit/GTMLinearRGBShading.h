@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -39,7 +39,7 @@
 
 ///  Generate a shading with color |begin| at position 0.0 and color |end| at 1.0.
 //
-//  Args: 
+//  Args:
 //    begin: color at beginning of range
 //    end: color at end of range
 //    colorSpaceName: name of colorspace to draw into must be either
@@ -47,7 +47,7 @@
 //
 //  Returns:
 //    a GTMLinearRGBShading
-+ (id)shadingFromColor:(NSColor *)begin toColor:(NSColor *)end 
++ (id)shadingFromColor:(NSColor *)begin toColor:(NSColor *)end
         fromSpaceNamed:(NSString*)colorSpaceName;
 
 ///  Generate a shading with a collection of colors at various positions.
@@ -56,7 +56,7 @@
 //    colors: a C style array containg the colors we are adding
 //    colorSpaceName: name of colorspace to draw into must be either
 //                    NSCalibratedRGBColorSpace or NSDeviceRGBColorSpace
-//    positions: a C style array containg the positions we want to 
+//    positions: a C style array containg the positions we want to
 //              add the colors at
 //    numberOfColors: how many colors/positions we are adding
 //
@@ -64,7 +64,7 @@
 //    a GTMLinearRGBShading
 + (id)shadingWithColors:(NSColor **)colors
          fromSpaceNamed:(NSString*)colorSpaceName
-            atPositions:(CGFloat *)positions 
+            atPositions:(CGFloat *)positions
                   count:(NSUInteger)numberOfColors;
 
 /// Designated initializer

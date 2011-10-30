@@ -13,7 +13,7 @@
  * 3. Neither the name of the copyright holder nor the names of any contributors
  *    may be used to endorse or promote products derived from this
  *    software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -42,7 +42,7 @@
 
 /* Test NSError creation */
 - (void) testDatabaseError {
-    NSError *error = [PlausibleDatabase errorWithCode: PLDatabaseErrorFileNotFound 
+    NSError *error = [PlausibleDatabase errorWithCode: PLDatabaseErrorFileNotFound
                                  localizedDescription: @"test"
                                           queryString: @"query"
                                           vendorError: [NSNumber numberWithInt: 42]
@@ -53,7 +53,7 @@
     STAssertTrue([@"test" isEqual: [error localizedDescription]], @"Description incorrect");
 
     STAssertTrue([@"query" isEqual: [[error userInfo] objectForKey: PLDatabaseErrorQueryStringKey]], @"Query string incorrect");
-    
+
     STAssertEquals(42, [[[error userInfo] objectForKey: PLDatabaseErrorVendorErrorKey] intValue], @"Native error code incorrect");
     STAssertTrue([@"native" isEqual: [[error userInfo] objectForKey: PLDatabaseErrorVendorStringKey]], @"Native error string incorrect");
 }

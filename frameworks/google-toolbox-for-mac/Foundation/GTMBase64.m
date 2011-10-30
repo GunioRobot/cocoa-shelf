@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -498,7 +498,7 @@ FOUNDATION_STATIC_INLINE NSUInteger GuessDecodedLength(NSUInteger srcLen) {
 
   char *curDest = destBytes;
   const unsigned char *curSrc = (const unsigned char *)(srcBytes);
-  
+
   // Three bytes of data encodes to four characters of cyphertext.
   // So we can pump through three-byte chunks atomically.
   while (srcLen > 2) {
@@ -584,14 +584,14 @@ FOUNDATION_STATIC_INLINE NSUInteger GuessDecodedLength(NSUInteger srcLen) {
   while (srcLen-- && (ch = *srcBytes++) != 0)  {
     if (IsSpace(ch))  // Skip whitespace
       continue;
-    
+
     if (ch == kBase64PaddingChar)
       break;
-    
+
     decode = charset[(unsigned int)ch];
     if (decode == kBase64InvalidChar)
       return 0;
-    
+
     // Four cyphertext characters decode to three bytes.
     // Therefore we can be in one of four states.
     switch (state) {
@@ -637,7 +637,7 @@ FOUNDATION_STATIC_INLINE NSUInteger GuessDecodedLength(NSUInteger srcLen) {
         break;
     }
   }
-  
+
   // We are done decoding Base-64 chars.  Let's see if we ended
   //      on a byte boundary, and/or with erroneous trailing characters.
   if (ch == kBase64PaddingChar) {               // We got a pad char
@@ -668,7 +668,7 @@ FOUNDATION_STATIC_INLINE NSUInteger GuessDecodedLength(NSUInteger srcLen) {
     }
   } else {
     // We ended by seeing the end of the string.
-    
+
     if (requirePadding) {
       // If we require padding, then anything but state 0 is an error.
       if (state != 0) {
@@ -682,7 +682,7 @@ FOUNDATION_STATIC_INLINE NSUInteger GuessDecodedLength(NSUInteger srcLen) {
       }
     }
   }
-  
+
   // If then next piece of output was valid and got written to it means we got a
   // very carefully crafted input that appeared valid but contains some trailing
   // bits past the real length, so just toss the thing.
@@ -690,7 +690,7 @@ FOUNDATION_STATIC_INLINE NSUInteger GuessDecodedLength(NSUInteger srcLen) {
       (destBytes[destIndex] != 0)) {
     return 0;
   }
-  
+
   return destIndex;
 }
 

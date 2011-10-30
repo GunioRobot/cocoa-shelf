@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -40,19 +40,19 @@ GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_descriptorWithLabeledHandler:labels
 GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:);  // COV_NF_LINE
 
 + (void)load {
-  DescType types[] = { 
+  DescType types[] = {
     typeScript
   };
-  
+
   NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
   [NSAppleEventDescriptor gtm_registerSelector:@selector(gtm_scriptValue)
                                       forTypes:types
                                          count:sizeof(types)/sizeof(DescType)];
-  
-  DescType types2[] = { 
+
+  DescType types2[] = {
     'evnt'  // No type code for this one
   };
-  
+
   [NSAppleEventDescriptor gtm_registerSelector:@selector(gtm_eventValue)
                                       forTypes:types2
                                          count:sizeof(types2)/sizeof(DescType)];
@@ -77,27 +77,27 @@ GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:); 
   return genericID;
 }
 
-- (NSAppleEventDescriptor*)gtm_executePositionalHandler:(NSString*)handler 
-                                             parameters:(NSArray*)params 
+- (NSAppleEventDescriptor*)gtm_executePositionalHandler:(NSString*)handler
+                                             parameters:(NSArray*)params
                                                   error:(NSDictionary**)error {
-  NSAppleEventDescriptor *event 
-    = [NSAppleEventDescriptor gtm_descriptorWithPositionalHandler:handler 
+  NSAppleEventDescriptor *event
+    = [NSAppleEventDescriptor gtm_descriptorWithPositionalHandler:handler
                                                   parametersArray:params];
   return [self executeAppleEvent:event error:error];
-} 
+}
 
 - (NSAppleEventDescriptor*)gtm_executeLabeledHandler:(NSString*)handler
                                               labels:(AEKeyword*)labels
                                           parameters:(id*)params
                                                count:(NSUInteger)count
                                                error:(NSDictionary **)error {
-  NSAppleEventDescriptor *event 
-    = [NSAppleEventDescriptor gtm_descriptorWithLabeledHandler:handler 
+  NSAppleEventDescriptor *event
+    = [NSAppleEventDescriptor gtm_descriptorWithLabeledHandler:handler
                                                         labels:labels
                                                     parameters:params
                                                          count:count];
   return [self executeAppleEvent:event error:error];
-} 
+}
 
 - (NSSet*)gtm_handlers {
   AEDescList names = { typeNull, NULL };
@@ -106,7 +106,7 @@ GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:); 
   OSAID osaID = [self gtm_realIDAndComponent:&component];
   OSAError err = OSAGetHandlerNames(component, kOSAModeNull, osaID, &names);
   if (!err) {
-    NSAppleEventDescriptor *desc 
+    NSAppleEventDescriptor *desc
       = [[[NSAppleEventDescriptor alloc] initWithAEDescNoCopy:&names] autorelease];
     array = [desc gtm_objectValue];
   }
@@ -123,7 +123,7 @@ GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:); 
   OSAID osaID = [self gtm_realIDAndComponent:&component];
   OSAError err = OSAGetPropertyNames(component, kOSAModeNull, osaID, &names);
   if (!err) {
-    NSAppleEventDescriptor *desc 
+    NSAppleEventDescriptor *desc
       = [[[NSAppleEventDescriptor alloc] initWithAEDescNoCopy:&names] autorelease];
     array = [desc gtm_objectValue];
   }
@@ -143,19 +143,19 @@ GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:); 
     ComponentInstance component;
     OSAID scriptID = [self gtm_realIDAndComponent:&component];
     error = OSACoerceFromDesc(component,
-                              [desc aeDesc], 
-                              kOSAModeNull, 
+                              [desc aeDesc],
+                              kOSAModeNull,
                               &valueID);
     if (!error) {
-      error = OSASetProperty(component, kOSAModeNull, 
-                             scriptID, [propertyName aeDesc], valueID); 
+      error = OSASetProperty(component, kOSAModeNull,
+                             scriptID, [propertyName aeDesc], valueID);
       if (!error) {
         wasGood = YES;
       }
     }
   }
   if (!wasGood) {
-    _GTMDevLog(@"Unable to setValue:%@ forProperty:%@ from %@ (%d)", 
+    _GTMDevLog(@"Unable to setValue:%@ forProperty:%@ from %@ (%d)",
                value, property, self, error);
   }
   return wasGood;
@@ -169,27 +169,27 @@ GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:); 
     ComponentInstance component;
     OSAID scriptID = [self gtm_realIDAndComponent:&component];
     OSAID valueID = kOSANullScript;
-    error = OSAGetProperty(component, 
-                           kOSAModeNull, 
-                           scriptID, 
-                           [propertyName aeDesc], 
+    error = OSAGetProperty(component,
+                           kOSAModeNull,
+                           scriptID,
+                           [propertyName aeDesc],
                            &valueID);
     if (!error) {
       AEDesc aeDesc;
-      error = OSACoerceToDesc(component, 
-                              valueID, 
-                              typeWildCard, 
-                              kOSAModeNull, 
+      error = OSACoerceToDesc(component,
+                              valueID,
+                              typeWildCard,
+                              kOSAModeNull,
                               &aeDesc);
       if (!error) {
-        NSAppleEventDescriptor *desc 
+        NSAppleEventDescriptor *desc
         = [[[NSAppleEventDescriptor alloc] initWithAEDescNoCopy:&aeDesc] autorelease];
         value = [desc gtm_objectValue];
       }
     }
   }
   if (error) {
-    _GTMDevLog(@"Unable to get valueForProperty:%@ from %@ (%d)", 
+    _GTMDevLog(@"Unable to get valueForProperty:%@ from %@ (%d)",
                property, self, error);
   }
   return value;
@@ -200,8 +200,8 @@ GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:); 
   OSAID osaID = [self gtm_realIDAndComponent:&component];
   AEDesc result = { typeNull, NULL };
   NSAppleEventDescriptor *desc = nil;
-  OSAError err = OSACoerceToDesc(component, 
-                                 osaID, 
+  OSAError err = OSACoerceToDesc(component,
+                                 osaID,
                                  typeScript,
                                  kOSAModeNull,
                                  &result);
@@ -223,7 +223,7 @@ GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:); 
     for (NSUInteger i = 1; i < count; i++) {
       [types appendString:@"@"];
     }
-    signature = [NSMethodSignature signatureWithObjCTypes:[types UTF8String]];    
+    signature = [NSMethodSignature signatureWithObjCTypes:[types UTF8String]];
   }
   return signature;
 }
@@ -232,7 +232,7 @@ GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:); 
   SEL sel = [invocation selector];
   NSMutableString *handlerName = [NSStringFromSelector(sel) mutableCopy];
   NSUInteger handlerOrigLength = [handlerName length];
-  [handlerName replaceOccurrencesOfString:@":" 
+  [handlerName replaceOccurrencesOfString:@":"
                                withString:@""
                                   options:0
                                     range:NSMakeRange(0,handlerOrigLength)];
@@ -245,9 +245,9 @@ GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:); 
     [args addObject:arg];
   }
   NSDictionary *error = nil;
-  NSAppleEventDescriptor *desc = [self gtm_executePositionalHandler:handlerName 
-                                                         parameters:args 
-                                                              error:&error];  
+  NSAppleEventDescriptor *desc = [self gtm_executePositionalHandler:handlerName
+                                                         parameters:args
+                                                              error:&error];
   if ([[invocation methodSignature] methodReturnLength] > 0) {
     id returnValue = [desc gtm_objectValue];
     [invocation setReturnValue:&returnValue];
@@ -259,7 +259,7 @@ GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:); 
 
 - (NSAppleScript*)gtm_scriptValue {
   NSDictionary *error;
-  NSAppleScript *script = [[[NSAppleScript alloc] _initWithData:[self data] 
+  NSAppleScript *script = [[[NSAppleScript alloc] _initWithData:[self data]
                                                           error:&error] autorelease];
   if (!script) {
     _GTMDevLog(@"Unable to create script: %@", error);  // COV_NF_LINE
@@ -273,7 +273,7 @@ GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:); 
     AEEventID eventID;
   };
   NSData *data = [self data];
-  const struct AEEventRecordStruct *record 
+  const struct AEEventRecordStruct *record
     = (const struct AEEventRecordStruct*)[data bytes];
   NSString *eClass = [GTMFourCharCode stringWithFourCharCode:record->eventClass];
   NSString *eID = [GTMFourCharCode stringWithFourCharCode:record->eventID];

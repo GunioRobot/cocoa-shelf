@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -30,7 +30,7 @@ static const CGFloat kEdgeInset = 16.0;
 // Give us an alpha value for our backing window
 static const CGFloat kTwoThirdsAlpha = 0.66;
 
-@interface GTMLargeTypeBackgroundView : NSView 
+@interface GTMLargeTypeBackgroundView : NSView
 @end
 
 @interface GTMLargeTypeWindow (GTMLargeTypeWindowPrivate)
@@ -48,7 +48,7 @@ static const CGFloat kTwoThirdsAlpha = 0.66;
   CGFloat displayWidth = [[self class] displayWidth];
   NSMutableAttributedString *attrString
     = [[[NSMutableAttributedString alloc] initWithString:string] autorelease];
-  
+
   // Try and find a size that fits without iterating too many times.
   // We start going 50 pixels at a time, then 10, then 1
   int size = -26;  // start at 24 (-26 + 50)
@@ -56,8 +56,8 @@ static const CGFloat kTwoThirdsAlpha = 0.66;
   for (size_t i = 0; i < sizeof(offsets) / sizeof(int); ++i) {
     for(size = size + offsets[i]; size >= 24 && size < 300; size += offsets[i]) {
       NSFont *textFont = [NSFont boldSystemFontOfSize:size];
-      NSDictionary *fontAttr 
-        = [NSDictionary dictionaryWithObject:textFont 
+      NSDictionary *fontAttr
+        = [NSDictionary dictionaryWithObject:textFont
                                       forKey:NSFontAttributeName];
       NSSize textSize = [string sizeWithAttributes:fontAttr];
       if (textSize.width > displayWidth) {
@@ -66,36 +66,36 @@ static const CGFloat kTwoThirdsAlpha = 0.66;
       }
     }
   }
-  
+
   // Bounds check our values
   if (size > 300) {
     size = 300;
   } else if (size < 24) {
     size = 24;
   }
-  
+
   NSRange fullRange = NSMakeRange(0, [string length]);
-  [attrString addAttribute:NSFontAttributeName 
-                     value:[NSFont boldSystemFontOfSize:size] 
+  [attrString addAttribute:NSFontAttributeName
+                     value:[NSFont boldSystemFontOfSize:size]
                      range:fullRange];
-  [attrString addAttribute:NSForegroundColorAttributeName 
-                     value:[NSColor whiteColor] 
+  [attrString addAttribute:NSForegroundColorAttributeName
+                     value:[NSColor whiteColor]
                      range:fullRange];
-  
-  NSMutableParagraphStyle *style 
+
+  NSMutableParagraphStyle *style
     = [[[NSParagraphStyle defaultParagraphStyle] mutableCopy] autorelease];
   [style setAlignment:NSCenterTextAlignment];
-  [attrString addAttribute:NSParagraphStyleAttributeName 
-                     value:style 
+  [attrString addAttribute:NSParagraphStyleAttributeName
+                     value:style
                      range:fullRange];
-  
+
   NSShadow *textShadow = [[[NSShadow alloc] init] autorelease];
   [textShadow setShadowOffset:NSMakeSize( 5, -5 )];
   [textShadow setShadowBlurRadius:10];
-  [textShadow setShadowColor:[NSColor colorWithCalibratedWhite:0 
+  [textShadow setShadowColor:[NSColor colorWithCalibratedWhite:0
                                                          alpha:kTwoThirdsAlpha]];
-  [attrString addAttribute:NSShadowAttributeName 
-                     value:textShadow 
+  [attrString addAttribute:NSShadowAttributeName
+                     value:textShadow
                      range:fullRange];
   return [self initWithAttributedString:attrString];
 }
@@ -114,7 +114,7 @@ static const CGFloat kTwoThirdsAlpha = 0.66;
   [textView setDrawsBackground:NO];
   [[textView textStorage] setAttributedString:attrString];
   [textView sizeToFit];
-  
+
   return [self initWithContentView:textView];
 }
 
@@ -125,7 +125,7 @@ static const CGFloat kTwoThirdsAlpha = 0.66;
     return nil;
   }
   NSRect rect = GTMNSRectOfSize([image size]);
-  NSImageView *imageView 
+  NSImageView *imageView
     = [[[NSImageView alloc] initWithFrame:rect] autorelease];
   [imageView setImage:image];
   return [self initWithContentView:imageView];
@@ -142,7 +142,7 @@ static const CGFloat kTwoThirdsAlpha = 0.66;
     return nil;
   }
   NSRect screenRect = [[NSScreen mainScreen] frame];
-  NSRect windowRect = GTMNSAlignRectangles([view frame], 
+  NSRect windowRect = GTMNSAlignRectangles([view frame],
                                            screenRect,
                                            GTMRectAlignCenter);
   windowRect = NSInsetRect(windowRect, -kEdgeInset, -kEdgeInset);
@@ -153,7 +153,7 @@ static const CGFloat kTwoThirdsAlpha = 0.66;
                             backing:NSBackingStoreBuffered
                               defer:NO];
   if (self) {
-    [self setFrame:GTMNSAlignRectangles(windowRect, 
+    [self setFrame:GTMNSAlignRectangles(windowRect,
                                         screenRect,
                                         GTMRectAlignCenter)
            display:YES];
@@ -162,14 +162,14 @@ static const CGFloat kTwoThirdsAlpha = 0.66;
     [self setLevel:NSFloatingWindowLevel];
     [self setHidesOnDeactivate:NO];
 
-    GTMLargeTypeBackgroundView *content 
-      = [[[GTMLargeTypeBackgroundView alloc] initWithFrame:NSZeroRect] 
+    GTMLargeTypeBackgroundView *content
+      = [[[GTMLargeTypeBackgroundView alloc] initWithFrame:NSZeroRect]
          autorelease];
     [self setHasShadow:YES];
     [self setContentView:content];
     [self setAlphaValue:0];
     [self setIgnoresMouseEvents:YES];
-    [view setFrame:GTMNSAlignRectangles([view frame], 
+    [view setFrame:GTMNSAlignRectangles([view frame],
                                         [content frame],
                                         GTMRectAlignCenter)];
     [content addSubview:view];
@@ -188,7 +188,7 @@ static const CGFloat kTwoThirdsAlpha = 0.66;
   }
 }
 
-- (BOOL)canBecomeKeyWindow { 
+- (BOOL)canBecomeKeyWindow {
   return YES;
 }
 
@@ -219,16 +219,16 @@ static const CGFloat kTwoThirdsAlpha = 0.66;
                            NSViewAnimationFadeOutEffect, NSViewAnimationEffectKey,
                            nil];
   NSArray *animation = [NSArray arrayWithObject:fadeOut];
-  NSViewAnimation *viewAnim 
+  NSViewAnimation *viewAnim
     = [[[NSViewAnimation alloc] initWithViewAnimations:animation] autorelease];
   [viewAnim setDuration:kGTMLargeTypeWindowFadeTime];
   [viewAnim startAnimation];
-  NSDate *fadeOutDate 
+  NSDate *fadeOutDate
     = [NSDate dateWithTimeIntervalSinceNow:kGTMLargeTypeWindowFadeTime];
   // We have a local run loop because if this is called as part of a close
   // our window will be hidden immediately before it has a chance to fade.
-  [[NSRunLoop currentRunLoop] runUntilDate:fadeOutDate]; 
-}  
+  [[NSRunLoop currentRunLoop] runUntilDate:fadeOutDate];
+}
 
 + (CGFloat)displayWidth {
   NSRect screenRect = [[NSScreen mainScreen] frame];
@@ -245,7 +245,7 @@ static const CGFloat kTwoThirdsAlpha = 0.66;
                             NSViewAnimationFadeInEffect, NSViewAnimationEffectKey,
                             nil];
     NSArray *animation = [NSArray arrayWithObject:fadeIn];
-    NSViewAnimation *viewAnim 
+    NSViewAnimation *viewAnim
       = [[[NSViewAnimation alloc] initWithViewAnimations:animation] autorelease];
     [viewAnim setDuration:kGTMLargeTypeWindowFadeTime];
     [viewAnim startAnimation];
@@ -262,11 +262,11 @@ static const CGFloat kTwoThirdsAlpha = 0.66;
 - (void)drawRect:(NSRect)rect {
   [[NSColor colorWithDeviceWhite:0 alpha:kTwoThirdsAlpha] set];
   rect = [self bounds];
-  
+
   NSBezierPath *roundRect = [NSBezierPath bezierPath];
   CGFloat minRadius = MIN(NSWidth(rect), NSHeight(rect)) * 0.5f;
-  
-  [roundRect gtm_appendBezierPathWithRoundRect:rect 
+
+  [roundRect gtm_appendBezierPathWithRoundRect:rect
                                   cornerRadius:MIN(minRadius, 32)];
   [roundRect addClip];
   NSRectFill(rect);

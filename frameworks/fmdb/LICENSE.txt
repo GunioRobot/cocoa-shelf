@@ -1,4 +1,4 @@
-If you are using fmdb in your project, I'd love to hear about it.  Let me 
+If you are using fmdb in your project, I'd love to hear about it.  Let me
 know at gus@flyingmeat.com.
 
 In short, this is the MIT License.

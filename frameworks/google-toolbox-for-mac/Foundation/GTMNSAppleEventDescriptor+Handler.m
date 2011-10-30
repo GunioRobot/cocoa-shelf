@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -24,15 +24,15 @@
 @implementation NSAppleEventDescriptor (GTMAppleEventDescriptorHandlerAdditions)
 GTM_METHOD_CHECK(NSProcessInfo, gtm_appleEventDescriptor);  // COV_NF_LINE
 
-+ (id)gtm_descriptorWithPositionalHandler:(NSString*)handler 
++ (id)gtm_descriptorWithPositionalHandler:(NSString*)handler
                           parametersArray:(NSArray*)params {
-  return [[[self alloc] gtm_initWithPositionalHandler:handler 
+  return [[[self alloc] gtm_initWithPositionalHandler:handler
                                       parametersArray:params] autorelease];
 }
 
-+ (id)gtm_descriptorWithPositionalHandler:(NSString*)handler 
++ (id)gtm_descriptorWithPositionalHandler:(NSString*)handler
                      parametersDescriptor:(NSAppleEventDescriptor*)params {
-  return [[[self alloc] gtm_initWithPositionalHandler:handler 
+  return [[[self alloc] gtm_initWithPositionalHandler:handler
                                  parametersDescriptor:params] autorelease];
 }
 
@@ -46,20 +46,20 @@ GTM_METHOD_CHECK(NSProcessInfo, gtm_appleEventDescriptor);  // COV_NF_LINE
                                              count:count] autorelease];
 }
 
-- (id)gtm_initWithPositionalHandler:(NSString*)handler 
+- (id)gtm_initWithPositionalHandler:(NSString*)handler
                     parametersArray:(NSArray*)params {
-  return [self gtm_initWithPositionalHandler:handler 
+  return [self gtm_initWithPositionalHandler:handler
                         parametersDescriptor:[params gtm_appleEventDescriptor]];
 }
 
-- (id)gtm_initWithPositionalHandler:(NSString*)handler 
+- (id)gtm_initWithPositionalHandler:(NSString*)handler
                parametersDescriptor:(NSAppleEventDescriptor*)params {
   if ((self = [self initWithEventClass:kASAppleScriptSuite
                                eventID:kASSubroutineEvent
                       targetDescriptor:[[NSProcessInfo processInfo] gtm_appleEventDescriptor]
                               returnID:kAutoGenerateReturnID
                          transactionID:kAnyTransactionID])) {
-    // Create an NSAppleEventDescriptor with the method handler. Note that the 
+    // Create an NSAppleEventDescriptor with the method handler. Note that the
     // name must be lowercase (even if it is uppercase in AppleScript).
     // http://developer.apple.com/qa/qa2001/qa1111.html
     // has details.
@@ -68,7 +68,7 @@ GTM_METHOD_CHECK(NSProcessInfo, gtm_appleEventDescriptor);  // COV_NF_LINE
       [self release];
       return nil;
     }
-    NSAppleEventDescriptor *handlerDesc 
+    NSAppleEventDescriptor *handlerDesc
       = [NSAppleEventDescriptor descriptorWithString:handler];
     [self setParamDescriptor:handlerDesc forKeyword:keyASSubroutineName];
     if (params) {
@@ -92,9 +92,9 @@ GTM_METHOD_CHECK(NSProcessInfo, gtm_appleEventDescriptor);  // COV_NF_LINE
       [self release];
       return nil;
     }
-    // Create an NSAppleEventDescriptor with the method handler. Note that the 
+    // Create an NSAppleEventDescriptor with the method handler. Note that the
     // name must be lowercase (even if it is uppercase in AppleScript).
-    NSAppleEventDescriptor *handlerDesc 
+    NSAppleEventDescriptor *handlerDesc
       = [NSAppleEventDescriptor descriptorWithString:[handler lowercaseString]];
     [self setParamDescriptor:handlerDesc forKeyword:keyASSubroutineName];
     for (NSUInteger i = 0; i < count; i++) {
@@ -107,7 +107,7 @@ GTM_METHOD_CHECK(NSProcessInfo, gtm_appleEventDescriptor);  // COV_NF_LINE
           self = nil;
           break;
         }
-        NSAppleEventDescriptor *userDesc 
+        NSAppleEventDescriptor *userDesc
           = [paramDesc descriptorForKeyword:keyASUserRecordFields];
         if (!userDesc) {
           _GTMDevLog(@"Dictionary for keyASPrepositionGiven must be a user "

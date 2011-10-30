@@ -13,7 +13,7 @@
  * 3. Neither the name of the copyright holder nor the names of any contributors
  *    may be used to endorse or promote products derived from this
  *    software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -45,7 +45,7 @@
  * PLPreparedStatement instances implement no locking and must not be shared between threads
  * without external synchronization.
  *
- * @warning A prepared statement may not be re-used by simultaneous PLResultSet. Attempting to 
+ * @warning A prepared statement may not be re-used by simultaneous PLResultSet. Attempting to
  * either re-execute a statement or rebind its parameters without first closing any PLResultSet previously
  * returned by the statement will throw an exception.
  */

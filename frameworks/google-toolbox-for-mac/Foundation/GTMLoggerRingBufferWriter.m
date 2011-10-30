@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -97,7 +97,7 @@ typedef void (GTMRingBufferPairCallback)(GTMLoggerRingBufferWriter *rbw,
   free(buffer_);
 
   [super dealloc];
-  
+
 }  // dealloc
 
 
@@ -130,11 +130,11 @@ typedef void (GTMRingBufferPairCallback)(GTMLoggerRingBufferWriter *rbw,
 
 - (int)droppedLogCount {
   int droppedCount = 0;
-  
+
   @synchronized(self) {
     droppedCount = totalLogged_ - capacity_;
   }
-  
+
   if (droppedCount < 0) droppedCount = 0;
 
   return droppedCount;
@@ -215,20 +215,20 @@ static void PrintContentsCallback(GTMLoggerRingBufferWriter *rbw,
 - (void)addMessage:(NSString *)message level:(GTMLoggerLevel)level {
     int newIndex = nextIndex_;
     nextIndex_ = (nextIndex_ + 1) % capacity_;
-    
+
     ++totalLogged_;
-    
+
     // Sanity check
     GTMLOGGER_ASSERT(buffer_ != NULL);
     GTMLOGGER_ASSERT(nextIndex_ >= 0 && nextIndex_ < capacity_);
     GTMLOGGER_ASSERT(newIndex >= 0 && newIndex < capacity_);
-    
+
     // Now store the goodies.
     GTMRingBufferPair *pair = buffer_ + newIndex;
     [pair->logMessage_ release];
     pair->logMessage_ = [message copy];
     pair->level_ = level;
-  
+
 }  // addMessage
 
 
@@ -236,7 +236,7 @@ static void PrintContentsCallback(GTMLoggerRingBufferWriter *rbw,
 - (void)logMessage:(NSString *)message level:(GTMLoggerLevel)level {
   @synchronized(self) {
     [self addMessage:message level:level];
-    
+
     if (level >= kGTMLoggerLevelError) {
       [self dumpContents];
       [self reset];

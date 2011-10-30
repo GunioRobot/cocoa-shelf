@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -95,7 +95,7 @@
                          @"logging mistmatch at index %d from line %d",
                          i, line);
   }
-  
+
 }  // compareWithExpectedLogging
 
 
@@ -146,7 +146,7 @@
     [GTMLoggerRingBufferWriter ringBufferWriterWithCapacity:4
                                                      writer:countingWriter_];
   [logger_ setWriter:writer];
-  
+
   // Shouldn't do anything if there are no contents.
   [writer dumpContents];
   STAssertEquals([writer count], 0, nil);
@@ -265,10 +265,10 @@
   [logger_ setWriter:writer];
 
   [logger_ logInfo:@"ack"];
-  STAssertEquals([countingWriter_ count], 0, nil);  
+  STAssertEquals([countingWriter_ count], 0, nil);
   STAssertEquals([writer count], 1, nil);
   [writer dumpContents];
-  STAssertEquals([countingWriter_ count], 1, nil);  
+  STAssertEquals([countingWriter_ count], 1, nil);
 
   [self compareWriter:countingWriter_
         withExpectedLogging:[NSArray arrayWithObjects:@"ack", nil]
@@ -280,7 +280,7 @@
 
   [countingWriter_ reset];
   [logger_ logError:@"snoogy"];  // should drop "oop"
-  STAssertEquals([countingWriter_ count], 1, nil);  
+  STAssertEquals([countingWriter_ count], 1, nil);
 
   [self compareWriter:countingWriter_
   withExpectedLogging:[NSArray arrayWithObjects:@"snoogy", nil]
@@ -290,7 +290,7 @@
 
 
 
-// Run 10 threads, all logging through the same logger.  
+// Run 10 threads, all logging through the same logger.
 
 static volatile int gStoppedThreads = 0; // Total number that have stopped.
 
@@ -350,9 +350,9 @@ static volatile int gStoppedThreads = 0; // Total number that have stopped.
 
   [logger_ logError:@"bork"];
   STAssertEquals([countingWriter_ count], kCapacity, nil);
-  
+
   NSArray *expected = [NSArray arrayWithObjects:
-                       @"ack", @"ack", @"ack", @"ack", @"ack", 
+                       @"ack", @"ack", @"ack", @"ack", @"ack",
                        @"ack", @"ack", @"ack", @"ack", @"bork",
                        nil];
   [self compareWriter:countingWriter_

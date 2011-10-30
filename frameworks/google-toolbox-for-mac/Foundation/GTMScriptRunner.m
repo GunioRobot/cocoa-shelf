@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -36,11 +36,11 @@ static BOOL LaunchNSTaskCatchingExceptions(NSTask *task);
 }
 
 + (GTMScriptRunner *)runnerWithPerl {
-  return [self runnerWithInterpreter:@"/usr/bin/perl"];  
+  return [self runnerWithInterpreter:@"/usr/bin/perl"];
 }
 
 + (GTMScriptRunner *)runnerWithPython {
-  return [self runnerWithInterpreter:@"/usr/bin/python"]; 
+  return [self runnerWithInterpreter:@"/usr/bin/python"];
 }
 
 + (GTMScriptRunner *)runnerWithInterpreter:(NSString *)interp {
@@ -88,22 +88,22 @@ static BOOL LaunchNSTaskCatchingExceptions(NSTask *task);
 
 - (NSString *)run:(NSString *)cmds standardError:(NSString **)err {
   if (!cmds) return nil;
-  
+
   NSTask *task = [self interpreterTaskWithAdditionalArgs:nil];
   NSFileHandle *toTask = [[task standardInput] fileHandleForWriting];
   NSFileHandle *fromTask = [[task standardOutput] fileHandleForReading];
-  
+
   if (!LaunchNSTaskCatchingExceptions(task)) {
     return nil;
   }
-  
+
   [toTask writeData:[cmds dataUsingEncoding:NSUTF8StringEncoding]];
   [toTask closeFile];
-  
+
   NSData *outData = [fromTask readDataToEndOfFile];
   NSString *output = [[[NSString alloc] initWithData:outData
                                             encoding:NSUTF8StringEncoding] autorelease];
-  
+
   // Handle returning standard error if |err| is not nil
   if (err) {
     NSFileHandle *stderror = [[task standardError] fileHandleForReading];
@@ -119,18 +119,18 @@ static BOOL LaunchNSTaskCatchingExceptions(NSTask *task);
       *err = nil;
     }
   }
-  
+
   [task terminate];
-  
+
   if (trimsWhitespace_) {
     output = [output stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
   }
-  
+
   // let folks test for nil instead of @""
   if ([output length] < 1) {
     output = nil;
   }
-      
+
   return output;
 }
 
@@ -144,11 +144,11 @@ static BOOL LaunchNSTaskCatchingExceptions(NSTask *task);
 
 - (NSString *)runScript:(NSString *)path withArgs:(NSArray *)args standardError:(NSString **)err {
   if (!path) return nil;
-  
+
   NSArray *scriptPlusArgs = [[NSArray arrayWithObject:path] arrayByAddingObjectsFromArray:args];
   NSTask *task = [self interpreterTaskWithAdditionalArgs:scriptPlusArgs];
   NSFileHandle *fromTask = [[task standardOutput] fileHandleForReading];
-  
+
   if (!LaunchNSTaskCatchingExceptions(task)) {
     return nil;
   }
@@ -156,7 +156,7 @@ static BOOL LaunchNSTaskCatchingExceptions(NSTask *task);
   NSData *outData = [fromTask readDataToEndOfFile];
   NSString *output = [[[NSString alloc] initWithData:outData
                                             encoding:NSUTF8StringEncoding] autorelease];
-  
+
   // Handle returning standard error if |err| is not nil
   if (err) {
     NSFileHandle *stderror = [[task standardError] fileHandleForReading];
@@ -172,18 +172,18 @@ static BOOL LaunchNSTaskCatchingExceptions(NSTask *task);
       *err = nil;
     }
   }
-  
+
   [task terminate];
-  
+
   if (trimsWhitespace_) {
     output = [output stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
   }
-  
+
   // let folks test for nil instead of @""
   if ([output length] < 1) {
     output = nil;
   }
-  
+
   return output;
 }
 
@@ -215,13 +215,13 @@ static BOOL LaunchNSTaskCatchingExceptions(NSTask *task);
   [task setStandardInput:[NSPipe pipe]];
   [task setStandardOutput:[NSPipe pipe]];
   [task setStandardError:[NSPipe pipe]];
-  
+
   // If |environment_| is nil, then use an empty dictionary, otherwise use
   // environment_ exactly.
   [task setEnvironment:(environment_
                         ? environment_
                         : [NSDictionary dictionary])];
-  
+
   // Build args to interpreter.  The format is:
   //   interp [args-to-interp] [script-name [args-to-script]]
   NSArray *allArgs = nil;
@@ -234,7 +234,7 @@ static BOOL LaunchNSTaskCatchingExceptions(NSTask *task);
   if (allArgs){
     [task setArguments:allArgs];
   }
-  
+
   return task;
 }
 

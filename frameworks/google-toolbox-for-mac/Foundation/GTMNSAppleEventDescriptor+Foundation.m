@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -25,8 +25,8 @@ static NSMutableDictionary *gTypeMap = nil;
 
 @implementation NSAppleEventDescriptor (GTMAppleEventDescriptorArrayAdditions)
 
-+ (void)gtm_registerSelector:(SEL)selector 
-                    forTypes:(DescType*)types 
++ (void)gtm_registerSelector:(SEL)selector
+                    forTypes:(DescType*)types
                        count:(NSUInteger)count {
   if (selector && types && count > 0) {
     @synchronized(self) {
@@ -38,7 +38,7 @@ static NSMutableDictionary *gTypeMap = nil;
         NSNumber *key = [NSNumber numberWithUnsignedInt:types[i]];
         NSString *exists = [gTypeMap objectForKey:key];
         if (exists) {
-          _GTMDevLog(@"%@ being replaced with %@ exists for type: %@", 
+          _GTMDevLog(@"%@ being replaced with %@ exists for type: %@",
                     exists, selString, key);
         }
         [gTypeMap setObject:selString forKey:key];
@@ -49,7 +49,7 @@ static NSMutableDictionary *gTypeMap = nil;
 
 - (id)gtm_objectValue {
   id value = nil;
-  
+
   // Check our registered types to see if we have anything
   if (gTypeMap) {
     @synchronized(gTypeMap) {
@@ -86,7 +86,7 @@ static NSMutableDictionary *gTypeMap = nil;
     [items addObject:value];
   }
   return items;
-}  
+}
 
 - (NSDictionary*)gtm_dictionaryValue {
   NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
@@ -112,12 +112,12 @@ static NSMutableDictionary *gTypeMap = nil;
         _GTMDevLog(@"Unknown type of descriptor %@", [desc description]);
         return nil;
       }
-      [dictionary setObject:value 
+      [dictionary setObject:value
                      forKey:[GTMFourCharCode fourCharCodeWithFourCharCode:key]];
     }
   }
   return dictionary;
-}  
+}
 
 - (NSNull*)gtm_nullValue {
   return [NSNull null];
@@ -125,13 +125,13 @@ static NSMutableDictionary *gTypeMap = nil;
 
 + (NSAppleEventDescriptor*)gtm_descriptorWithDouble:(double)real {
   return [NSAppleEventDescriptor descriptorWithDescriptorType:typeIEEE64BitFloatingPoint
-                                                        bytes:&real 
+                                                        bytes:&real
                                                        length:sizeof(real)];
 }
 
 + (NSAppleEventDescriptor*)gtm_descriptorWithFloat:(float)real {
   return [NSAppleEventDescriptor descriptorWithDescriptorType:typeIEEE32BitFloatingPoint
-                                                        bytes:&real 
+                                                        bytes:&real
                                                        length:sizeof(real)];
 }
 
@@ -170,7 +170,7 @@ static NSMutableDictionary *gTypeMap = nil;
 #endif
 }
 
-- (NSNumber*)gtm_numberValue { 
+- (NSNumber*)gtm_numberValue {
   typedef struct {
     DescType type;
     SEL selector;
@@ -233,10 +233,10 @@ static NSMutableDictionary *gTypeMap = nil;
 @implementation NSArray (GTMAppleEventDescriptorObjectAdditions)
 
 + (void)load {
-  DescType types[] = { 
+  DescType types[] = {
     typeAEList,
   };
-  
+
   NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
   [NSAppleEventDescriptor gtm_registerSelector:@selector(gtm_arrayValue)
                                      forTypes:types
@@ -263,10 +263,10 @@ static NSMutableDictionary *gTypeMap = nil;
 @implementation NSDictionary (GTMAppleEventDescriptorObjectAdditions)
 
 + (void)load {
-  DescType types[] = { 
+  DescType types[] = {
     typeAERecord,
   };
-  
+
   NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
   [NSAppleEventDescriptor gtm_registerSelector:@selector(gtm_dictionaryValue)
                                     forTypes:types
@@ -326,10 +326,10 @@ static NSMutableDictionary *gTypeMap = nil;
 
 @implementation NSNull (GTMAppleEventDescriptorObjectAdditions)
 + (void)load {
-  DescType types[] = { 
+  DescType types[] = {
     typeNull
   };
-  
+
   NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
   [NSAppleEventDescriptor gtm_registerSelector:@selector(gtm_nullValue)
                                       forTypes:types
@@ -345,7 +345,7 @@ static NSMutableDictionary *gTypeMap = nil;
 @implementation NSString (GTMAppleEventDescriptorObjectAdditions)
 
 + (void)load {
-  DescType types[] = { 
+  DescType types[] = {
     typeUTF16ExternalRepresentation,
     typeUnicodeText,
     typeUTF8Text,
@@ -353,7 +353,7 @@ static NSMutableDictionary *gTypeMap = nil;
     typePString,
     typeChar,
     typeIntlText };
-  
+
   NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
   [NSAppleEventDescriptor gtm_registerSelector:@selector(stringValue)
                                       forTypes:types
@@ -369,7 +369,7 @@ static NSMutableDictionary *gTypeMap = nil;
 @implementation NSNumber (GTMAppleEventDescriptorObjectAdditions)
 
 + (void)load {
-  DescType types[] = { 
+  DescType types[] = {
     typeTrue,
     typeFalse,
     typeBoolean,
@@ -379,7 +379,7 @@ static NSMutableDictionary *gTypeMap = nil;
     typeSInt64,
     typeIEEE32BitFloatingPoint,
     typeIEEE64BitFloatingPoint };
-  
+
   NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
   [NSAppleEventDescriptor gtm_registerSelector:@selector(gtm_numberValue)
                                      forTypes:types
@@ -390,7 +390,7 @@ static NSMutableDictionary *gTypeMap = nil;
 - (NSAppleEventDescriptor*)gtm_appleEventDescriptor {
   const char *type = [self objCType];
   if (!type || strlen(type) != 1) return nil;
-  
+
   DescType desiredType = typeNull;
   NSAppleEventDescriptor *desc = nil;
   switch (type[0]) {
@@ -400,19 +400,19 @@ static NSMutableDictionary *gTypeMap = nil;
       desc = [NSAppleEventDescriptor descriptorWithBoolean:[self boolValue]];
       break;
     // COV_NF_END
-     
+
     case 'c':
     case 'C':
     case 's':
     case 'S':
       desiredType = typeSInt16;
       break;
-      
+
     case 'i':
     case 'l':
       desiredType = typeSInt32;
       break;
-    
+
     // COV_NF_START
     // I can't seem to convince objcType to return something of this type
     case 'I':
@@ -420,29 +420,29 @@ static NSMutableDictionary *gTypeMap = nil;
       desiredType = typeUInt32;
       break;
     // COV_NF_END
-      
+
     case 'q':
     case 'Q':
       desiredType = typeSInt64;
       break;
-      
+
     case 'f':
       desiredType = typeIEEE32BitFloatingPoint;
       break;
-      
+
     case 'd':
     default:
       desiredType = typeIEEE64BitFloatingPoint;
       break;
   }
-  
+
   if (!desc) {
     desc = [NSAppleEventDescriptor gtm_descriptorWithDouble:[self doubleValue]];
     if (desc && desiredType != typeIEEE64BitFloatingPoint) {
         desc = [desc coerceToDescriptorType:desiredType];
     }
   }
-  return desc;  
+  return desc;
 }
 
 @end
@@ -454,13 +454,13 @@ static NSMutableDictionary *gTypeMap = nil;
   return [NSAppleEventDescriptor descriptorWithDescriptorType:typeProcessSerialNumber
                                                         bytes:&psn
                                                        length:sizeof(ProcessSerialNumber)];
-}  
+}
 
 @end
 
 @implementation NSAppleEventDescriptor (GTMAppleEventDescriptorAdditions)
 
-- (BOOL)gtm_sendEventWithMode:(AESendMode)mode 
+- (BOOL)gtm_sendEventWithMode:(AESendMode)mode
                       timeOut:(NSTimeInterval)timeout
                         reply:(NSAppleEventDescriptor**)reply {
   BOOL isGood = YES;
@@ -471,7 +471,7 @@ static NSMutableDictionary *gTypeMap = nil;
     _GTMDevLog(@"Unable to send message: %@ %d", self, err);
     replyEvent.descriptorType = typeNull;
     replyEvent.dataHandle = NULL;
-  } 
+  }
   NSAppleEventDescriptor *replyDesc = [[[NSAppleEventDescriptor alloc] initWithAEDescNoCopy:&replyEvent] autorelease];
   if (isGood) {
     NSAppleEventDescriptor *errorDesc = [replyDesc descriptorForKeyword:keyErrorNumber];

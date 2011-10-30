@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -29,9 +29,9 @@
 @implementation GTMNSBezierPath_CGPathTest
 
 - (void)testCreateCGPath {
-  GTMAssertDrawingEqualToImageNamed(self, 
-                                    NSMakeSize(100, 100), 
-                                    @"GTMNSBezierPath+CGPathTest", 
+  GTMAssertDrawingEqualToImageNamed(self,
+                                    NSMakeSize(100, 100),
+                                    @"GTMNSBezierPath+CGPathTest",
                                     nil, nil);
 }
 
@@ -40,7 +40,7 @@
 - (void)gtm_unitTestViewDrawRect:(NSRect)rect contextInfo:(void*)contextInfo{
   NSBezierPath *thePath = [NSBezierPath bezierPath];
   NSPoint theStart = NSMakePoint(20.0, 20.0);
-  
+
   // Test moveto/lineto
   [thePath moveToPoint: theStart];
   for (NSUInteger i = 0; i < 10; ++i) {
@@ -49,7 +49,7 @@
     theNewPoint = NSMakePoint(i * 2, i * 6);
     [thePath moveToPoint: theNewPoint];
   }
-  
+
   // Test moveto/curveto
   for (NSUInteger i = 0; i < 10;  ++i) {
     NSPoint startPoint = NSMakePoint(5.0, 50.0);
@@ -61,13 +61,13 @@
   }
   // test close
   [thePath closePath];
-  
+
   CGPathRef cgPath = [thePath gtm_createCGPath];
   STAssertNotNULL(cgPath, @"Nil CGPath");
 
   CGContextRef cgContext = [[NSGraphicsContext currentContext] graphicsPort];
   STAssertNotNULL(cgContext, @"Nil cgContext");
-  
+
   CGContextAddPath(cgContext, cgPath);
   CGContextStrokePath(cgContext);
   CGPathRelease(cgPath);

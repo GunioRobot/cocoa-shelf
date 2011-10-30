@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -38,7 +38,7 @@ static BOOL NoEqualChar(NSData *data) {
   return YES;
 }
 
-@interface GTMBase64Test : GTMTestCase 
+@interface GTMBase64Test : GTMTestCase
 @end
 
 @implementation GTMBase64Test
@@ -53,10 +53,10 @@ static BOOL NoEqualChar(NSData *data) {
   for (int x = 1 ; x < 1024 ; ++x) {
     NSMutableData *data = [NSMutableData data];
     STAssertNotNil(data, @"failed to alloc data block");
-    
+
     [data setLength:x];
     FillWithRandom([data mutableBytes], [data length]);
-    
+
     // w/ *Bytes apis
     NSData *encoded = [GTMBase64 encodeBytes:[data bytes] length:[data length]];
     STAssertEquals(([encoded length] % 4), (NSUInteger)0,
@@ -73,7 +73,7 @@ static BOOL NoEqualChar(NSData *data) {
     dataPrime = [GTMBase64 decodeData:encoded];
     STAssertEqualObjects(data, dataPrime,
                          @"failed to round trip via *Data apis");
-    
+
     // Bytes to String and back
     NSString *encodedString = [GTMBase64 stringByEncodingBytes:[data bytes]
                                                         length:[data length]];
@@ -91,18 +91,18 @@ static BOOL NoEqualChar(NSData *data) {
     STAssertEqualObjects(data, dataPrime,
                          @"failed to round trip for Bytes to Strings");
   }
-  
+
   {
     // now test all byte values
     NSMutableData *data = [NSMutableData data];
     STAssertNotNil(data, @"failed to alloc data block");
-    
+
     [data setLength:256];
     unsigned char *scan = (unsigned char*)[data mutableBytes];
     for (int x = 0 ; x <= 255 ; ++x) {
       *scan++ = x;
     }
-    
+
     // w/ *Bytes apis
     NSData *encoded = [GTMBase64 encodeBytes:[data bytes] length:[data length]];
     STAssertEquals(([encoded length] % 4), (NSUInteger)0,
@@ -137,14 +137,14 @@ static BOOL NoEqualChar(NSData *data) {
     STAssertEqualObjects(data, dataPrime,
                          @"failed to round trip for Data to Strings");
   }
-  
+
   {
     // test w/ a mix of spacing characters
-    
+
     // generate some data, encode it, and add spaces
     NSMutableData *data = [NSMutableData data];
     STAssertNotNil(data, @"failed to alloc data block");
-    
+
     [data setLength:253]; // should get some padding chars on the end
     FillWithRandom([data mutableBytes], [data length]);
 
@@ -166,7 +166,7 @@ static BOOL NoEqualChar(NSData *data) {
     STAssertNotNil(encodedAsData, @"failed to extract from string");
     STAssertEquals([encodedAsData length], [encodedAndSpaced length],
                    @"lengths for encoded string and data didn't match?");
-    
+
     // all the decode modes
     NSData *dataPrime = [GTMBase64 decodeData:encodedAsData];
     STAssertEqualObjects(data, dataPrime,
@@ -185,7 +185,7 @@ static BOOL NoEqualChar(NSData *data) {
   // loop to test w/ and w/o padding
   for (int paddedLoop = 0; paddedLoop < 2 ; ++paddedLoop) {
     BOOL padded = (paddedLoop == 1);
-  
+
     // generate a range of sizes w/ random content
     for (int x = 1 ; x < 1024 ; ++x) {
       NSMutableData *data = [NSMutableData data];
@@ -209,7 +209,7 @@ static BOOL NoEqualChar(NSData *data) {
                                                  length:[encoded length]];
       STAssertEqualObjects(data, dataPrime,
                            @"failed to round trip via *Bytes apis");
-      
+
       // w/ *Data apis
       encoded = [GTMBase64 webSafeEncodeData:data padded:padded];
       if (padded) {
@@ -222,7 +222,7 @@ static BOOL NoEqualChar(NSData *data) {
       dataPrime = [GTMBase64 webSafeDecodeData:encoded];
       STAssertEqualObjects(data, dataPrime,
                            @"failed to round trip via *Data apis");
-      
+
       // Bytes to String and back
       NSString *encodedString =
         [GTMBase64 stringByWebSafeEncodingBytes:[data bytes]
@@ -238,7 +238,7 @@ static BOOL NoEqualChar(NSData *data) {
       dataPrime = [GTMBase64 webSafeDecodeString:encodedString];
       STAssertEqualObjects(data, dataPrime,
                            @"failed to round trip for Bytes to Strings");
-      
+
       // Data to String and back
       encodedString =
         [GTMBase64 stringByWebSafeEncodingData:data padded:padded];
@@ -258,13 +258,13 @@ static BOOL NoEqualChar(NSData *data) {
       // now test all byte values
       NSMutableData *data = [NSMutableData data];
       STAssertNotNil(data, @"failed to alloc data block");
-      
+
       [data setLength:256];
       unsigned char *scan = (unsigned char*)[data mutableBytes];
       for (int x = 0 ; x <= 255 ; ++x) {
         *scan++ = x;
       }
-      
+
       // w/ *Bytes apis
       NSData *encoded =
         [GTMBase64 webSafeEncodeBytes:[data bytes]
@@ -281,7 +281,7 @@ static BOOL NoEqualChar(NSData *data) {
                                                  length:[encoded length]];
       STAssertEqualObjects(data, dataPrime,
                            @"failed to round trip via *Bytes apis");
-      
+
       // w/ *Data apis
       encoded = [GTMBase64 webSafeEncodeData:data padded:padded];
       if (padded) {
@@ -294,7 +294,7 @@ static BOOL NoEqualChar(NSData *data) {
       dataPrime = [GTMBase64 webSafeDecodeData:encoded];
       STAssertEqualObjects(data, dataPrime,
                            @"failed to round trip via *Data apis");
-      
+
       // Bytes to String and back
       NSString *encodedString =
         [GTMBase64 stringByWebSafeEncodingBytes:[data bytes]
@@ -310,7 +310,7 @@ static BOOL NoEqualChar(NSData *data) {
       dataPrime = [GTMBase64 webSafeDecodeString:encodedString];
       STAssertEqualObjects(data, dataPrime,
                            @"failed to round trip for Bytes to Strings");
-      
+
       // Data to String and back
       encodedString =
         [GTMBase64 stringByWebSafeEncodingData:data padded:padded];
@@ -328,19 +328,19 @@ static BOOL NoEqualChar(NSData *data) {
 
     {
       // test w/ a mix of spacing characters
-      
+
       // generate some data, encode it, and add spaces
       NSMutableData *data = [NSMutableData data];
       STAssertNotNil(data, @"failed to alloc data block");
-      
+
       [data setLength:253]; // should get some padding chars on the end
       FillWithRandom([data mutableBytes], [data length]);
-      
+
       NSString *encodedString = [GTMBase64 stringByWebSafeEncodingData:data
                                                                 padded:padded];
       NSMutableString *encodedAndSpaced =
         [[encodedString mutableCopy] autorelease];
-      
+
       NSString *spaces[] = { @"\t", @"\n", @"\r", @" " };
       const NSUInteger numSpaces = sizeof(spaces) / sizeof(NSString*);
       for (int x = 0 ; x < 512 ; ++x) {
@@ -348,14 +348,14 @@ static BOOL NoEqualChar(NSData *data) {
         [encodedAndSpaced insertString:spaces[random() % numSpaces]
                                atIndex:offset];
       }
-      
+
       // we'll need it as data for apis
       NSData *encodedAsData =
         [encodedAndSpaced dataUsingEncoding:NSASCIIStringEncoding];
       STAssertNotNil(encodedAsData, @"failed to extract from string");
       STAssertEquals([encodedAsData length], [encodedAndSpaced length],
                      @"lengths for encoded string and data didn't match?");
-      
+
       // all the decode modes
       NSData *dataPrime = [GTMBase64 webSafeDecodeData:encodedAsData];
       STAssertEqualObjects(data, dataPrime,
@@ -398,7 +398,7 @@ static BOOL NoEqualChar(NSData *data) {
   STAssertNil([GTMBase64 decodeString:@"@@@not valid###"], @"it worked?");
   // carefully crafted bad input to make sure we don't overwalk
   STAssertNil([GTMBase64 decodeString:@"WD=="], @"it worked?");
-  
+
   STAssertNil([GTMBase64 webSafeEncodeData:nil padded:YES], @"it worked?");
   STAssertNil([GTMBase64 webSafeDecodeData:nil], @"it worked?");
   STAssertNil([GTMBase64 webSafeEncodeBytes:NULL length:10 padded:YES],

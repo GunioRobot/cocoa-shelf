@@ -13,7 +13,7 @@
  * 3. Neither the name of the copyright holder nor the names of any contributors
  *    may be used to endorse or promote products derived from this
  *    software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -88,7 +88,7 @@
 
     /* Create a test table */
     STAssertTrue([_db executeUpdate: @"CREATE TABLE test (a VARCHAR(10), b VARCHAR(20), c BOOL)"], @"Create table failed");
-    
+
     /* Prepare a statement */
     stmt = [_db prepareStatement: @"INSERT INTO test (a) VALUES (?)" error: nil];
     STAssertNotNil(stmt, @"Could not prepare statement");
@@ -159,16 +159,16 @@
 
     /* NULL value */
     STAssertTrue([rs isNullForColumn: @"nilval"], @"NULL value not returned.");
-    
+
     /* Date value */
     STAssertEquals([now timeIntervalSince1970], [[rs dateForColumn: @"dateval"] timeIntervalSince1970], @"Date value incorrect.");
-    
+
     /* String */
     STAssertTrue([@"test" isEqual: [rs stringForColumn: @"stringval"]], @"String value incorrect.");
 
     /* Integer */
     STAssertEquals(42, [rs intForColumn: @"intval"], @"Integer value incorrect.");
-    
+
     /* 64-bit integer value */
     STAssertEquals(INT64_MAX, [rs bigIntForColumn: @"int64val"], @"64-bit integer value incorrect");
 
@@ -177,7 +177,7 @@
 
     /* Double */
     STAssertEquals(3.14159, [rs doubleForColumn: @"doubleval"], @"Double value incorrect");
-    
+
     /* Data */
     STAssertTrue([data isEqualToData: [rs dataForColumn: @"dataval"]], @"Data value incorrect");
 }
@@ -210,15 +210,15 @@
 - (void) testLastInsertRowId {
     NSObject<PLResultSet> *rs;
     int64_t rowId;
-    
+
     /* Create test table */
     STAssertTrue([_db executeUpdate: @"CREATE TABLE test (a INTEGER PRIMARY KEY AUTOINCREMENT, b INTEGER)"], @"Create table failed");
     STAssertTrue([_db tableExists: @"test"], @"Table 'test' not created");
-    
+
     /* Insert test data */
     STAssertTrue(([_db executeUpdate: @"INSERT INTO test (a, b) VALUES (?, ?)", nil, [NSNumber numberWithInt: 42]]), @"Inserting test data failed");
     rowId = [_db lastInsertRowId];
-    
+
     /* Try to fetch the test data again */
     rs = [_db executeQuery: @"SELECT b FROM test WHERE rowId = ?", [NSNumber numberWithLongLong: rowId]];
     STAssertTrue([rs next], @"No result returned");

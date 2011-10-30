@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -70,7 +70,7 @@ const NSUInteger kExisitingIndex = 2;
 - (void)testRemoveStopAtIndex {
   STAssertThrows([range_ removeStopAtIndex: kStringCount], @"Was able to remove non-existant stop");
   STAssertNoThrow([range_ removeStopAtIndex: kStringCount - 1], @"Was unable to remove good stop");
-  STAssertEquals([range_ stopCount], kStringCount - 1, @"Removing stop should adjust stop count");  
+  STAssertEquals([range_ stopCount], kStringCount - 1, @"Removing stop should adjust stop count");
 }
 
 - (void)testStopCount {
@@ -85,7 +85,7 @@ const NSUInteger kExisitingIndex = 2;
 
 - (void)testStopAtIndex {
   CGFloat thePosition;
-  
+
   STAssertEqualObjects([range_ stopAtIndex:kStringCount - 1 position:nil], kStrings[kStringCount - 1], nil);
   STAssertEqualObjects([range_ stopAtIndex:kExisitingIndex position:&thePosition], kStrings[kExisitingIndex], nil);
   STAssertEquals(thePosition, kExistingPosition, nil);

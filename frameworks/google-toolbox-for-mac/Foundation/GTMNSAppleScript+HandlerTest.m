@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -23,7 +23,7 @@
 #import "GTMUnitTestDevLog.h"
 
 @interface GTMNSAppleScript_HandlerTest : GTMTestCase {
-  NSAppleScript *script_; 
+  NSAppleScript *script_;
 }
 @end
 
@@ -31,7 +31,7 @@
 - (void)setUp {
   NSBundle *bundle = [NSBundle bundleForClass:[GTMNSAppleScript_HandlerTest class]];
   STAssertNotNil(bundle, nil);
-  NSString *path = [bundle pathForResource:@"GTMNSAppleEvent+HandlerTest" 
+  NSString *path = [bundle pathForResource:@"GTMNSAppleEvent+HandlerTest"
                                     ofType:@"scpt"
                                inDirectory:@"Scripts"];
   STAssertNotNil(path, [bundle description]);
@@ -49,48 +49,48 @@
 
 - (void)testHandlerNoParamsNoReturn {
   NSDictionary *error = nil;
-  NSAppleEventDescriptor *desc = [script_ gtm_executePositionalHandler:@"test" 
-                                                            parameters:nil 
+  NSAppleEventDescriptor *desc = [script_ gtm_executePositionalHandler:@"test"
+                                                            parameters:nil
                                                                  error:&error];
   STAssertNotNil(desc, [error description]);
   STAssertNil(error, @"Error should be nil. Error = %@", [error description]);
   STAssertEquals([desc descriptorType], (DescType)typeNull, nil);
-  desc = [script_ gtm_executePositionalHandler:@"test" 
-                                    parameters:[NSArray array] 
+  desc = [script_ gtm_executePositionalHandler:@"test"
+                                    parameters:[NSArray array]
                                          error:&error];
   STAssertNotNil(desc, [error description]);
   STAssertNil(error, @"Error should be nil. Error = %@", [error description]);
   STAssertEquals([desc descriptorType], (DescType)typeNull, nil);
-  
+
   //Applescript doesn't appear to get upset about extra params
-  desc = [script_ gtm_executePositionalHandler:@"test" 
-                                    parameters:[NSArray arrayWithObject:@"foo"] 
+  desc = [script_ gtm_executePositionalHandler:@"test"
+                                    parameters:[NSArray arrayWithObject:@"foo"]
                                          error:&error];
   STAssertNotNil(desc, [error description]);
   STAssertNil(error, @"Error should be nil. Error = %@", [error description]);
   STAssertEquals([desc descriptorType], (DescType)typeNull, nil);
 }
-  
+
 - (void)testHandlerNoParamsWithReturn {
   NSDictionary *error = nil;
-  NSAppleEventDescriptor *desc = [script_ gtm_executePositionalHandler:@"testReturnOne" 
-                                                            parameters:nil 
+  NSAppleEventDescriptor *desc = [script_ gtm_executePositionalHandler:@"testReturnOne"
+                                                            parameters:nil
                                                                  error:&error];
   STAssertNotNil(desc, [error description]);
   STAssertNil(error, @"Error should be nil. Error = %@", [error description]);
   STAssertEquals([desc descriptorType], (DescType)typeSInt32, nil);
   STAssertEquals([desc int32Value], (SInt32)1, nil);
-  desc = [script_ gtm_executePositionalHandler:@"testReturnOne" 
-                                    parameters:[NSArray array] 
+  desc = [script_ gtm_executePositionalHandler:@"testReturnOne"
+                                    parameters:[NSArray array]
                                          error:&error];
   STAssertNotNil(desc, [error description]);
   STAssertNil(error, @"Error should be nil. Error = %@", [error description]);
   STAssertEquals([desc descriptorType], (DescType)typeSInt32, nil);
   STAssertEquals([desc int32Value], (SInt32)1, nil);
-  
+
   //Applescript doesn't appear to get upset about extra params
-  desc = [script_ gtm_executePositionalHandler:@"testReturnOne" 
-                                    parameters:[NSArray arrayWithObject:@"foo"] 
+  desc = [script_ gtm_executePositionalHandler:@"testReturnOne"
+                                    parameters:[NSArray arrayWithObject:@"foo"]
                                          error:&error];
   STAssertNotNil(desc, [error description]);
   STAssertNil(error, @"Error should be nil. Error = %@", [error description]);
@@ -101,21 +101,21 @@
 - (void)testHandlerOneParamWithReturn {
   NSDictionary *error = nil;
   // Note case change in executeHandler call
-  NSAppleEventDescriptor *desc = [script_ gtm_executePositionalHandler:@"testreturnParam" 
-                                                            parameters:nil 
+  NSAppleEventDescriptor *desc = [script_ gtm_executePositionalHandler:@"testreturnParam"
+                                                            parameters:nil
                                                                 error:&error];
   STAssertNil(desc, @"Desc should by nil %@", desc);
   STAssertNotNil(error, nil);
   error = nil;
-  
-  desc = [script_ gtm_executePositionalHandler:@"testReturnParam" 
-                                    parameters:[NSArray array] 
+
+  desc = [script_ gtm_executePositionalHandler:@"testReturnParam"
+                                    parameters:[NSArray array]
                                          error:&error];
   STAssertNil(desc, @"Desc should by nil %@", desc);
   STAssertNotNil(error, nil);
   error = nil;
-  
-  desc = [script_ gtm_executePositionalHandler:@"testReturnParam" 
+
+  desc = [script_ gtm_executePositionalHandler:@"testReturnParam"
                                     parameters:[NSArray arrayWithObject:@"foo"]
                                          error:&error];
   STAssertNotNil(desc, [error description]);
@@ -128,27 +128,27 @@
   NSDictionary *error = nil;
   // Note case change in executeHandler call
   // Test case and empty params
-  NSAppleEventDescriptor *desc = [script_ gtm_executePositionalHandler:@"testADDPArams" 
-                                                            parameters:nil 
+  NSAppleEventDescriptor *desc = [script_ gtm_executePositionalHandler:@"testADDPArams"
+                                                            parameters:nil
                                                                  error:&error];
   STAssertNil(desc, @"Desc should by nil %@", desc);
   STAssertNotNil(error, nil);
-  
+
   // Test empty params
   error = nil;
-  desc = [script_ gtm_executePositionalHandler:@"testAddParams" 
-                                    parameters:[NSArray array] 
+  desc = [script_ gtm_executePositionalHandler:@"testAddParams"
+                                    parameters:[NSArray array]
                                          error:&error];
   STAssertNil(desc, @"Desc should by nil %@", desc);
   STAssertNotNil(error, nil);
-  
+
   error = nil;
   NSArray *args = [NSArray arrayWithObjects:
     [NSNumber numberWithInt:1],
     [NSNumber numberWithInt:2],
     nil];
-  desc = [script_ gtm_executePositionalHandler:@"testAddParams" 
-                                    parameters:args 
+  desc = [script_ gtm_executePositionalHandler:@"testAddParams"
+                                    parameters:args
                                          error:&error];
   STAssertNotNil(desc, [error description]);
   STAssertNil(error, @"Error should be nil. Error = %@", [error description]);
@@ -161,8 +161,8 @@
     @"foo",
     @"bar",
     nil];
-  desc = [script_ gtm_executePositionalHandler:@"testAddParams" 
-                                    parameters:args 
+  desc = [script_ gtm_executePositionalHandler:@"testAddParams"
+                                    parameters:args
                                          error:&error];
   STAssertNil(desc, @"Desc should by nil %@", desc);
   STAssertNotNil(error, nil);
@@ -174,8 +174,8 @@
     [NSNumber numberWithInt:2],
     [NSNumber numberWithInt:3],
     nil];
-  desc = [script_ gtm_executePositionalHandler:@"testAddParams" 
-                                    parameters:args 
+  desc = [script_ gtm_executePositionalHandler:@"testAddParams"
+                                    parameters:args
                                          error:&error];
   STAssertNotNil(desc, [error description]);
   STAssertNil(error, @"Error should be nil. Error = %@", [error description]);
@@ -184,16 +184,16 @@
 
 - (void)testLabeledHandler {
   NSDictionary *error = nil;
-  AEKeyword labels[] = { keyDirectObject, 
-                         keyASPrepositionOnto, 
+  AEKeyword labels[] = { keyDirectObject,
+                         keyASPrepositionOnto,
                          keyASPrepositionGiven };
   id params[3];
   params[0] = [NSNumber numberWithInt:1];
   params[1] = [NSNumber numberWithInt:3];
-  params[2] = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:4] 
+  params[2] = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:4]
                                           forKey:@"othervalue"];
-  
-  NSAppleEventDescriptor *desc = [script_ gtm_executeLabeledHandler:@"testAdd" 
+
+  NSAppleEventDescriptor *desc = [script_ gtm_executeLabeledHandler:@"testAdd"
                                                              labels:labels
                                                          parameters:params
                                                               count:sizeof(params) / sizeof(id)
@@ -202,21 +202,21 @@
   STAssertNil(error, @"Error should be nil. Error = %@", [error description]);
   STAssertEquals([desc descriptorType], (DescType)typeSInt32, nil);
   STAssertEquals([desc int32Value], (SInt32)8, nil);
-  
+
   // Test too many params. Currently Applescript allows this so it should pass
-  AEKeyword labels2[] = { keyDirectObject, 
-                         keyASPrepositionOnto, 
+  AEKeyword labels2[] = { keyDirectObject,
+                         keyASPrepositionOnto,
                          keyASPrepositionBetween,
                          keyASPrepositionGiven };
   id params2[4];
   params2[0] = [NSNumber numberWithInt:1];
   params2[1] = [NSNumber numberWithInt:3];
   params2[2] = [NSNumber numberWithInt:5];
-  params2[3] = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:4] 
+  params2[3] = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:4]
                                             forKey:@"othervalue"];
 
   error = nil;
-  desc = [script_ gtm_executeLabeledHandler:@"testAdd" 
+  desc = [script_ gtm_executeLabeledHandler:@"testAdd"
                                      labels:labels2
                                  parameters:params2
                                       count:sizeof(params2) / sizeof(id)
@@ -242,8 +242,8 @@
 - (void)testProperties {
   NSSet *properties = [script_ gtm_properties];
   NSSet *expected = [NSSet setWithObjects:
-                     @"foo", 
-                     @"asdscriptuniqueidentifier", 
+                     @"foo",
+                     @"asdscriptuniqueidentifier",
                      nil];
   STAssertEqualObjects(properties, expected, @"Unexpected properties?");
   id value = [script_ gtm_valueForProperty:@"foo"];
@@ -252,7 +252,7 @@
   STAssertTrue(goodSet, @"Couldn't set property");
   value = [script_ gtm_valueForProperty:@"foo"];
   STAssertEqualObjects(value, @"bar", @"bad property?");
-  
+
   [GTMUnitTestDevLog expectPattern:@"Unable to setValue:bar forProperty:"
    "\\(null\\) from <NSAppleScript: 0x[0-9a-f]+> \\(-50\\)"];
   goodSet = [script_ gtm_setValue:@"bar" forProperty:nil];
@@ -265,34 +265,34 @@
 
 - (void)testFailures {
   NSDictionary *error = nil;
-  NSAppleEventDescriptor *desc = [script_ gtm_executePositionalHandler:@"noSuchTest" 
-                                                            parameters:nil 
+  NSAppleEventDescriptor *desc = [script_ gtm_executePositionalHandler:@"noSuchTest"
+                                                            parameters:nil
                                                                  error:&error];
   STAssertNil(desc, nil);
   STAssertNotNil(error, nil);
 
   // Test with empty handler name
   error = nil;
-  desc = [script_ gtm_executePositionalHandler:@"" 
-                                    parameters:[NSArray array] 
+  desc = [script_ gtm_executePositionalHandler:@""
+                                    parameters:[NSArray array]
                                          error:&error];
   STAssertNil(desc, nil);
   STAssertNotNil(error, nil);
-  
+
   // Test with nil handler
   error = nil;
   desc = [script_ gtm_executePositionalHandler:nil
-                                    parameters:[NSArray array] 
+                                    parameters:[NSArray array]
                                          error:&error];
   STAssertNil(desc, nil);
   STAssertNotNil(error, nil);
-  
+
   // Test with nil handler and nil error
   desc = [script_ gtm_executePositionalHandler:nil
-                                    parameters:nil 
+                                    parameters:nil
                                          error:nil];
   STAssertNil(desc, nil);
-  
+
   // Test with a bad script
   NSAppleScript *script = [[[NSAppleScript alloc] initWithSource:@"david hasselhoff"] autorelease];
   [GTMUnitTestDevLog expectPattern:@"Unable to compile script: .*"];

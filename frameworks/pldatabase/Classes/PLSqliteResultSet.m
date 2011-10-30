@@ -13,7 +13,7 @@
  * 3. Neither the name of the copyright holder nor the names of any contributors
  *    may be used to endorse or promote products derived from this
  *    software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -50,20 +50,20 @@
  * @par Designated Initializer
  * This method is the designated initializer for the PLSqliteResultSet class.
  */
-- (id) initWithPreparedStatement: (PLSqlitePreparedStatement *) stmt 
+- (id) initWithPreparedStatement: (PLSqlitePreparedStatement *) stmt
                   sqliteStatemet: (sqlite3_stmt *) sqlite_stmt
 {
     if ((self = [super init]) == nil) {
         return nil;
     }
-    
+
     /* Save our database and statement references. */
     _stmt = [stmt retain];
     _sqlite_stmt = sqlite_stmt;
 
     /* Save result information */
     _columnCount = sqlite3_column_count(_sqlite_stmt);
-    
+
     /* Create a column name cache. Optimization possibility: Using CFDictionary may
      * provide an optimization here, since dictionary values do not need to be boxed as objects */
     _columnNames = [[NSMutableDictionary alloc] initWithCapacity: _columnCount];
@@ -90,10 +90,10 @@
 
     /* Release the column cache. */
     [_columnNames release];
-    
+
     /* Release the statement. */
     [_stmt release];
-    
+
     [super dealloc];
 }
 
@@ -122,15 +122,15 @@
 
     int ret;
     ret = sqlite3_step(_sqlite_stmt);
-    
+
     /* No more rows available, return NO. */
     if (ret == SQLITE_DONE)
         return NO;
-    
+
     /* A row is available, return YES. */
     if (ret == SQLITE_ROW)
         return YES;
-    
+
     /* An error occurred. Log it and throw an exceptions. */
     NSString *error = [NSString stringWithFormat: @"Error occurred calling next on a PLSqliteResultSet. SQLite error #%d", ret];
     NSLog(@"%@", error);
@@ -149,7 +149,7 @@
     NSNumber *number = [_columnNames objectForKey: [name lowercaseString]];
     if (number != nil)
         return [number intValue];
-    
+
     /* Not found */
     [NSException raise: PLSqliteException format: @"Attempted to access unknown result column %@", name];
 
@@ -166,14 +166,14 @@
     [self assertNotClosed];
 
     int columnType;
-    
+
     /* Verify that the index is in range */
     if (columnIndex > _columnCount - 1 || columnIndex < 0)
         [NSException raise: PLSqliteException format: @"Attempted to access out-of-range column index %d", columnIndex];
 
     /* Fetch the type */
     columnType = sqlite3_column_type(_sqlite_stmt, columnIndex);
-    
+
     /* Verify nullability */
     if (!nullable && columnType == SQLITE_NULL) {
         [NSException raise: PLSqliteException format: @"Attempted to access null column value for column index %d. Use -[PLResultSet isNullColumn].", columnIndex];
@@ -272,7 +272,7 @@ VALUE_ACCESSORS(NSData *, data, SQLITE_BLOB, [NSData dataWithBytes: sqlite3_colu
     [self assertNotClosed];
 
     int columnType = [self validateColumnIndex: columnIndex isNullable: YES];
-    
+
     /* If the column has a null value, return YES. */
     if (columnType == SQLITE_NULL)
         return YES;

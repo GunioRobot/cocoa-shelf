@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -32,7 +32,7 @@ extern "C" {
 // resolved Objective-C name.  --  5/15/2007
 // TODO: write dladdr() replacement that works with Objective-C symbols.
 // *****************************************************************************
-// 
+//
 // This function gets the stack trace for the current thread, and is safe to
 // use in production multi-threaded code.  Typically this function will be used
 // along with some loggins, as in the following:
@@ -53,7 +53,7 @@ extern "C" {
 // variant that autoreleases the returned string.
 //
 CFStringRef GTMStackTraceCreate(void);
-  
+
 /// Wrapper that autoreleases the returned CFStringRef.
 // This is simply for the convenience of those using Objective-C.
 //

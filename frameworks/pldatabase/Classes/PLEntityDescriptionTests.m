@@ -13,7 +13,7 @@
  * 3. Neither the name of the copyright holder nor the names of any contributors
  *    may be used to endorse or promote products derived from this
  *    software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -45,7 +45,7 @@
 
     /** Last name */
     NSString *_lastName;
-    
+
     /** Were we woken from the database? */
     BOOL _awoken;
 }
@@ -70,7 +70,7 @@
         return nil;
 
     _awoken = NO;
-    
+
     return self;
 }
 
@@ -153,7 +153,7 @@
 
 
 /* Verify that we throw an exception if a user attempts to define multiple generated primary keys */
-- (void) testMultipleGeneratedKeys {    
+- (void) testMultipleGeneratedKeys {
     /* Create one */
     STAssertThrows(([PLEntityDescription descriptionForClass: [self class] tableName: @"test" properties:
                         [NSArray arrayWithObjects:
@@ -167,7 +167,7 @@
 
 - (void) testGeneratedPrimaryKeyProperty {
     PLEntityDescription *desc;
-    
+
     /* Create one */
     desc = [PLEntityDescription descriptionForClass: [self class] tableName: @"test" properties:
         [NSArray arrayWithObjects:
@@ -221,10 +221,10 @@
 - (void) testEntityPrimaryKeyColumnValues {
     PLEntityDescExampleEntity *entity;
     NSDictionary *columnValues;
-    
+
     /* Create a new entity */
     entity = [[[PLEntityDescExampleEntity alloc] initWithFirstName: @"Johnny" lastName: @"Appleseed"] autorelease];
-    
+
     /* Try to fetch the column values */
     columnValues = [[PLEntityDescExampleEntity entityDescription] columnValuesForEntity: entity withFilter: PLEntityPropertyFilterPrimaryKeys];
     STAssertNotNil(columnValues, @"Could not fetch column values");
@@ -237,14 +237,14 @@
 - (void) testEntityGeneratedPrimaryKeyColumnValues {
     PLEntityDescExampleEntity *entity;
     NSDictionary *columnValues;
-    
+
     /* Create a new entity */
     entity = [[[PLEntityDescExampleEntity alloc] initWithFirstName: @"Johnny" lastName: @"Appleseed"] autorelease];
-    
+
     /* Try to fetch the column values */
     columnValues = [[PLEntityDescExampleEntity entityDescription] columnValuesForEntity: entity withFilter: PLEntityPropertyFilterGeneratedPrimaryKeys];
     STAssertNotNil(columnValues, @"Could not fetch column values");
-    
+
     STAssertEquals([columnValues count], (NSUInteger) 1, @"Extra values returned");
     STAssertEquals([NSNull null], [columnValues objectForKey: @"id"], @"Row id was not NSNull instance");
 }
@@ -260,7 +260,7 @@
     [values setObject: @"Johnny" forKey: @"first_name"];
     [values setObject: [NSNull null] forKey: @"last_name"];
 
-    
+
     /*
      * Try creating the entity
      */
@@ -271,22 +271,22 @@
     STAssertEquals(42, [[entity rowId] intValue], @"Incorrect row id");
     STAssertTrue([@"Johnny" isEqual: [entity firstName]], @"Incorrect firstName");
     STAssertNil([entity lastName], @"lastName is not nil");
-    
-    
+
+
     /*
-     * Try creating the entity with a name that will be changed (Sarah -> Sara) 
+     * Try creating the entity with a name that will be changed (Sarah -> Sara)
      */
     [values setObject: @"Sarah" forKey: @"first_name"];
     entity = [[PLEntityDescExampleEntity entityDescription] instantiateEntityWithColumnValues: values error: nil];
     STAssertNotNil(entity, @"Could not instantiate entity");
     STAssertTrue([@"Sara" isEqual: [entity firstName]], @"Incorrect firstName '%@'", [entity firstName]);
 
-    
+
     /*
      * Try triggering a validation error
      */
     [values setObject: @"Barnie" forKey: @"first_name"];
-    
+
     error = nil;
     entity = [[PLEntityDescExampleEntity entityDescription] instantiateEntityWithColumnValues: values error: &error];
 
@@ -298,10 +298,10 @@
     NSMutableDictionary *values = [NSMutableDictionary dictionaryWithCapacity: 3];
     PLEntityDescExampleEntity *entity;
     NSError *error;
-    
+
     /* Set up our entity */
     entity = [[[PLEntityDescExampleEntity alloc] initWithFirstName: @"Johnny" lastName: @"Appleseed"] autorelease];
-    
+
     /* Set some example values */
     [values setObject: [NSNumber numberWithInt: 42] forKey: @"id"];
 

@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -46,8 +46,8 @@ static int MethodSort(const void *a, const void *b) {
   BOOL iscase = NO;
   Class testCaseClass = [SenTestCase class];
   Class superclass;
-  for (superclass = aClass; 
-       !iscase && superclass; 
+  for (superclass = aClass;
+       !iscase && superclass;
        superclass = class_getSuperclass(superclass)) {
     iscase = superclass == testCaseClass ? YES : NO;
   }
@@ -104,12 +104,12 @@ static int MethodSort(const void *a, const void *b) {
                             "finished at %@.\nExecuted 0 tests, with 0 "
                             "failures (0 unexpected) in 0 (0) seconds\n",
                             fixtureName, fixtureStartDate];
-        
+
         fputs([output UTF8String], stderr);
         continue;
       }
       // This handles disposing of methods for us even if an
-      // exception should fly. 
+      // exception should fly.
       [NSData dataWithBytesNoCopy:methods
                            length:sizeof(Method) * methodCount];
       // Sort our methods so they are called in Alphabetical order just
@@ -162,22 +162,22 @@ static int MethodSort(const void *a, const void *b) {
       NSTimeInterval fixtureEndTime = [fixtureEndDate timeIntervalSinceDate:fixtureStartDate];
       NSString *fixtureEndString = [NSString stringWithFormat:@"Test Suite '%@' finished at %@.\n"
                                     "Executed %d tests, with %d failures (%d unexpected) in %0.3f (%0.3f) seconds\n",
-                                    fixtureName, fixtureEndDate, fixtureTotal, 
+                                    fixtureName, fixtureEndDate, fixtureTotal,
                                     fixtureFailures, fixtureFailures,
                                     fixtureEndTime, fixtureEndTime];
-      
+
       fputs([fixtureEndString UTF8String], stderr);
       fflush(stderr);
       suiteTotal += fixtureTotal;
       suiteSuccesses += fixtureSuccesses;
-      suiteFailures += fixtureFailures;      
+      suiteFailures += fixtureFailures;
     }
   }
   NSDate *suiteEndDate = [NSDate date];
   NSTimeInterval suiteEndTime = [suiteEndDate timeIntervalSinceDate:suiteStartDate];
   NSString *suiteEndString = [NSString stringWithFormat:@"Test Suite '%@' finished at %@.\n"
                               "Executed %d tests, with %d failures (%d unexpected) in %0.3f (%0.3f) seconds\n",
-                              suiteName, suiteEndDate, suiteTotal, 
+                              suiteName, suiteEndDate, suiteTotal,
                               suiteFailures, suiteFailures,
                               suiteEndTime, suiteEndTime];
   fputs([suiteEndString UTF8String], stderr);

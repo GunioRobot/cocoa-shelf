@@ -13,7 +13,7 @@
  * 3. Neither the name of the copyright holder nor the names of any contributors
  *    may be used to endorse or promote products derived from this
  *    software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -42,13 +42,13 @@
 
 - (NSObject<PLPreparedStatement> *) insertForTable: (NSString *) tableName withColumns: (NSArray *) columnNames error: (NSError **) outError;
 
-- (NSObject<PLPreparedStatement> *) selectForTable: (NSString *) tableName 
+- (NSObject<PLPreparedStatement> *) selectForTable: (NSString *) tableName
                                        withColumns: (NSArray *) columnNames
                                        primaryKeys: (NSArray *) primaryKeys
                                              error: (NSError **) outError;
 
-- (NSObject<PLPreparedStatement> *) selectLastInsertForTable: (NSString *) tableName 
-                                                 withColumns: (NSArray *) columnNames 
+- (NSObject<PLPreparedStatement> *) selectLastInsertForTable: (NSString *) tableName
+                                                 withColumns: (NSArray *) columnNames
                                                   primaryKey: (NSString *) primaryKeyColumnName
                                                        error: (NSError **) outError;
 

@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -21,7 +21,7 @@
 #import "GTMNSObject+UnitTesting.h"
 #import "GTMUnitTestDevLog.h"
 
-NSString *const kLongTextBlock = 
+NSString *const kLongTextBlock =
   @"`Twas brillig, and the slithy toves "
   "Did gyre and gimble in the wabe: "
   "all mimsy were the borogoves, "
@@ -55,23 +55,23 @@ NSString *const kMediumTextBlock = @"For the Snark was a Boojum, you see.";
 @implementation GTMLargeTypeWindowTest
 - (void)testLargeTypeWindow {
   [GTMUnitTestDevLog expectString:@"GTMLargeTypeWindow got an empty string"];
-  GTMLargeTypeWindow *window = [[[GTMLargeTypeWindow alloc] 
+  GTMLargeTypeWindow *window = [[[GTMLargeTypeWindow alloc]
                                  initWithString:@""] autorelease];
   STAssertNil(window, nil);
-  
+
   [GTMUnitTestDevLog expectString:@"GTMLargeTypeWindow got an empty string"];
   window = [[[GTMLargeTypeWindow alloc] initWithString:nil] autorelease];
   STAssertNil(window, nil);
-  
+
   [GTMUnitTestDevLog expectString:@"GTMLargeTypeWindow got an empty string"];
-  NSAttributedString *attrString = [[[NSAttributedString alloc] 
+  NSAttributedString *attrString = [[[NSAttributedString alloc]
                                      initWithString:@""] autorelease];
-  window = [[[GTMLargeTypeWindow alloc] 
+  window = [[[GTMLargeTypeWindow alloc]
              initWithAttributedString:attrString] autorelease];
   STAssertNil(window, nil);
-  
+
   [GTMUnitTestDevLog expectString:@"GTMLargeTypeWindow got an empty string"];
-  window = [[[GTMLargeTypeWindow alloc] 
+  window = [[[GTMLargeTypeWindow alloc]
              initWithAttributedString:nil] autorelease];
   STAssertNil(window, nil);
 
@@ -82,39 +82,39 @@ NSString *const kMediumTextBlock = @"For the Snark was a Boojum, you see.";
   [GTMUnitTestDevLog expectString:@"GTMLargeTypeWindow got an empty image"];
   window = [[[GTMLargeTypeWindow alloc] initWithImage:nil] autorelease];
   STAssertNil(window, nil);
-  
-  window = [[[GTMLargeTypeWindow alloc] 
+
+  window = [[[GTMLargeTypeWindow alloc]
              initWithString:kMediumTextBlock] autorelease];
   STAssertNotNil(window, nil);
   STAssertTrue([window canBecomeKeyWindow], nil);
   [window makeKeyAndOrderFront:nil];
-  NSDate *endDate 
+  NSDate *endDate
     = [NSDate dateWithTimeIntervalSinceNow:kGTMLargeTypeWindowFadeTime];
   [[NSRunLoop currentRunLoop] runUntilDate:endDate];
-  GTMAssertObjectStateEqualToStateNamed(window, 
+  GTMAssertObjectStateEqualToStateNamed(window,
                                         @"GTMLargeTypeWindowMediumTextTest",
-                                        nil); 
+                                        nil);
   [window copy:nil];
   NSPasteboard *pb = [NSPasteboard generalPasteboard];
   NSString *pbString = [pb stringForType:NSStringPboardType];
   STAssertEqualObjects(pbString, kMediumTextBlock, nil);
   [window keyDown:nil];
-  
+
   window = [[[GTMLargeTypeWindow alloc] initWithString:@"Short"] autorelease];
   STAssertNotNil(window, nil);
   STAssertTrue([window canBecomeKeyWindow], nil);
   [window makeKeyAndOrderFront:nil];
   endDate = [NSDate dateWithTimeIntervalSinceNow:kGTMLargeTypeWindowFadeTime];
   [[NSRunLoop currentRunLoop] runUntilDate:endDate];
-  GTMAssertObjectStateEqualToStateNamed(window, 
+  GTMAssertObjectStateEqualToStateNamed(window,
                                         @"GTMLargeTypeWindowShortTextTest",
-                                        nil); 
+                                        nil);
   [window copy:nil];
   pbString = [pb stringForType:NSStringPboardType];
   STAssertEqualObjects(pbString, @"Short", nil);
   [window resignKeyWindow];
 
-  window = [[[GTMLargeTypeWindow alloc] 
+  window = [[[GTMLargeTypeWindow alloc]
              initWithString:kLongTextBlock] autorelease];
   STAssertNotNil(window, nil);
   [window orderFront:nil];
@@ -123,17 +123,17 @@ NSString *const kMediumTextBlock = @"For the Snark was a Boojum, you see.";
   // Can't do state for long text as it will wrap differently on different
   // sized screens.
   GTMAssertObjectStateEqualToStateNamed(window,
-                                        @"GTMLargeTypeWindowLongTextTest", 
-                                        nil); 
+                                        @"GTMLargeTypeWindowLongTextTest",
+                                        nil);
   [window keyDown:nil];
-  
+
   NSImage *image = [NSApp applicationIconImage];
   window = [[[GTMLargeTypeWindow alloc] initWithImage:image] autorelease];
   STAssertNotNil(window, nil);
   [window makeKeyAndOrderFront:nil];
   endDate = [NSDate dateWithTimeIntervalSinceNow:kGTMLargeTypeWindowFadeTime];
   [[NSRunLoop currentRunLoop] runUntilDate:endDate];
-  GTMAssertObjectStateEqualToStateNamed(window, 
+  GTMAssertObjectStateEqualToStateNamed(window,
                                         @"GTMLargeTypeWindowImageTest",
                                         nil);
   [window copy:nil];

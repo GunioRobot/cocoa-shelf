@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -26,30 +26,30 @@
 
 @interface GTMNSBezierPath_ShadingTest : GTMTestCase<GTMUnitTestViewDrawer>
 @end
-  
+
 @implementation GTMNSBezierPath_ShadingTest
 
 - (void)testShadings {
   GTMAssertDrawingEqualToImageNamed(self,
-                                    NSMakeSize(200, 200), 
+                                    NSMakeSize(200, 200),
                                     @"GTMNSBezierPath+ShadingTest", nil, nil);
 }
 
 - (void)gtm_unitTestViewDrawRect:(NSRect)rect contextInfo:(void*)contextInfo {
-  
+
   NSColor *theColorArray[] = { [NSColor blueColor],
     [NSColor redColor], [NSColor yellowColor],
     [NSColor blueColor], [NSColor greenColor],
     [NSColor redColor] };
   CGFloat theFloatArray[] = { 0.0, 0.2, 0.4, 0.6, 0.8, 1.0 };
-  
+
   GTMLinearRGBShading *shading =
     [GTMLinearRGBShading shadingWithColors:theColorArray
                             fromSpaceNamed:NSCalibratedRGBColorSpace
                                atPositions:theFloatArray
-                                     count:sizeof(theFloatArray)/sizeof(CGFloat)]; 
+                                     count:sizeof(theFloatArray)/sizeof(CGFloat)];
   NSBezierPath *shadedPath;
-  
+
   // axialStrokeRect test
   NSRect axialStrokeRect = NSMakeRect(10.0f, 10.0f, 90.0f, 90.0f);
   shadedPath = [NSBezierPath bezierPathWithRect:axialStrokeRect];
@@ -59,7 +59,7 @@
   NSPoint endPoint = NSMakePoint(axialStrokeRect.origin.x + axialStrokeRect.size.width - 20.0f,
                                  axialStrokeRect.origin.y + axialStrokeRect.size.height - 20.0f);
   [shadedPath gtm_strokeAxiallyFrom:startPoint to:endPoint extendingStart:YES extendingEnd:YES shading:shading];
-  
+
   // axial fill
   NSRect axialFillRect = NSMakeRect(10.0f, 110.0f, 90.0f, 90.0f);
   shadedPath = [NSBezierPath bezierPathWithRect:axialFillRect];
@@ -68,7 +68,7 @@
   endPoint = NSMakePoint(axialFillRect.origin.x + axialFillRect.size.width - 20.0f,
                          axialFillRect.origin.y + axialFillRect.size.height - 20.0f);
   [shadedPath gtm_fillAxiallyFrom:startPoint to:endPoint extendingStart:YES extendingEnd:YES shading:shading];
-  
+
   // radial stroke
   NSRect radialStrokeRect = NSMakeRect(110.0f, 110.0f, 90.0f, 90.0f);
   shadedPath = [NSBezierPath bezierPathWithRect:radialStrokeRect];
@@ -76,10 +76,10 @@
                            radialStrokeRect.origin.y + 20.0f);
   endPoint = NSMakePoint(radialStrokeRect.origin.x + radialStrokeRect.size.width - 20.0f,
                          radialStrokeRect.origin.y + radialStrokeRect.size.height - 20.0f);
-  [shadedPath gtm_strokeRadiallyFrom:startPoint fromRadius:60.0f 
+  [shadedPath gtm_strokeRadiallyFrom:startPoint fromRadius:60.0f
                                   to:endPoint toRadius:20.0f
                       extendingStart:YES extendingEnd:YES shading:shading];
-  
+
   // radial fill
   NSRect radialFillRect = NSMakeRect(110.0f, 10.0f, 90.0f, 90.0f);
   shadedPath = [NSBezierPath bezierPathWithRect:radialFillRect];
@@ -87,7 +87,7 @@
                            radialFillRect.origin.y + 20.0f);
   endPoint = NSMakePoint(radialFillRect.origin.x + radialFillRect.size.width - 20.0f,
                          radialFillRect.origin.y + radialFillRect.size.height - 20.0f);
-  [shadedPath gtm_fillRadiallyFrom:startPoint fromRadius:10.0f 
+  [shadedPath gtm_fillRadiallyFrom:startPoint fromRadius:10.0f
                                 to:endPoint toRadius:20.0f
                     extendingStart:YES extendingEnd:YES shading:shading];
 }

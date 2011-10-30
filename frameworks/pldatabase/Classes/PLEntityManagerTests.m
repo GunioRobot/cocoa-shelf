@@ -13,7 +13,7 @@
  * 3. Neither the name of the copyright holder nor the names of any contributors
  *    may be used to endorse or promote products derived from this
  *    software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -42,7 +42,7 @@
 @private
     /** Row id */
     NSNumber *_rowId;
-    
+
     /** First name */
     NSString *_name;
 }
@@ -63,7 +63,7 @@
     PLEntityManager *entityManager;
     PLSqliteEntityDialect *dialect;
     PLSqliteEntityConnectionDelegate *delegate;
-    
+
     /* Set up a delegate and dialect */
     delegate = [[[PLSqliteEntityConnectionDelegate alloc] initWithPath: @":memory:"] autorelease];
     dialect = [[[PLSqliteEntityDialect alloc] init] autorelease];
@@ -81,7 +81,7 @@
     session = [_manager openSessionAndReturnError: &error];
     STAssertNotNil(session, @"Could not open session: %@", error);
     [session close];
-    
+
     session = [_manager openSession];
     STAssertNotNil(session, @"Could not open session");
     [session close];

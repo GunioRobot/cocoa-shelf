@@ -8,9 +8,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -31,23 +31,23 @@
 
 // Utility functions for GTMAssert* Macros. Don't use them directly
 // but use the macros below instead
-BOOL GTMIsObjectImageEqualToImageNamed(id object, 
-                                       NSString *filename, 
+BOOL GTMIsObjectImageEqualToImageNamed(id object,
+                                       NSString *filename,
                                        NSString **error);
-BOOL GTMIsObjectStateEqualToStateNamed(id object, 
-                                       NSString *filename, 
+BOOL GTMIsObjectStateEqualToStateNamed(id object,
+                                       NSString *filename,
                                        NSString **error);
 
 // Fails when image of |a1| does not equal image in image file named |a2|
 //
-//  Generates a failure when the unittest image of |a1| is not equal to the 
-//  image stored in the image file named |a2|, or |a2| does not exist in the 
+//  Generates a failure when the unittest image of |a1| is not equal to the
+//  image stored in the image file named |a2|, or |a2| does not exist in the
 //  executable code's bundle.
 //  If |a2| does not exist in the executable code's bundle, we save a image
 //  representation of |a1| in the save directory with name |a2|. This can then
 //  be included in the bundle as the master to test against.
-//  If |a2| != |a1|, we save a image representation of |a1| in the save 
-//  directory named |a2|_Failed and a file named |a2|_Failed_Diff showing the 
+//  If |a2| != |a1|, we save a image representation of |a1| in the save
+//  directory named |a2|_Failed and a file named |a2|_Failed_Diff showing the
 //  diff in red so that we can see what has changed.
 //  See pathForImageNamed to see how name is searched for.
 //  The save directory is specified by +gtm_setUnitTestSaveToDirectory, and is
@@ -58,8 +58,8 @@ BOOL GTMIsObjectStateEqualToStateNamed(id object,
 //    a1: The object to be checked. Must implement the -createUnitTestImage method.
 //    a2: The name of the image file to check against.
 //        Do not include the extension
-//    description: A format string as in the printf() function. 
-//        Can be nil or an empty string but must be present. 
+//    description: A format string as in the printf() function.
+//        Can be nil or an empty string but must be present.
 //    ...: A variable number of arguments to the format string. Can be absent.
 //
 #define GTMAssertObjectImageEqualToImageNamed(a1, a2, description, ...) \
@@ -79,14 +79,14 @@ do { \
 
 // Fails when state of |a1| does not equal state in file |a2|
 //
-//  Generates a failure when the unittest state of |a1| is not equal to the 
-//  state stored in the state file named |a2|, or |a2| does not exist in the 
+//  Generates a failure when the unittest state of |a1| is not equal to the
+//  state stored in the state file named |a2|, or |a2| does not exist in the
 //  executable code's bundle.
 //  If |a2| does not exist in the executable code's bundle, we save a state
-//  representation of |a1| in the save directiry with name |a2|. This can then 
+//  representation of |a1| in the save directiry with name |a2|. This can then
 //  be included in the bundle as the master to test against.
-//  If |a2| != |a1|, we save a state representation of |a1| in the save 
-//  directory with name |a2|_Failed so that we can compare the two files to see 
+//  If |a2| != |a1|, we save a state representation of |a1| in the save
+//  directory with name |a2|_Failed so that we can compare the two files to see
 //  what has changed.
 //  The save directory is specified by +gtm_setUnitTestSaveToDirectory, and is
 //  the desktop by default.
@@ -96,8 +96,8 @@ do { \
 //    a1: The object to be checked. Must implement the -createUnitTestImage method.
 //    a2: The name of the state file to check against.
 //        Do not include the extension
-//    description: A format string as in the printf() function. 
-//        Can be nil or an empty string but must be present. 
+//    description: A format string as in the printf() function.
+//        Can be nil or an empty string but must be present.
 //    ...: A variable number of arguments to the format string. Can be absent.
 //
 #define GTMAssertObjectStateEqualToStateNamed(a1, a2, description, ...) \
@@ -128,8 +128,8 @@ do { \
 // GTMUnitTestingImaging protocol is for objects which need to save their
 // image for using with the unit testing categories
 @protocol GTMUnitTestingImaging
-// Create a CGImageRef containing a representation suitable for use in 
-// comparing against a master image. 
+// Create a CGImageRef containing a representation suitable for use in
+// comparing against a master image.
 //
 //  Returns:
 //    an CGImageRef of the object. Caller must release
@@ -182,7 +182,7 @@ do { \
 //    an CGColorSpaceRef of the object. Caller must release
 - (CGColorSpaceRef)gtm_createUnitTestColorspace;
 
-// Create a CGBitmapContextRef appropriate for using in creating a unit test 
+// Create a CGBitmapContextRef appropriate for using in creating a unit test
 // image. If data is non-NULL, returns the buffer that the bitmap is
 // using for it's underlying storage. You must free this buffer using
 // free. If data is NULL, uses it's own internal storage.
@@ -218,7 +218,7 @@ do { \
 //  NSData for image
 - (NSData*)gtm_imageDataForImage:(CGImageRef)image;
 
-// Save the unitTestImage to a image file with name 
+// Save the unitTestImage to a image file with name
 // |name|.arch.OSVersionMajor.OSVersionMinor.OSVersionBugfix.extension
 // in the save folder (desktop by default)
 //
@@ -230,7 +230,7 @@ do { \
 //
 - (BOOL)gtm_saveToImageNamed:(NSString*)name;
 
-// Save unitTestImage of |self| to an image file at path |path|. 
+// Save unitTestImage of |self| to an image file at path |path|.
 // All non-drawn areas will be transparent.
 //
 //  Args:
@@ -313,7 +313,7 @@ do { \
 //  An extension (e.g. "gtmUTState")
 - (NSString*)gtm_stateExtension;
 
-// Save the encoded unit test state to a state file with name 
+// Save the encoded unit test state to a state file with name
 // |name|.arch.OSVersionMajor.OSVersionMinor.OSVersionBugfix.extension
 // in the save folder (desktop by default)
 //
@@ -398,7 +398,7 @@ do { \
 //
 //  Arguments:
 //    inCoder - the coder to encode our state into
-- (void)gtm_unitTestEncodeState:(NSCoder*)inCoder;  
+- (void)gtm_unitTestEncodeState:(NSCoder*)inCoder;
 @end
 
 // Informal protocol for delegates that wanst to be able to add state info

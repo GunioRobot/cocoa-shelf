@@ -1,14 +1,14 @@
 //
 //  GTMUnitTestDevLog.h
-//  
+//
 //  Copyright 2008 Google Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -25,7 +25,7 @@
 // to find unexpected logs in your output when running unittests.
 // In your unittests you tell GTMUnitTestDevLog what messages you expect your
 // test to spit out, and it will cause any that don't match to appear as errors
-// in your unittest run output. You can match on exact strings or standard 
+// in your unittest run output. You can match on exact strings or standard
 // regexps.
 
 @interface GTMUnitTestDevLog : NSObject

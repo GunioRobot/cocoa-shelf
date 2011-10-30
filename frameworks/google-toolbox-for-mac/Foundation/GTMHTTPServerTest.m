@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -91,13 +91,13 @@ const NSTimeInterval kSendChunkInterval = 0.05;
   STAssertFalse([server localhostOnly], nil);
   [server setLocalhostOnly:YES];
   STAssertTrue([server localhostOnly], nil);
-  
+
   STAssertEquals([server port], (uint16_t)0, nil);
   [server setPort:8080];
   STAssertEquals([server port], (uint16_t)8080, nil);
   [server setPort:80];
   STAssertEquals([server port], (uint16_t)80, nil);
-  
+
   // description (atleast 10 chars)
   STAssertGreaterThan([[server description] length], (NSUInteger)10, nil);
 }
@@ -119,7 +119,7 @@ const NSTimeInterval kSendChunkInterval = 0.05;
   GTMHTTPServer *server2 =
     [[[GTMHTTPServer alloc] initWithDelegate:delegate2] autorelease];
   STAssertNotNil(server2, nil);
-  
+
   // try the reserved port
   [server2 setPort:666];
   error = nil;
@@ -128,7 +128,7 @@ const NSTimeInterval kSendChunkInterval = 0.05;
   STAssertEqualObjects([error domain], kGTMHTTPServerErrorDomain, nil);
   STAssertEquals([error code], (NSInteger)kGTMHTTPServerBindFailedError,
                  @"port should have been reserved");
-  
+
   // try the same port
   [server2 setPort:[server1 port]];
   error = nil;
@@ -137,13 +137,13 @@ const NSTimeInterval kSendChunkInterval = 0.05;
   STAssertEqualObjects([error domain], kGTMHTTPServerErrorDomain, nil);
   STAssertEquals([error code], (NSInteger)kGTMHTTPServerBindFailedError,
                  @"port should have been in use");
-  
+
   // try a random port again so we really start (prove two can run at once)
   [server2 setPort:0];
   error = nil;
   STAssertTrue([server2 start:&error], @"failed to start (error=%@)", error);
   STAssertNil(error, @"error: %@", error);
-  
+
   // shut them down
   [server1 stop];
   [server2 stop];
@@ -160,7 +160,7 @@ const NSTimeInterval kSendChunkInterval = 0.05;
   STAssertNil(error, @"error: %@", error);
 
   // a request to test all the fields of a request object
-  
+
   NSString *payload =
     @"PUT /some/server/path HTTP/1.0\r\n"
     @"Content-Length: 16\r\n"
@@ -170,7 +170,7 @@ const NSTimeInterval kSendChunkInterval = 0.05;
   NSData *reply =
     [self fetchFromPort:[server port] payload:payload chunkSize:kSendChunkSize];
   STAssertNotNil(reply, nil);
-  
+
   GTMHTTPRequestMessage *request = [delegate popRequest];
   STAssertEqualObjects([request version], @"HTTP/1.0", nil);
   STAssertEqualObjects([[request URL] absoluteString], @"/some/server/path", nil);
@@ -186,14 +186,14 @@ const NSTimeInterval kSendChunkInterval = 0.05;
   STAssertEqualObjects([allHeaders objectForKey:@"Custom-Header"],
                        @"Custom_Value", nil);
   STAssertGreaterThan([[request description] length], (NSUInteger)10, nil);
-  
+
   // test different request types (in simple form)
 
   typedef struct  {
     NSString *method;
     NSString *url;
   } TestData;
-  
+
   TestData data[] = {
     { @"GET", @"/foo/bar" },
     { @"HEAD", @"/foo/baz" },
@@ -209,8 +209,8 @@ const NSTimeInterval kSendChunkInterval = 0.05;
     payload = [NSString stringWithFormat:@"%@ %@ HTTP/1.0\r\n\r\n",
                data[i].method, data[i].url];
     STAssertNotNil(payload, nil);
-    reply = [self fetchFromPort:[server port] 
-                        payload:payload 
+    reply = [self fetchFromPort:[server port]
+                        payload:payload
                       chunkSize:kSendChunkSize];
     STAssertNotNil(reply, // just want a reply in this test
                    @"failed of method %@", data[i].method);
@@ -220,7 +220,7 @@ const NSTimeInterval kSendChunkInterval = 0.05;
     STAssertEqualObjects([request method], data[i].method,
                          @"methods didn't match for index %d", i);
   }
-  
+
   [server stop];
 }
 
@@ -236,7 +236,7 @@ const NSTimeInterval kSendChunkInterval = 0.05;
                                            contentType:nil
                                             statusCode:602],
               nil);
-  
+
   TestServerDelegate *delegate = [TestServerDelegate testServerDelegate];
   STAssertNotNil(delegate, nil);
   GTMHTTPServer *server =
@@ -247,7 +247,7 @@ const NSTimeInterval kSendChunkInterval = 0.05;
   STAssertNil(error, @"error: %@", error);
 
   // test the html helper
-  
+
   GTMHTTPResponseMessage *expectedResponse =
     [GTMHTTPResponseMessage responseWithHTMLString:@"Success!"];
   STAssertNotNil(expectedResponse, nil);
@@ -268,9 +268,9 @@ const NSTimeInterval kSendChunkInterval = 0.05;
                     (NSUInteger)NSNotFound, nil);
   STAssertNotEquals([responseString rangeOfString:@"Content-Type: text/html; charset=UTF-8"].location,
                     (NSUInteger)NSNotFound, nil);
-  
+
   // test the plain code response
-  
+
   expectedResponse = [GTMHTTPResponseMessage emptyResponseWithCode:299];
   STAssertNotNil(expectedResponse, nil);
   STAssertGreaterThan([[expectedResponse description] length],
@@ -322,7 +322,7 @@ const NSTimeInterval kSendChunkInterval = 0.05;
                     (NSUInteger)NSNotFound, nil);
   STAssertNotEquals([responseString rangeOfString:@"Custom-Header2: "].location,
                     (NSUInteger)NSNotFound, nil);
-  
+
   [server stop];
 }
 
@@ -337,7 +337,7 @@ const NSTimeInterval kSendChunkInterval = 0.05;
   NSError *error = nil;
   STAssertTrue([server start:&error], @"failed to start (error=%@)", error);
   STAssertNil(error, @"error: %@", error);
-  
+
   // extra data (ie-pipelining)
 
   NSString *payload =
@@ -352,7 +352,7 @@ const NSTimeInterval kSendChunkInterval = 0.05;
     [self fetchFromPort:[server port] payload:payload chunkSize:0];
   STAssertNotNil(reply, nil);
   STAssertEquals([delegate requestCount], (NSUInteger)1, nil);
-  
+
   // close w/o full request
   {
     // local pool so we can force our handle to close
@@ -365,7 +365,7 @@ const NSTimeInterval kSendChunkInterval = 0.05;
     // spin the run loop so reads the start of the request
     NSDate* loopIntervalDate =
       [NSDate dateWithTimeIntervalSinceNow:kRunLoopInterval];
-    [[NSRunLoop currentRunLoop] runUntilDate:loopIntervalDate]; 
+    [[NSRunLoop currentRunLoop] runUntilDate:loopIntervalDate];
     // make sure we see the request at this point
     STAssertEquals([server activeRequestCount], (NSUInteger)1,
                    @"should have started the request by now");
@@ -381,7 +381,7 @@ const NSTimeInterval kSendChunkInterval = 0.05;
     STAssertEquals([server activeRequestCount], (NSUInteger)0,
                    @"should have cleaned up the pending connection");
   }
-  
+
 }
 
 - (void)testExceptionDuringRequest {
@@ -432,13 +432,13 @@ const NSTimeInterval kSendChunkInterval = 0.05;
   while (!fetchedData_ && [giveUpDate timeIntervalSinceNow] > 0) {
     NSDate* loopIntervalDate =
       [NSDate dateWithTimeIntervalSinceNow:kRunLoopInterval];
-    [[NSRunLoop currentRunLoop] runUntilDate:loopIntervalDate]; 
+    [[NSRunLoop currentRunLoop] runUntilDate:loopIntervalDate];
   }
 
   [center removeObserver:self
                  name:NSFileHandleReadToEndOfFileCompletionNotification
                object:handle];
-  
+
   NSData *result = [fetchedData_ autorelease];
   fetchedData_ = nil;
   return result;
@@ -449,7 +449,7 @@ const NSTimeInterval kSendChunkInterval = 0.05;
                                 chunkSize:(NSUInteger)chunkSize {
   int fd = socket(AF_INET, SOCK_STREAM, 0);
   STAssertGreaterThan(fd, 0, @"failed to create socket");
-  
+
   struct sockaddr_in addr;
   bzero(&addr, sizeof(addr));
   addr.sin_len    = sizeof(addr);
@@ -459,14 +459,14 @@ const NSTimeInterval kSendChunkInterval = 0.05;
   int connectResult =
   connect(fd, (struct sockaddr*)(&addr), (socklen_t)sizeof(addr));
   STAssertEquals(connectResult, 0, nil);
-  
+
   NSFileHandle *handle =
   [[[NSFileHandle alloc] initWithFileDescriptor:fd
                                  closeOnDealloc:YES] autorelease];
   STAssertNotNil(handle, nil);
-  
+
   NSData *payloadData = [payload dataUsingEncoding:NSUTF8StringEncoding];
-  
+
   // we can send in one block or in chunked mode
   if (chunkSize > 0) {
     // we don't write the data in one large block, instead of write it out
@@ -477,20 +477,20 @@ const NSTimeInterval kSendChunkInterval = 0.05;
       if (dataChunkSize > chunkSize) {
         dataChunkSize = chunkSize;
       }
-      NSData *dataChunk 
+      NSData *dataChunk
         = [payloadData subdataWithRange:NSMakeRange(x, dataChunkSize)];
       [handle writeData:dataChunk];
       // delay after all but the last chunk to give it time to be read.
       if ((x + chunkSize) < length) {
         NSDate* loopIntervalDate =
           [NSDate dateWithTimeIntervalSinceNow:kSendChunkInterval];
-        [[NSRunLoop currentRunLoop] runUntilDate:loopIntervalDate]; 
+        [[NSRunLoop currentRunLoop] runUntilDate:loopIntervalDate];
       }
     }
   } else {
     [handle writeData:payloadData];
   }
-  
+
   return handle;
 }
 
@@ -542,7 +542,7 @@ const NSTimeInterval kSendChunkInterval = 0.05;
 - (GTMHTTPResponseMessage *)httpServer:(GTMHTTPServer *)server
                          handleRequest:(GTMHTTPRequestMessage *)request {
   [requests_ addObject:request];
-  
+
   GTMHTTPResponseMessage *result = nil;
   if ([responses_ count] > 0) {
     result = [[[responses_ lastObject] retain] autorelease];

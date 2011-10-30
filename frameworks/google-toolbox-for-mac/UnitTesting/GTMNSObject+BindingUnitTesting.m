@@ -1,6 +1,6 @@
 //
 //  GTMNSObject+BindingUnitTesting.m
-//  
+//
 //  An informal protocol for doing advanced binding unittesting with objects.
 //
 //  Copyright 2006-2008 Google Inc.
@@ -8,9 +8,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -21,7 +21,7 @@
 #import "GTMDefines.h"
 #import "GTMNSObject+BindingUnitTesting.h"
 
-BOOL GTMDoExposedBindingsFunctionCorrectly(NSObject *object, 
+BOOL GTMDoExposedBindingsFunctionCorrectly(NSObject *object,
                                            NSArray **errors) {
   NSMutableArray *errorArray = [NSMutableArray array];
   if (errors) {
@@ -63,7 +63,7 @@ BOOL GTMDoExposedBindingsFunctionCorrectly(NSObject *object,
           }
         }
         @catch(NSException *e) {
-          [errorArray addObject:[NSString stringWithFormat:@"%@:%@-> Binding %@", 
+          [errorArray addObject:[NSString stringWithFormat:@"%@:%@-> Binding %@",
                                  [e name], [e reason], bindingKey]];
         }  // COV_NF_LINE - compiler bug
       }
@@ -89,7 +89,7 @@ BOOL GTMDoExposedBindingsFunctionCorrectly(NSObject *object,
 - (NSMutableArray*)gtm_unitTestExposedBindingsToIgnore {
   NSMutableArray *array = [NSMutableArray arrayWithObject:NSValueBinding];
   if ([[self exposedBindings] containsObject:NSFontBinding]) {
-    NSString *fontBindings[] = { NSFontBoldBinding, NSFontFamilyNameBinding, 
+    NSString *fontBindings[] = { NSFontBoldBinding, NSFontFamilyNameBinding,
     NSFontItalicBinding, NSFontNameBinding, NSFontSizeBinding };
     for (size_t i = 0; i < sizeof(fontBindings) / sizeof(NSString*); ++i) {
       [array addObject:fontBindings[i]];
@@ -99,19 +99,19 @@ BOOL GTMDoExposedBindingsFunctionCorrectly(NSObject *object,
 }
 
 - (NSMutableDictionary*)gtm_unitTestExposedBindingsTestValues:(NSString*)binding {
-  
+
   NSMutableDictionary *dict = [NSMutableDictionary dictionary];
   id value = [self valueForKey:binding];
-  
+
   // Always test identity if possible
   if (value) {
     [dict gtm_setObjectAndKey:value];
   }
-  
+
   // Now some default test values for a variety of bindings to make
   // sure that we cover all the bases and save other people writing lots of
   // duplicate test code.
-  
+
   // If anybody can think of more to add, please go nuts.
   if ([binding isEqualToString:NSAlignmentBinding]) {
     [dict gtm_setObjectAndKey:[NSNumber numberWithInt:NSLeftTextAlignment]];
@@ -122,19 +122,19 @@ BOOL GTMDoExposedBindingsFunctionCorrectly(NSObject *object,
     [dict gtm_setObjectAndKey:natural];
     [dict setObject:natural forKey:[NSNumber numberWithInt:500]];
     [dict setObject:natural forKey:[NSNumber numberWithInt:-1]];
-  } else if ([binding isEqualToString:NSAlternateImageBinding] || 
-             [binding isEqualToString:NSImageBinding] || 
-             [binding isEqualToString:NSMixedStateImageBinding] || 
+  } else if ([binding isEqualToString:NSAlternateImageBinding] ||
+             [binding isEqualToString:NSImageBinding] ||
+             [binding isEqualToString:NSMixedStateImageBinding] ||
              [binding isEqualToString:NSOffStateImageBinding] ||
              [binding isEqualToString:NSOnStateImageBinding]) {
     // This handles all image bindings
     [dict gtm_setObjectAndKey:[NSImage imageNamed:@"NSApplicationIcon"]];
-  } else if ([binding isEqualToString:NSAnimateBinding] || 
+  } else if ([binding isEqualToString:NSAnimateBinding] ||
              [binding isEqualToString:NSDocumentEditedBinding] ||
              [binding isEqualToString:NSEditableBinding] ||
              [binding isEqualToString:NSEnabledBinding] ||
              [binding isEqualToString:NSHiddenBinding] ||
-             [binding isEqualToString:NSVisibleBinding] || 
+             [binding isEqualToString:NSVisibleBinding] ||
              [binding isEqualToString:NSIsIndeterminateBinding] ||
              // NSTranparentBinding 10.5 only
              [binding isEqualToString:@"transparent"]) {
@@ -149,38 +149,38 @@ BOOL GTMDoExposedBindingsFunctionCorrectly(NSObject *object,
     // This handles all string value bindings
     [dict gtm_setObjectAndKey:@"happy"];
     [dict gtm_setObjectAndKey:@""];
-    
+
     // Test some non-ascii roman text
     char a_not_alpha[] = { 'A', 0xE2, 0x89, 0xA2, 0xCE, 0x91, '.', 0x00 };
     [dict gtm_setObjectAndKey:[NSString stringWithUTF8String:a_not_alpha]];
     // Test some korean
-    char hangugo[] = { 0xED, 0x95, 0x9C, 0xEA, 0xB5, 
-                       0xAD, 0xEC, 0x96, 0xB4, 0x00 };    
+    char hangugo[] = { 0xED, 0x95, 0x9C, 0xEA, 0xB5,
+                       0xAD, 0xEC, 0x96, 0xB4, 0x00 };
     [dict gtm_setObjectAndKey:[NSString stringWithUTF8String:hangugo]];
     // Test some japanese
     char nihongo[] = { 0xE6, 0x97, 0xA5, 0xE6, 0x9C,
                        0xAC, 0xE8, 0xAA, 0x9E, 0x00 };
     [dict gtm_setObjectAndKey:[NSString stringWithUTF8String:nihongo]];
-    // Test some arabic 
+    // Test some arabic
     char arabic[] = { 0xd9, 0x83, 0xd8, 0xa7, 0xd9, 0x83, 0xd8, 0xa7, 0x00 };
     [dict gtm_setObjectAndKey:[NSString stringWithUTF8String:arabic]];
   } else if ([binding isEqualToString:NSRepresentedFilenameBinding]) {
     // This handles all path bindings
     [dict gtm_setObjectAndKey:@"/happy"];
     [dict gtm_setObjectAndKey:@"/"];
-    
+
     // Test some non-ascii roman text
     char a_not_alpha[] = { '/', 'A', 0xE2, 0x89, 0xA2, 0xCE, 0x91, '.', 0x00 };
     [dict gtm_setObjectAndKey:[NSString stringWithUTF8String:a_not_alpha]];
     // Test some korean
-    char hangugo[] = { '/', 0xED, 0x95, 0x9C, 0xEA, 0xB5, 
-    0xAD, 0xEC, 0x96, 0xB4, 0x00 };    
+    char hangugo[] = { '/', 0xED, 0x95, 0x9C, 0xEA, 0xB5,
+    0xAD, 0xEC, 0x96, 0xB4, 0x00 };
     [dict gtm_setObjectAndKey:[NSString stringWithUTF8String:hangugo]];
     // Test some japanese
     char nihongo[] = { '/', 0xE6, 0x97, 0xA5, 0xE6, 0x9C,
     0xAC, 0xE8, 0xAA, 0x9E, 0x00 };
     [dict gtm_setObjectAndKey:[NSString stringWithUTF8String:nihongo]];
-    // Test some arabic 
+    // Test some arabic
     char arabic[] = { '/', 0xd9, 0x83, 0xd8, 0xa7, 0xd9, 0x83, 0xd8, 0xa7, 0x00 };
     [dict gtm_setObjectAndKey:[NSString stringWithUTF8String:arabic]];
   } else if ([binding isEqualToString:NSMaximumRecentsBinding] ||
@@ -193,8 +193,8 @@ BOOL GTMDoExposedBindingsFunctionCorrectly(NSObject *object,
   } else if ([binding isEqualToString:NSMaxValueBinding] ||
              [binding isEqualToString:NSMaxWidthBinding] ||
              [binding isEqualToString:NSMinValueBinding] ||
-             [binding isEqualToString:NSMinWidthBinding] || 
-             [binding isEqualToString:NSContentWidthBinding] || 
+             [binding isEqualToString:NSMinWidthBinding] ||
+             [binding isEqualToString:NSContentWidthBinding] ||
              [binding isEqualToString:NSContentHeightBinding] ||
              [binding isEqualToString:NSWidthBinding] ||
              [binding isEqualToString:NSAnimationDelayBinding]) {
@@ -211,17 +211,17 @@ BOOL GTMDoExposedBindingsFunctionCorrectly(NSObject *object,
     [dict gtm_setObjectAndKey:[NSColor colorWithCalibratedWhite:1.0 alpha:1.0]];
     [dict gtm_setObjectAndKey:[NSColor colorWithCalibratedWhite:1.0 alpha:0.0]];
     [dict gtm_setObjectAndKey:[NSColor colorWithCalibratedWhite:1.0 alpha:0.5]];
-    [dict gtm_setObjectAndKey:[NSColor colorWithCalibratedRed:0.5 green:0.5 
+    [dict gtm_setObjectAndKey:[NSColor colorWithCalibratedRed:0.5 green:0.5
                                                          blue:0.5 alpha:0.5]];
-    [dict gtm_setObjectAndKey:[NSColor colorWithDeviceCyan:0.25 magenta:0.25 
-                                                    yellow:0.25 black:0.25 
+    [dict gtm_setObjectAndKey:[NSColor colorWithDeviceCyan:0.25 magenta:0.25
+                                                    yellow:0.25 black:0.25
                                                      alpha:0.25]];
   } else if ([binding isEqualToString:NSFontBinding]) {
     // This handles all font value bindings
     [dict gtm_setObjectAndKey:[NSFont boldSystemFontOfSize:[NSFont systemFontSize]]];
     [dict gtm_setObjectAndKey:[NSFont toolTipsFontOfSize:[NSFont smallSystemFontSize]]];
     [dict gtm_setObjectAndKey:[NSFont labelFontOfSize:144.0]];
-  } else if ([binding isEqualToString:NSRecentSearchesBinding] || 
+  } else if ([binding isEqualToString:NSRecentSearchesBinding] ||
              [binding isEqualToString:NSSortDescriptorsBinding]) {
     // This handles all array value bindings
     [dict gtm_setObjectAndKey:[NSArray array]];
@@ -249,7 +249,7 @@ BOOL GTMDoExposedBindingsFunctionCorrectly(NSObject *object,
 #pragma mark -
 #pragma mark All the special AppKit Bindings issues below
 
-@interface NSImage (GTMBindingUnitTestingAdditions) 
+@interface NSImage (GTMBindingUnitTestingAdditions)
 @end
 
 @implementation NSImage (GTMBindingUnitTestingAdditions)
@@ -261,7 +261,7 @@ BOOL GTMDoExposedBindingsFunctionCorrectly(NSObject *object,
 }
 @end
 
-@interface NSScroller (GTMBindingUnitTestingAdditions) 
+@interface NSScroller (GTMBindingUnitTestingAdditions)
 @end
 
 @implementation NSScroller (GTMBindingUnitTestingAdditions)
@@ -275,7 +275,7 @@ BOOL GTMDoExposedBindingsFunctionCorrectly(NSObject *object,
 }
 @end
 
-@interface NSTextField (GTMBindingUnitTestingAdditions) 
+@interface NSTextField (GTMBindingUnitTestingAdditions)
 @end
 
 @implementation NSTextField (GTMBindingUnitTestingAdditions)
@@ -299,7 +299,7 @@ BOOL GTMDoExposedBindingsFunctionCorrectly(NSObject *object,
 }
 @end
 
-@interface NSSearchField (GTMBindingUnitTestingAdditions) 
+@interface NSSearchField (GTMBindingUnitTestingAdditions)
 @end
 
 @implementation NSSearchField (GTMBindingUnitTestingAdditions)
@@ -310,7 +310,7 @@ BOOL GTMDoExposedBindingsFunctionCorrectly(NSObject *object,
   if ([binding isEqualToString:NSAlignmentBinding]) {
     // rdar://5851491 - Setting NSAlignmentBinding of search field to NSCenterTextAlignment broken
     // This appears to not be a bug in 64 bit. Strange.
-    [dict setObject:[NSNumber numberWithInt:NSNaturalTextAlignment] 
+    [dict setObject:[NSNumber numberWithInt:NSNaturalTextAlignment]
              forKey:[NSNumber numberWithInt:NSCenterTextAlignment]];
   }
 #endif
@@ -326,7 +326,7 @@ BOOL GTMDoExposedBindingsFunctionCorrectly(NSObject *object,
 
 @end
 
-@interface NSWindow (GTMBindingUnitTestingAdditions) 
+@interface NSWindow (GTMBindingUnitTestingAdditions)
 @end
 
 @implementation NSWindow (GTMBindingUnitTestingAdditions)
@@ -344,7 +344,7 @@ BOOL GTMDoExposedBindingsFunctionCorrectly(NSObject *object,
 
 @end
 
-@interface NSBox (GTMBindingUnitTestingAdditions) 
+@interface NSBox (GTMBindingUnitTestingAdditions)
 @end
 
 @implementation NSBox (GTMBindingUnitTestingAdditions)
@@ -360,7 +360,7 @@ BOOL GTMDoExposedBindingsFunctionCorrectly(NSObject *object,
 
 @end
 
-@interface NSTableView (GTMBindingUnitTestingAdditions) 
+@interface NSTableView (GTMBindingUnitTestingAdditions)
 @end
 
 @implementation NSTableView (GTMBindingUnitTestingAdditions)
@@ -379,7 +379,7 @@ BOOL GTMDoExposedBindingsFunctionCorrectly(NSObject *object,
 
 @end
 
-@interface NSTextView (GTMBindingUnitTestingAdditions) 
+@interface NSTextView (GTMBindingUnitTestingAdditions)
 @end
 
 @implementation NSTextView (GTMBindingUnitTestingAdditions)
@@ -397,14 +397,14 @@ BOOL GTMDoExposedBindingsFunctionCorrectly(NSObject *object,
 
 @end
 
-@interface NSTabView (GTMBindingUnitTestingAdditions) 
+@interface NSTabView (GTMBindingUnitTestingAdditions)
 @end
 
 @implementation NSTabView (GTMBindingUnitTestingAdditions)
 
 - (NSMutableArray*)gtm_unitTestExposedBindingsToIgnore {
   NSMutableArray *array = [super gtm_unitTestExposedBindingsToIgnore];
-  // rdar://5849248 - NSTabView exposes binding with no value class for NSSelectedIdentifierBinding 
+  // rdar://5849248 - NSTabView exposes binding with no value class for NSSelectedIdentifierBinding
   [array addObject:NSSelectedIdentifierBinding];
   // Not KVC Compliant
   [array addObject:NSSelectedIndexBinding];
@@ -414,7 +414,7 @@ BOOL GTMDoExposedBindingsFunctionCorrectly(NSObject *object,
 
 @end
 
-@interface NSButton (GTMBindingUnitTestingAdditions) 
+@interface NSButton (GTMBindingUnitTestingAdditions)
 @end
 
 @implementation NSButton (GTMBindingUnitTestingAdditions)
@@ -428,7 +428,7 @@ BOOL GTMDoExposedBindingsFunctionCorrectly(NSObject *object,
 
 @end
 
-@interface NSProgressIndicator (GTMBindingUnitTestingAdditions) 
+@interface NSProgressIndicator (GTMBindingUnitTestingAdditions)
 @end
 
 @implementation NSProgressIndicator (GTMBindingUnitTestingAdditions)

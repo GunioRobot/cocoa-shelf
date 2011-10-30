@@ -13,7 +13,7 @@
  * 3. Neither the name of the copyright holder nor the names of any contributors
  *    may be used to endorse or promote products derived from this
  *    software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -42,7 +42,7 @@
 
 - (void) setUp {
     _dialect = [[PLSqliteEntityDialect alloc] init];
-    
+
     _db = [[PLSqliteDatabase alloc] initWithPath: @":memory:"];
     STAssertTrue([_db open], @"Couldn't open in-memory database");
 
@@ -60,7 +60,7 @@
 - (void) testLastInsertIdentity {
     NSObject<PLResultSet> *result;
     int32_t rowId;
-    
+
     STAssertTrue([_dialect supportsLastInsertIdentity], nil);
     STAssertNotNil([_dialect lastInsertIdentity], nil);
 

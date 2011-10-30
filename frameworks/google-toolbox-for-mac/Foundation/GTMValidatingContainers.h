@@ -1,7 +1,7 @@
 //
 //  GTMValidatingContainers.h
 //
-//  Mutable containers that do verification of objects being added to them 
+//  Mutable containers that do verification of objects being added to them
 //  at runtime. Support for arrays, dictionaries and sets.
 //
 //  Copyright 2008 Google Inc.
@@ -9,9 +9,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -20,11 +20,11 @@
 //
 
 // GTMValidatingContainers are a set of mutable container classes that allow
-// you to have a selector on a target that is called to verify that the objects 
-// being put into the container are valid. This can be controlled at compile 
-// time so that you don't take the performance hit in a release build using the 
+// you to have a selector on a target that is called to verify that the objects
+// being put into the container are valid. This can be controlled at compile
+// time so that you don't take the performance hit in a release build using the
 // GTM_CONTAINERS_VALIDATE macro.
-// We have supplied validators for simple cases such as kindOfClass or 
+// We have supplied validators for simple cases such as kindOfClass or
 // conformsToProtocol. See GTMKindOfClassValidator et al. for details.
 //
 // Example of usage:
@@ -35,7 +35,7 @@
 // [array addObject:@"foo"]; // Will be good
 // [array addObject:[NSNumber numberWithInt:2]; // Will fail
 //
-// By setting the GTM_CONTAINERS_VALIDATION_FAILED_LOG and 
+// By setting the GTM_CONTAINERS_VALIDATION_FAILED_LOG and
 // GTM_CONTAINERS_VALIDATION_FAILED_ASSERT macros you can control what happens
 // when a validation fails. If you implement your own validators, you may want
 // to control their internals using the same macros for consistency.
@@ -88,13 +88,13 @@ inline void _GTMValidateContainer(id container, id target, SEL selector) {
 }
 inline void _GTMValidateContainerContainsKindOfClass(id container, Class cls) {
 }
-inline void _GTMValidateContainerContainsMemberOfClass(id container, 
+inline void _GTMValidateContainerContainsMemberOfClass(id container,
                                                        Class cls) {
 }
-inline void _GTMValidateContainerConformsToProtocol(id container, 
+inline void _GTMValidateContainerConformsToProtocol(id container,
                                                     Protocol *prot) {
 }
-inline void _GTMValidateContainerItemsRespondToSelector(id container, 
+inline void _GTMValidateContainerItemsRespondToSelector(id container,
                                                         SEL sel) {
 }
 #endif
@@ -109,12 +109,12 @@ inline void _GTMValidateContainerItemsRespondToSelector(id container,
 #endif  // #if GTM_CONTAINERS_VALIDATE
 }
 + (id)validatingArrayWithTarget:(id)target selector:(SEL)sel;
-+ (id)validatingArrayWithCapacity:(NSUInteger)capacity 
-                           target:(id)target 
++ (id)validatingArrayWithCapacity:(NSUInteger)capacity
+                           target:(id)target
                          selector:(SEL)sel;
 - (id)initValidatingWithTarget:(id)target selector:(SEL)sel;
 - (id)initValidatingWithCapacity:(NSUInteger)capacity
-                          target:(id)target 
+                          target:(id)target
                         selector:(SEL)sel;
 @end
 
@@ -127,12 +127,12 @@ inline void _GTMValidateContainerItemsRespondToSelector(id container,
 #endif  // #if GTM_CONTAINERS_VALIDATE
 }
 + (id)validatingDictionaryWithTarget:(id)target selector:(SEL)sel;
-+ (id)validatingDictionaryWithCapacity:(NSUInteger)capacity 
-                                target:(id)target 
++ (id)validatingDictionaryWithCapacity:(NSUInteger)capacity
+                                target:(id)target
                               selector:(SEL)sel;
 - (id)initValidatingWithTarget:(id)target selector:(SEL)sel;
 - (id)initValidatingWithCapacity:(NSUInteger)capacity
-                          target:(id)target 
+                          target:(id)target
                         selector:(SEL)sel;
 @end
 
@@ -145,12 +145,12 @@ inline void _GTMValidateContainerItemsRespondToSelector(id container,
 #endif  // #if GTM_CONTAINERS_VALIDATE
 }
 + (id)validatingSetWithTarget:(id)target selector:(SEL)sel;
-+ (id)validatingSetWithCapacity:(NSUInteger)capacity 
-                         target:(id)target 
++ (id)validatingSetWithCapacity:(NSUInteger)capacity
+                         target:(id)target
                        selector:(SEL)sel;
 - (id)initValidatingWithTarget:(id)target selector:(SEL)sel;
 - (id)initValidatingWithCapacity:(NSUInteger)capacity
-                          target:(id)target 
+                          target:(id)target
                         selector:(SEL)sel;
 @end
 

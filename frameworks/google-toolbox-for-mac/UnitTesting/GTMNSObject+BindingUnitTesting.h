@@ -8,9 +8,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -22,7 +22,7 @@
 
 // Utility functions for GTMTestExposedBindings Macro. Don't use it directly
 // but use the macro below instead
-BOOL GTMDoExposedBindingsFunctionCorrectly(NSObject *object, 
+BOOL GTMDoExposedBindingsFunctionCorrectly(NSObject *object,
                                            NSArray **errors);
 
 // Tests the setters and getters for exposed bindings
@@ -36,8 +36,8 @@ BOOL GTMDoExposedBindingsFunctionCorrectly(NSObject *object,
 //
 //  Args:
 //    a1: The object to be checked.
-//    description: A format string as in the printf() function. 
-//        Can be nil or an empty string but must be present. 
+//    description: A format string as in the printf() function.
+//        Can be nil or an empty string but must be present.
 //    ...: A variable number of arguments to the format string. Can be absent.
 //
 #define GTMTestExposedBindings(a1, description, ...) \
@@ -69,7 +69,7 @@ do { \
 //    return array;
 //  }
 // The NSObject implementation by default will ignore NSFontBoldBinding,
-// NSFontFamilyNameBinding, NSFontItalicBinding, NSFontNameBinding and 
+// NSFontFamilyNameBinding, NSFontItalicBinding, NSFontNameBinding and
 // NSFontSizeBinding if your exposed bindings contains NSFontBinding because
 // the NSFont*Bindings are NOT KVC/KVO compliant.
 - (NSMutableArray*)gtm_unitTestExposedBindingsToIgnore;

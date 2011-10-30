@@ -37,7 +37,7 @@
       return nil;
     }
   }
-  
+
   return self;
 }
 
@@ -96,9 +96,9 @@
 - (GTMPath *)createDirectoryName:(NSString *)name
                       attributes:(NSDictionary *)attributes {
   if ([name length] == 0) return nil;
-  
+
   // We first check to see if the requested directory alread exists by trying
-  // to create a GTMPath from the desired new path string. Only if the path 
+  // to create a GTMPath from the desired new path string. Only if the path
   // doesn't already exist do we attempt to create it. If the path already
   // exists, we will end up returning a GTMPath for the pre-existing path.
   NSString *newPath = [fullPath_ stringByAppendingPathComponent:name];
@@ -106,7 +106,7 @@
   if (nascentPath != nil && ![nascentPath isDirectory]) {
     return nil;  // Return nil because the path exists, but it's not a dir
   }
-  
+
   if (nascentPath == nil) {
     BOOL created = [[NSFileManager defaultManager]
                     createDirectoryAtPath:newPath
@@ -133,7 +133,7 @@
                  attributes:(NSDictionary *)attributes
                        data:(NSData *)data {
   if ([name length] == 0) return nil;
-  
+
   // See createDirectoryName:attribute: for some high-level notes about what and
   // why this method does what it does.
   NSString *newPath = [fullPath_ stringByAppendingPathComponent:name];
@@ -141,7 +141,7 @@
   if (nascentPath != nil && [nascentPath isDirectory]) {
     return nil;  // Return nil because the path exists, but it's a dir
   }
-  
+
   if (nascentPath == nil) {
     BOOL created = [[NSFileManager defaultManager]
                     createFileAtPath:newPath
@@ -149,7 +149,7 @@
                           attributes:attributes];
     nascentPath = created ? [GTMPath pathWithFullPath:newPath] : nil;
   }
-  
+
   return nascentPath;
 }
 
